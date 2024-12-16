@@ -20,6 +20,7 @@ public class BoardGame extends ApplicationAdapter {
     List<Field> fields;
     ShapeRenderer shapeRenderer;
     boolean isDiceRolled = false;
+    Axis axis;
 
     @Override
     public void create () {
@@ -29,23 +30,12 @@ public class BoardGame extends ApplicationAdapter {
         dice = new Dice();
         shapeRenderer = new ShapeRenderer();
         fields = FieldGenerator.generateFields();
+        axis = new Axis();
     }
-
     @Override
     public void render() {
         draw();
-        if(Gdx.input.isTouched()){
-            float touchX = Gdx.input.getX();
-            float touchY = Gdx.input.getY();
-            touchY = Gdx.graphics.getHeight() - touchY;
-
-            if(dice.isDiceClicked(dice.getCurrentPilotDiceSprites(), dice.getCurrentPilotDiceValues(), touchX, touchY, true)){
-                System.out.println("Pilot dice");
-            }
-            if(dice.isDiceClicked(dice.getCurrentCopilotDiceSprites(), dice.getCurrentCoPilotDiceValues(), touchX, touchY, false)){
-                System.out.println("Copilot dice");
-            }
-        }
+        input();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (Field field : fields){
             field.renderer(shapeRenderer);
@@ -64,10 +54,28 @@ public class BoardGame extends ApplicationAdapter {
             dice.rollDice();
             isDiceRolled = true;
         }
+        axis.render(batch);
+        axis.setAxisValue(3);
         dice.renderDice(batch, true, 100);
         dice.renderDice(batch, false, 100);
         batch.end();
     }
+
+    public void input() {
+        if(Gdx.input.isTouched()){
+            float touchX = Gdx.input.getX();
+            float touchY = Gdx.input.getY();
+            touchY = Gdx.graphics.getHeight() - touchY;
+
+            if(dice.isDiceClicked(dice.getCurrentPilotDiceSprites(), dice.getCurrentPilotDiceValues(), touchX, touchY, true)){
+                System.out.println("Pilot dice");
+            }
+            if(dice.isDiceClicked(dice.getCurrentCopilotDiceSprites(), dice.getCurrentCoPilotDiceValues(), touchX, touchY, false)){
+                System.out.println("Copilot dice");
+            }
+        }
+    }
+
     @Override
     public void resize (int width, int height) {
         viewport.update(width, height, true);
