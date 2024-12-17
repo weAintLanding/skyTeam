@@ -1,17 +1,14 @@
 package com.sierrra.skyTeam;
 
 import com.badlogic.gdx.math.Rectangle;
-import org.w3c.dom.css.Rect;
-
-import java.util.ArrayList;
 
 public class Field {
     private Rectangle bounds;
-    private int fieldHeight = 35; private int fieldWidth = 35;
+    private int fieldSize = 45;
     private boolean isOccupied;
 
     public Field (float x, float y){
-        this.bounds = new Rectangle(x, y, fieldWidth, fieldHeight);
+        this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
         this.isOccupied = false;
     }
 

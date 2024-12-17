@@ -49,13 +49,14 @@ public class Dice {
             currentCopilotDiceSprites[i] = new Sprite(copilotDice[copilotDiceValue]);
         }
     }
-    public void renderDice(SpriteBatch batch, boolean isPilot, float startY) {
+    public void renderDice(SpriteBatch batch, boolean isPilot) {
         Sprite[] dice = isPilot ? currentPilotDiceSprites : currentCopilotDiceSprites;
-        float startX = isPilot ? 95 : 925;
+        float startX = isPilot ? 86 : 1150;
+        float startY = 200;
         for(int i = 0; i < dice.length; i++){
             Sprite sprite = dice[i];
             sprite.setSize(50, 50);
-            sprite.setPosition(startX + i*75, startY);
+            sprite.setPosition(startX, startY  + i*75);
             sprite.draw(batch);
         }
     }

@@ -13,8 +13,8 @@ public class Axis {
         this.axisValue = 0;
         Texture texture = new Texture("Axis.png");
         axis = new Sprite(texture);
-        axis.setPosition(528.5F, 210);
-        axis.setScale(0.4F);
+        axis.setPosition(525, 410);
+        axis.setScale(0.6F);
         axis.setOriginCenter();
     }
 
@@ -31,7 +31,7 @@ public class Axis {
         float animationSpeed = 2f;
         float deltaTime = Gdx.graphics.getDeltaTime();
         float targetAngle;
-        if(axisValue == 3){
+        if (Math.abs(axisValue) == 3){
             targetAngle = -axisValue * 25F;
         } else targetAngle = -axisValue * 27F;
         float currentAngle = axis.getRotation();
