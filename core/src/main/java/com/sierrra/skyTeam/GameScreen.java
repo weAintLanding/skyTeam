@@ -1,13 +1,13 @@
 package com.sierrra.skyTeam;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -33,7 +33,7 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         fields = FieldGenerator.generateFields();
         axis = new Axis();
-        logic = new Logic(dice, fields);
+        logic = new Logic(dice, fields, viewport);
     }
     public void show() {}
     public void render(float delta) {
@@ -70,8 +70,9 @@ public class GameScreen implements Screen {
     }
 
     public void handleHover() {
-        float touchX = Gdx.input.getX();
-        float touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
+        Vector2 coordinates = Something.scaledInput(viewport);
+        float touchX = coordinates.x;
+        float touchY = coordinates.y;
 
         boolean isHovered = false;
         for(int i = 0; i < dice.getCurrentPilotDiceSprites().length; i++){
