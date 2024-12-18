@@ -1,11 +1,9 @@
-package com.sierrra.skyTeam;
+package com.sierrra.skyTeam.View;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-
-import java.util.List;
 
 public class Field {
     private Rectangle bounds;
