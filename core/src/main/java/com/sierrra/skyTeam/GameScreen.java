@@ -1,6 +1,7 @@
 package com.sierrra.skyTeam;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +23,7 @@ public class GameScreen implements Screen {
     ShapeRenderer shapeRenderer;
     boolean isDiceRolled = false;
     Axis axis;
+    private Logic logic; //the rapper
     public GameScreen (BoardGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -31,11 +33,13 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         fields = FieldGenerator.generateFields();
         axis = new Axis();
+        logic = new Logic(dice, fields);
     }
     public void show() {}
     public void render(float delta) {
         draw();
-        input();
+        logic.handleInput();
+        handleHover();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (Field field : fields){
             field.renderer(shapeRenderer);
@@ -54,6 +58,10 @@ public class GameScreen implements Screen {
             dice.rollDice();
             isDiceRolled = true;
         }
+        for (Field field : fields) {
+            field.switchRenderer(batch);
+        }
+        fields.get(0).toggleSwitch();
         axis.render(batch);
         axis.setAxisValue(-1);
         dice.renderDice(batch, true);
@@ -61,12 +69,11 @@ public class GameScreen implements Screen {
         batch.end();
     }
 
-    public void input() {
+    public void handleHover() {
         float touchX = Gdx.input.getX();
         float touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
         boolean isHovered = false;
-
         for(int i = 0; i < dice.getCurrentPilotDiceSprites().length; i++){
             Sprite sprite = dice.getCurrentPilotDiceSprites()[i];
             if(sprite.getBoundingRectangle().contains(touchX,touchY)){
@@ -86,15 +93,6 @@ public class GameScreen implements Screen {
             Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Hand);
         } else {
             Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Arrow);
-        }
-
-        if(Gdx.input.isTouched()){
-            if(dice.isDiceClicked(dice.getCurrentPilotDiceSprites(), dice.getCurrentPilotDiceValues(), touchX, touchY, true)){
-                System.out.println("Pilot dice");
-            }
-            if(dice.isDiceClicked(dice.getCurrentCopilotDiceSprites(), dice.getCurrentCoPilotDiceValues(), touchX, touchY, false)){
-                System.out.println("Copilot dice");
-            }
         }
     }
     public void resize (int width, int height) {

@@ -76,6 +76,22 @@ public class Dice {
         return false;
     }
 
+    public int getDiceValue(float touchX, float touchY) {
+        for(int i = 0; i < currentPilotDiceSprites.length; i++){
+            Sprite sprite = currentPilotDiceSprites[i];
+            if(sprite.getBoundingRectangle().contains(touchX, touchY)){
+                return currentPilotDiceValues[i];
+            }
+        }
+        for(int i = 0; i < currentCopilotDiceSprites.length; i++){
+            Sprite sprite = currentCopilotDiceSprites[i];
+            if(sprite.getBoundingRectangle().contains(touchX, touchY)){
+                return currentCoPilotDiceValues[i];
+            }
+        }
+        return -1;
+    }
+
     public Sprite[] getCurrentPilotDiceSprites(){
         return currentPilotDiceSprites;
     }
