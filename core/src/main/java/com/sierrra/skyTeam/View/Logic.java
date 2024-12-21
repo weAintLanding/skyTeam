@@ -2,21 +2,27 @@ package com.sierrra.skyTeam.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.List;
 
 public class Logic {
+    Viewport viewport;
     Dice dice;
     List<Field> fields;
     private int lastClickedDiceValue = -1;
 
-    public Logic(Dice dice, List<Field> fields){
+    public Logic(Dice dice, List<Field> fields, Viewport viewport){
         this.dice = dice;
         this.fields = fields;
+        this.viewport = viewport;
     }
+
     public void handleInput() {
-        float touchX = Gdx.input.getX();
-        float touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
+        Vector2 coordinates = Something.scaledInput(viewport);
+        float touchX = coordinates.x;
+        float touchY = coordinates.y;
 
         //test for dice and field clicking
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {

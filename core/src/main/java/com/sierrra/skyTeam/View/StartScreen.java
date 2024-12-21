@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -40,12 +41,9 @@ public class StartScreen implements Screen {
         batch.end();
     }
     public void input(){
-        float touchX = Gdx.input.getX();
-        float touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
-        float scaleX = viewport.getWorldWidth() / Gdx.graphics.getWidth();
-        float scaleY = viewport.getWorldHeight() / Gdx.graphics.getHeight();
-        touchX *= scaleX;
-        touchY *= scaleY;
+        Vector2 coordinates = Something.scaledInput(viewport);
+        float touchX = coordinates.x;
+        float touchY = coordinates.y;
 
         boolean isPlay = playButton.contains(touchX, touchY);
         boolean isQuit = quitButton.contains(touchX, touchY);
