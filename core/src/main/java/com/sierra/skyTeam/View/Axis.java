@@ -1,4 +1,4 @@
-package com.sierrra.skyTeam.View;
+package com.sierra.skyTeam.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,12 +15,11 @@ public class Axis {
         axis = new Sprite(texture);
         axis.setPosition(525, 410);
         axis.setScale(0.6F);
-        axis.setOriginCenter();
-    }
+        axis.setOriginCenter();    }
 
-    public void calcAxis(int pilotAxisValue, int copilotAxisValue){
+    //public void calcAxis(int pilotAxisValue, int copilotAxisValue){
         // idk some thing for fadhil
-    }
+    //}
 
     public void setAxisValue(int axisValue) {
         this.axisValue = axisValue;

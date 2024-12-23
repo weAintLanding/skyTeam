@@ -1,8 +1,10 @@
-public class Axis {
+package com.sierra.skyTeam.Model;
+
+public class axisModel {
     private final Airplane airplane;
     private int axisValue = 0;
 
-    public Axis(Airplane airplane) {
+    public axisModel(Airplane airplane) {
         this.airplane = airplane;
     }
 
@@ -12,7 +14,7 @@ public class Axis {
         int changeValue = copilotValue - pilotValue;
         axisValue = axisValue + changeValue;
         if(airplane.getGame().checkCrashAxis()){
-            System.out.println("Axis out of balance. Plane Crashed.");
+            System.out.println("axisModel out of balance. Plane Crashed.");
             System.exit(0);
         }
     }
