@@ -14,6 +14,8 @@ public class Dice {
     private Sprite[] currentPilotDiceSprites;
     private Sprite[] currentCopilotDiceSprites;
     //Sprites are better for onclick events (such as the user clicking on the dice to select it)
+    boolean[] isPilotDiceMovable = new boolean[4];
+    boolean[] isCopilotDiceMovable = new boolean[4];
     Random random = new Random();
 
     public Dice() {
@@ -22,6 +24,7 @@ public class Dice {
         currentCopilotDiceSprites = new Sprite[4];
         currentCoPilotDiceValues = new int[4];
         currentPilotDiceValues = new int[4];
+
     }
 
     private void addSprites() {
@@ -41,22 +44,29 @@ public class Dice {
             int pilotDiceValue = random.nextInt(6);
             currentPilotDiceValues[i] = pilotDiceValue + 1;
             currentPilotDiceSprites[i] = new Sprite(pilotDice[pilotDiceValue]);
+            isPilotDiceMovable[i] = false;
 
             int copilotDiceValue = random.nextInt(6);
             currentCoPilotDiceValues[i] = copilotDiceValue + 1;
             //so it's better to make individual sprites for each or else if we roll the same
             //number, it'll not have any click functionality
             currentCopilotDiceSprites[i] = new Sprite(copilotDice[copilotDiceValue]);
+            isCopilotDiceMovable[i] = false;
         }
     }
+
     public void renderDice(SpriteBatch batch, boolean isPilot) {
         Sprite[] dice = isPilot ? currentPilotDiceSprites : currentCopilotDiceSprites;
+        boolean[] diceMovable = isPilot ? isPilotDiceMovable : isCopilotDiceMovable;
         float startX = isPilot ? 86 : 1150;
         float startY = 200;
         for(int i = 0; i < dice.length; i++){
             Sprite sprite = dice[i];
+            if(!diceMovable[i]){
+                sprite.setPosition(startX, startY  + i*75);
+                diceMovable[i] = true;
+            }
             sprite.setSize(50, 50);
-            sprite.setPosition(startX, startY  + i*75);
             sprite.draw(batch);
         }
     }
@@ -89,6 +99,22 @@ public class Dice {
                 return currentCoPilotDiceValues[i];
             }
         }
+        return -1;
+    }
+
+    public int getDiceValueFromSprite(Sprite selectedDice) {
+        for (int i = 0; i < currentPilotDiceSprites.length; i++) {
+            if (selectedDice == currentPilotDiceSprites[i]) {
+                return currentPilotDiceValues[i];
+            }
+        }
+
+        for (int i = 0; i < currentCopilotDiceSprites.length; i++) {
+            if (selectedDice == currentCopilotDiceSprites[i]) {
+                return currentCoPilotDiceValues[i];
+            }
+        }
+
         return -1;
     }
 

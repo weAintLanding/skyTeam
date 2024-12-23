@@ -13,6 +13,7 @@ public class Field {
     boolean switchOn;
     private int diceValue;
     private int [] allowedValues;
+    Dice dice = new Dice();
 
     public Field (float x, float y, boolean hasSwitch){
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
@@ -67,6 +68,12 @@ public class Field {
             return this;
         }
         return null;
+    }
+
+    public void placeDiceOnField (Sprite selectedDice) {
+        float centerX = bounds.x + (bounds.width - selectedDice.getWidth()) / 2;
+        float centerY = bounds.y + (bounds.height - selectedDice.getHeight()) / 2;
+        selectedDice.setPosition(centerX, centerY);
     }
 
     public Rectangle getBounds() {

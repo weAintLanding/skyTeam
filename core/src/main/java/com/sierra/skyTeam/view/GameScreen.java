@@ -21,9 +21,11 @@ public class GameScreen implements Screen {
     Dice dice;
     List<Field> fields;
     ShapeRenderer shapeRenderer;
-    boolean isDiceRolled = false;
     Axis axis;
-    private Logic logic; //the rapper
+    Logic logic; //the rapper
+    DicePosUpdater pilotHandler;
+    DicePosUpdater copilotHandler;
+
     public GameScreen (BoardGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -34,11 +36,17 @@ public class GameScreen implements Screen {
         fields = FieldGenerator.generateFields();
         axis = new Axis();
         logic = new Logic(dice, fields, viewport);
+        pilotHandler = new DicePosUpdater(dice.getCurrentPilotDiceSprites(), fields, viewport);
+        copilotHandler = new DicePosUpdater(dice.getCurrentCopilotDiceSprites(), fields, viewport);
     }
-    public void show() {}
+    public void show() {
+        dice.rollDice();
+    }
     public void render(float delta) {
         draw();
         logic.handleInput();
+        pilotHandler.update();
+        copilotHandler.update();
         handleHover();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (Field field : fields){
@@ -54,10 +62,6 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.draw(background, 0, 0,
             viewport.getWorldWidth(), viewport.getWorldHeight());
-        if (!isDiceRolled){
-            dice.rollDice();
-            isDiceRolled = true;
-        }
         for (Field field : fields) {
             field.switchRenderer(batch);
         }
@@ -70,7 +74,7 @@ public class GameScreen implements Screen {
     }
 
     public void handleHover() {
-        Vector2 coordinates = Something.scaledInput(viewport);
+        Vector2 coordinates = InputHandler.scaledInput(viewport);
         float touchX = coordinates.x;
         float touchY = coordinates.y;
 

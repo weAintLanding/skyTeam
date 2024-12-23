@@ -20,7 +20,7 @@ public class Logic {
     }
 
     public void handleInput() {
-        Vector2 coordinates = Something.scaledInput(viewport);
+        Vector2 coordinates = InputHandler.scaledInput(viewport);
         float touchX = coordinates.x;
         float touchY = coordinates.y;
 

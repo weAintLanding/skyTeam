@@ -41,7 +41,7 @@ public class StartScreen implements Screen {
         batch.end();
     }
     public void input(){
-        Vector2 coordinates = Something.scaledInput(viewport);
+        Vector2 coordinates = InputHandler.scaledInput(viewport);
         float touchX = coordinates.x;
         float touchY = coordinates.y;
 
