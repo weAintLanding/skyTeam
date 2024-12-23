@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class AltitudeTrack {
     private final int[] altitudes = {6000, 5000, 4000, 3000, 2000, 1000, 0};
     private final int[] rerollTokens = {1,0,0,0,1,0,0};

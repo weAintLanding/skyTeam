@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class Flaps {
     private final Airplane airplane;
     private final Field[] flapFields = new Field[4];

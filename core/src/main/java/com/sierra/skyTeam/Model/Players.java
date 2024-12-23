@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
@@ -77,12 +79,12 @@ public class Players {
     public boolean setAxis(Dice dice){
         int diceValue = dice.getDiceValue();
         if (axisSlot != null) {
-            System.out.println("Axis slot is already occupied");
+            System.out.println("axisModel slot is already occupied");
             return false;
         }
         this.axisSlot = diceValue;
         removeDice(diceValue);
-        System.out.println(this.getClass().getSimpleName() + " placed " + diceValue + " on their Axis slot");
+        System.out.println(this.getClass().getSimpleName() + " placed " + diceValue + " on their axisModel slot");
         return true;
     }
     public Integer getAxis() {

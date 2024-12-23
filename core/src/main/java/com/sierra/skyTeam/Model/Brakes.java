@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class Brakes {
     private final Airplane airplane;
     private final Field[] brakeFields = new Field[3];

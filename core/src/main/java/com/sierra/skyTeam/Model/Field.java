@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class Field {
     private final String fieldType;
     private Players owner;

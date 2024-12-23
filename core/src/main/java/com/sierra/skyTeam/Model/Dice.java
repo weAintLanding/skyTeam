@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 import java.util.Random;
 
 public class Dice {

@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class Radio {
     private final Airplane airplane;
 

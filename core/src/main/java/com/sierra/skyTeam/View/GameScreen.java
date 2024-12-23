@@ -1,4 +1,4 @@
-package com.sierrra.skyTeam.View;
+package com.sierra.skyTeam.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
         }
         fields.get(0).toggleSwitch();
         axis.render(batch);
-        axis.setAxisValue(-1);
+        axis.setAxisValue(0);
         dice.renderDice(batch, true);
         dice.renderDice(batch, false);
         batch.end();

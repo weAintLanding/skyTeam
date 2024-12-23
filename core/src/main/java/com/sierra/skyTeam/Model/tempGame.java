@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 import java.util.Scanner;
 
 public class tempGame {
@@ -31,7 +33,7 @@ public class tempGame {
             Players currentPlayer = game.getCurrentPlayer();
             System.out.println("Current Player: "+currentPlayer.getClass().getName());
             System.out.println(
-                "1. Axis\n"
+                "1. axisModel\n"
                 +"2. Engine\n"
                 +"3. Radio\n"
                 +"4. Coffee\n"
@@ -123,7 +125,7 @@ public class tempGame {
     private void turnChecker(){
         if(pilot.isAxis() && copilot.isAxis() && !axisChanged){
             airplane.getAxis().changeAxis(pilot,copilot);
-            System.out.println("Current Axis Value: " + airplane.getAxis().getAxisValue());
+            System.out.println("Current axisModel Value: " + airplane.getAxis().getAxisValue());
             axisChanged = true;
         }
         if (pilot.isThrottle() && copilot.isThrottle() && !throttleChanged) {
@@ -264,7 +266,7 @@ public class tempGame {
         axisChanged = false;
         throttleChanged = false;
 
-        //Engine Axis
+        //Engine axisModel
 
         game.getPilot().clearSlots();
         game.getCoPilot().clearSlots();

@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class Game {
     private final Airplane airplane;
     private final Pilot pilot;
@@ -87,7 +89,7 @@ public class Game {
 
     public boolean checkCrashAxis(){
         if (airplane.getAxis().getAxisValue() < -2 || airplane.getAxis().getAxisValue() > 2) {
-            System.out.println("Crash: Axis out of balance");
+            System.out.println("Crash: axisModel out of balance");
             return true;
         }
         return false;
@@ -96,7 +98,7 @@ public class Game {
     public boolean checkWin() {
         if (airplane.getApproachPosition() == 6 // Final position in the approach track
                 && airplane.getAltitude() == 0 // Altitude must be 0
-                && airplane.getAxis().getAxisValue() == 0 // Axis must be balanced
+                && airplane.getAxis().getAxisValue() == 0 // axisModel must be balanced
                 && airplane.getLandingGear().getActivatedLandingGearFields() == 3 // Landing gear engaged
                 && airplane.getBrakes().getActivatedBrakeFields() == 3 // Brakes engaged
                 && airplane.getFlaps().getActivatedFlapFields() == 4) { // Flaps fully engaged
@@ -119,7 +121,7 @@ public class Game {
             return false;
         }
         if (airplane.getAxis().getAxisValue() != 0) {
-            System.out.println("Landing conditions not met: Axis not balanced.");
+            System.out.println("Landing conditions not met: axisModel not balanced.");
             return false;
         }
         if (airplane.getAltitude() > 0) {

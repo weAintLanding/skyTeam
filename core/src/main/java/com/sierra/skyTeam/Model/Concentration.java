@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class Concentration {
     private int coffeeAvailable = 0;
 

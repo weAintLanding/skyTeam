@@ -1,9 +1,11 @@
+package com.sierra.skyTeam.Model;
+
 public class Airplane{
     private int altitude = 6000;
     private int approachPosition = 0;
 
     private Game game;
-    private final Axis axis;
+    private final axisModel axisModel;
     private final Engine engine;
     private final Brakes brakes;
     private final LandingGear landingGear;
@@ -13,7 +15,7 @@ public class Airplane{
 
     public Airplane(){
         engine = new Engine(this);
-        axis = new Axis(this);
+        axisModel = new axisModel(this);
         brakes = new Brakes(this);
         landingGear = new LandingGear(this);
         flaps = new Flaps(this);
@@ -28,8 +30,8 @@ public class Airplane{
         return game;
     }
 
-    public Axis getAxis() {
-        return axis;
+    public axisModel getAxis() {
+        return axisModel;
     }
     public Engine getEngine(){
         return engine;

@@ -1,3 +1,5 @@
+package com.sierra.skyTeam.Model;
+
 public class LandingGear {
     private final Airplane airplane;
     private final Field[] landingGearFields = new Field[3];

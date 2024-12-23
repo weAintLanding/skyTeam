@@ -1,4 +1,4 @@
-package com.sierrra.skyTeam.View;
+package com.sierra.skyTeam.View;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
