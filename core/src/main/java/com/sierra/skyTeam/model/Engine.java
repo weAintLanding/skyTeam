@@ -1,4 +1,4 @@
-package com.sierra.skyTeam.Model;
+package com.sierra.skyTeam.model;
 
 public class Engine {
     private final Airplane airplane;

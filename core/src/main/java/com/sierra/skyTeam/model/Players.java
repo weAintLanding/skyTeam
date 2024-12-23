@@ -1,4 +1,4 @@
-package com.sierra.skyTeam.Model;
+package com.sierra.skyTeam.model;
 
 import java.util.ArrayList;
 import java.util.Random;

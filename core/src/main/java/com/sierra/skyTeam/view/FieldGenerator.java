@@ -1,4 +1,4 @@
-package com.sierra.skyTeam.View;
+package com.sierra.skyTeam.view;
 
 import java.util.ArrayList;
 import java.util.List;

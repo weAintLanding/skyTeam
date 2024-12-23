@@ -1,8 +1,8 @@
-package com.sierra.skyTeam.Controller;
+package com.sierra.skyTeam.controller;
 
-import com.sierra.skyTeam.Model.Players;
-import com.sierra.skyTeam.Model.axisModel;
-import com.sierra.skyTeam.View.Axis;
+import com.sierra.skyTeam.model.Players;
+import com.sierra.skyTeam.model.axisModel;
+import com.sierra.skyTeam.view.Axis;
 
 public class axisController {
     private final Axis axisView;

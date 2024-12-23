@@ -1,4 +1,4 @@
-package com.sierra.skyTeam.View;
+package com.sierra.skyTeam.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;

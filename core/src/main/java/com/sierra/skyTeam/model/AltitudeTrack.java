@@ -1,4 +1,4 @@
-package com.sierra.skyTeam.Model;
+package com.sierra.skyTeam.model;
 
 public class AltitudeTrack {
     private final int[] altitudes = {6000, 5000, 4000, 3000, 2000, 1000, 0};
