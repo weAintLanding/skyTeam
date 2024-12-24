@@ -22,7 +22,6 @@ public class GameScreen implements Screen {
     List<Field> fields;
     ShapeRenderer shapeRenderer;
     Axis axis;
-    Logic logic; //the rapper
     DicePosUpdater pilotHandler;
     DicePosUpdater copilotHandler;
 
@@ -35,16 +34,14 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         fields = FieldGenerator.generateFields();
         axis = new Axis();
-        logic = new Logic(dice, fields, viewport);
-        pilotHandler = new DicePosUpdater(dice.getCurrentPilotDiceSprites(), fields, viewport);
-        copilotHandler = new DicePosUpdater(dice.getCurrentCopilotDiceSprites(), fields, viewport);
+        pilotHandler = new DicePosUpdater(dice, fields, viewport, true);
+        copilotHandler = new DicePosUpdater(dice, fields, viewport, false);
     }
     public void show() {
         dice.rollDice();
     }
     public void render(float delta) {
         draw();
-        logic.handleInput();
         pilotHandler.update();
         copilotHandler.update();
         handleHover();
