@@ -1,4 +1,4 @@
-package com.sierra.skyTeam.view;
+package com.sierra.skyTeam.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,11 +10,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sierra.skyTeam.MainGame;
+import com.sierra.skyTeam.view.*;
 
 import java.util.List;
 
 public class GameScreen implements Screen {
-    BoardGame game;
+    MainGame game;
     SpriteBatch batch;
     Texture background;
     Viewport viewport;
@@ -25,7 +27,7 @@ public class GameScreen implements Screen {
     DicePosUpdater pilotHandler;
     DicePosUpdater copilotHandler;
 
-    public GameScreen (BoardGame game) {
+    public GameScreen (MainGame game) {
         this.game = game;
         batch = new SpriteBatch();
         background = new Texture("board.png");

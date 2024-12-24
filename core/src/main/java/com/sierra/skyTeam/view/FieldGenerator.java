@@ -83,9 +83,9 @@ public class FieldGenerator {
 
     private static List<Field> generateBrakeFields() {
         List<Field> brakeFields = new ArrayList<>();
-        brakeFields.add(new Field(545, 175, false));
-        brakeFields.add(new Field(617, 175, false));
-        brakeFields.add(new Field(689, 175, false));
+        brakeFields.add(new Field(545, 175, true));
+        brakeFields.add(new Field(617, 175, true));
+        brakeFields.add(new Field(689, 175, true));
         return brakeFields;
     }
 

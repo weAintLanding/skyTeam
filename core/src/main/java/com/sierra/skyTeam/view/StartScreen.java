@@ -9,16 +9,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sierra.skyTeam.MainGame;
+import com.sierra.skyTeam.screens.GameScreen;
 
 public class StartScreen implements Screen {
-    BoardGame game;
+    MainGame game;
     SpriteBatch batch;
     Texture background;
     Viewport viewport;
     Rectangle playButton;
     Rectangle quitButton;
 
-    public StartScreen(BoardGame game){
+    public StartScreen(MainGame game){
         this.game = game;
         batch = new SpriteBatch();
         background = new Texture("landingPage.png");

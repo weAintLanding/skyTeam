@@ -57,7 +57,7 @@ public class StartScreen implements Screen {
 
         if (Gdx.input.isTouched()){
             if (isPlay){
-                game.setScreen(new StartScreen(game));
+                game.setScreen(new GameScreen(game));
                 Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Arrow);
             }
             if (isQuit){
