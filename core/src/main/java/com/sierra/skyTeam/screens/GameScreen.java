@@ -26,6 +26,7 @@ public class GameScreen implements Screen {
     Axis axis;
     DicePosUpdater pilotHandler;
     DicePosUpdater copilotHandler;
+    MarkerManager markerManager;
 
     public GameScreen (MainGame game) {
         this.game = game;
@@ -38,6 +39,7 @@ public class GameScreen implements Screen {
         axis = new Axis();
         pilotHandler = new DicePosUpdater(dice, fields, viewport, true);
         copilotHandler = new DicePosUpdater(dice, fields, viewport, false);
+        markerManager = new MarkerManager();
     }
     public void show() {
         dice.rollDice();
@@ -69,6 +71,7 @@ public class GameScreen implements Screen {
         axis.setAxisValue(0);
         dice.renderDice(batch, true);
         dice.renderDice(batch, false);
+        markerManager.draw(batch);
         batch.end();
     }
 
