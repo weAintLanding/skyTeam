@@ -44,14 +44,14 @@ public class Dice {
             int pilotDiceValue = random.nextInt(6);
             currentPilotDiceValues[i] = pilotDiceValue + 1;
             currentPilotDiceSprites[i] = new Sprite(pilotDice[pilotDiceValue]);
-            isPilotDiceMovable[i] = false;
+            isPilotDiceMovable[i] = true;
 
             int copilotDiceValue = random.nextInt(6);
             currentCoPilotDiceValues[i] = copilotDiceValue + 1;
             //so it's better to make individual sprites for each or else if we roll the same
             //number, it'll not have any click functionality
             currentCopilotDiceSprites[i] = new Sprite(copilotDice[copilotDiceValue]);
-            isCopilotDiceMovable[i] = false;
+            isCopilotDiceMovable[i] = true;
         }
     }
 
@@ -62,29 +62,28 @@ public class Dice {
         float startY = 200;
         for(int i = 0; i < dice.length; i++){
             Sprite sprite = dice[i];
-            if(!diceMovable[i]){
+            if(diceMovable[i]){
                 sprite.setPosition(startX, startY  + i*75);
-                diceMovable[i] = true;
             }
             sprite.setSize(50, 50);
             sprite.draw(batch);
         }
     }
-    public boolean isDiceClicked(Sprite[] diceSprites, int[] diceValues, float touchX, float touchY, boolean isPilot){
-        for(int i = 0; i < diceSprites.length; i++){
-            Sprite dice = diceSprites[i];
-            if(dice.getBoundingRectangle().contains(touchX, touchY)) {
-                int diceValue = diceValues[i];
-                if(isPilot){
-                    System.out.println("Pilot dice clicked, value: " + diceValue);
-                }else {
-                    System.out.println("Copilot dice clicked, value: " + diceValue);
-                }
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean isDiceClicked(Sprite[] diceSprites, int[] diceValues, float touchX, float touchY, boolean isPilot){
+//        for(int i = 0; i < diceSprites.length; i++){
+//            Sprite dice = diceSprites[i];
+//            if(dice.getBoundingRectangle().contains(touchX, touchY)) {
+//                int diceValue = diceValues[i];
+//                if(isPilot){
+//                    System.out.println("Pilot dice clicked, value: " + diceValue);
+//                }else {
+//                    System.out.println("Copilot dice clicked, value: " + diceValue);
+//                }
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public int getDiceValue(float touchX, float touchY) {
         for(int i = 0; i < currentPilotDiceSprites.length; i++){
@@ -102,22 +101,28 @@ public class Dice {
         return -1;
     }
 
-    public int getDiceValueFromSprite(Sprite selectedDice) {
-        for (int i = 0; i < currentPilotDiceSprites.length; i++) {
-            if (selectedDice == currentPilotDiceSprites[i]) {
-                return currentPilotDiceValues[i];
-            }
-        }
+//    public int getDiceValueFromSprite(Sprite selectedDice) {
+//        for (int i = 0; i < currentPilotDiceSprites.length; i++) {
+//            if (selectedDice == currentPilotDiceSprites[i]) {
+//                return currentPilotDiceValues[i];
+//            }
+//        }
+//
+//        for (int i = 0; i < currentCopilotDiceSprites.length; i++) {
+//            if (selectedDice == currentCopilotDiceSprites[i]) {
+//                return currentCoPilotDiceValues[i];
+//            }
+//        }
+//
+//        return -1;
+//    }
 
-        for (int i = 0; i < currentCopilotDiceSprites.length; i++) {
-            if (selectedDice == currentCopilotDiceSprites[i]) {
-                return currentCoPilotDiceValues[i];
-            }
-        }
-
-        return -1;
+    public boolean[] getIsPilotDiceMovable() {
+        return isPilotDiceMovable;
     }
-
+    public boolean[] getIsCopilotDiceMovable() {
+        return isCopilotDiceMovable;
+    }
     public Sprite[] getCurrentPilotDiceSprites(){
         return currentPilotDiceSprites;
     }

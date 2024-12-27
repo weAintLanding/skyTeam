@@ -29,17 +29,17 @@ public class FieldGenerator {
     }
 
     private static Field generateRerollTokenField() {
-        return new Field((leftColX+2), 630, false);
+        return new Field((leftColX+2), 630);
     }
 
     private static Field generatePilotRadio() {
-        return new Field(leftColX, 565, false);
+        return new Field(leftColX, 565);
     }
 
     private static List<Field> generateCopilotRadio() {
         List<Field> copilotRadio = new ArrayList<>();
-        copilotRadio.add(new Field(rightColX, 635, false));
-        copilotRadio.add(new Field(rightColX, 565, false));
+        copilotRadio.add(new Field(rightColX, 635));
+        copilotRadio.add(new Field(rightColX, 565));
         return copilotRadio;
     }
 
@@ -69,31 +69,34 @@ public class FieldGenerator {
 
     private static List<Field> generateAxisFields() {
         List<Field> axisFields = new ArrayList<>();
-        axisFields.add(new Field(493, 555, false));
-        axisFields.add(new Field(740, 555, false));
+        axisFields.add(new Field(493, 555));
+        axisFields.add(new Field(740, 555));
         return axisFields;
     }
 
     private static List<Field> generateThrottleFields() {
         List<Field> throttleFields = new ArrayList<>();
-        throttleFields.add(new Field(543,315, false));
-        throttleFields.add(new Field(690,315, false));
+        throttleFields.add(new Field(543,315));
+        throttleFields.add(new Field(690,315));
         return throttleFields;
     }
 
     private static List<Field> generateBrakeFields() {
         List<Field> brakeFields = new ArrayList<>();
-        brakeFields.add(new Field(545, 175, true));
-        brakeFields.add(new Field(617, 175, true));
-        brakeFields.add(new Field(689, 175, true));
+        int[] allowedValues1 = {2};
+        int[] allowedValues2 = {4};
+        int[] allowedValues3 = {6};
+        brakeFields.add(new Field(545, 175, true, allowedValues1));
+        brakeFields.add(new Field(617, 175, true, allowedValues2));
+        brakeFields.add(new Field(689, 175, true, allowedValues3));
         return brakeFields;
     }
 
     private static List<Field> generateCoffeeFields(){
         List<Field> coffeeFields = new ArrayList<>();
-        coffeeFields.add(new Field(545, 58, false));
-        coffeeFields.add(new Field(617, 58, false));
-        coffeeFields.add(new Field(689, 58, false));
+        coffeeFields.add(new Field(545, 58));
+        coffeeFields.add(new Field(617, 58));
+        coffeeFields.add(new Field(689, 58));
         return coffeeFields;
     }
 }

@@ -49,11 +49,6 @@ public class GameScreen implements Screen {
         pilotHandler.update();
         copilotHandler.update();
         handleHover();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (Field field : fields){
-            field.renderer(shapeRenderer);
-        }
-        shapeRenderer.end();
     }
 
     public void draw() {
