@@ -64,7 +64,28 @@ public class DicePosUpdater {
     private void handleFieldPlacement(float touchX, float touchY) {
         for (Field field : fields) {
             if (field.getBounds().contains(touchX, touchY)) {
-                if (field.isDiceAllowed(lastClickedDiceValue)) {
+                if(field.hasSwitch){
+                    if (field.isDiceAllowed(lastClickedDiceValue)) {
+                        if (!field.isOccupied) {
+                            field.placeDiceOnField(selectedDice);
+                            System.out.println("Placing dice");
+
+                            for (int i = 0; i < diceSprites.length; i++) {
+                                if (diceSprites[i] == selectedDice) {
+                                    isDiceMovable[i] = false; // No need to recheck isPilot
+                                    break;
+                                }
+                            }
+
+                            selectedDice = null;
+                            lastClickedDiceValue = -1;
+                            currentState = State.SELECTING;
+                            break;
+                        }
+                    } else {
+                        System.out.println("Dice value not allowed in this field.");
+                    }
+                } else {
                     if (!field.isOccupied) {
                         field.placeDiceOnField(selectedDice);
                         System.out.println("Placing dice");
@@ -80,9 +101,9 @@ public class DicePosUpdater {
                         lastClickedDiceValue = -1;
                         currentState = State.SELECTING;
                         break;
+                    } else {
+                        System.out.println("Dice value not allowed in this field.");
                     }
-                } else {
-                    System.out.println("Dice value not allowed in this field.");
                 }
             }
         }

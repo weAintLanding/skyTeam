@@ -18,7 +18,7 @@ public class Field {
 
     public Field (float x, float y){
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
-        this.switchOn = false;
+        this.hasSwitch = false;
         this.isOccupied = false;
     }
 
@@ -81,6 +81,11 @@ public class Field {
             switchImg.draw(batch);
         }
     }
+
+    public boolean hasSwitch() {
+        return hasSwitch;
+    }
+
     public void renderer(com.badlogic.gdx.graphics.glutils.ShapeRenderer shapeRenderer) {
         shapeRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
     }

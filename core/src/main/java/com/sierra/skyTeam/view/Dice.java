@@ -24,7 +24,6 @@ public class Dice {
         currentCopilotDiceSprites = new Sprite[4];
         currentCoPilotDiceValues = new int[4];
         currentPilotDiceValues = new int[4];
-
     }
 
     private void addSprites() {
