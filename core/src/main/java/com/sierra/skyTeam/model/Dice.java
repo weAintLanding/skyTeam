@@ -4,9 +4,10 @@ import java.util.Random;
 
 public class Dice {
     private int diceValue;
-    Random random = new Random();
+    private Random random;
 
     public Dice() {
+        random = new Random();
         this.diceValue = random.nextInt(6)+1;
     }
 
@@ -14,7 +15,7 @@ public class Dice {
         return diceValue;
     }
 
-    void setDiceValue(int newDiceValue){
-        this.diceValue = newDiceValue;
+    public void reroll() {
+        diceValue = random.nextInt(6)+1;
     }
 }
