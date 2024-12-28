@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
+import com.sierra.skyTeam.view.InputHandler;
 
 public class StartScreen implements Screen {
     MainGame game;
@@ -31,6 +32,7 @@ public class StartScreen implements Screen {
     public void render(float delta) {
         draw();
         input();
+
     }
     public void draw(){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -42,7 +44,7 @@ public class StartScreen implements Screen {
         batch.end();
     }
     public void input(){
-        Vector2 coordinates = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        Vector2 coordinates = InputHandler.scaledInput(viewport);
         float touchX = coordinates.x;
         float touchY = coordinates.y;
 
