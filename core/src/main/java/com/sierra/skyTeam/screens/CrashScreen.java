@@ -20,7 +20,6 @@ public class CrashScreen implements Screen {
     Viewport viewport;
     Rectangle tryAgainButton;
     Rectangle quitButton;
-    ShapeRenderer shapeRenderer;
 
     public CrashScreen(MainGame game){
         this.game = game;
@@ -52,17 +51,17 @@ public class CrashScreen implements Screen {
         float touchX = coordinates.x;
         float touchY = coordinates.y;
 
-        boolean isPlayAgain = tryAgainButton.contains(touchX, touchY);
+        boolean isTryAgain = tryAgainButton.contains(touchX, touchY);
         boolean isQuit = quitButton.contains(touchX, touchY);
 
-        if (isPlayAgain || isQuit) {
+        if (isTryAgain || isQuit) {
             Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Hand);
         } else {
             Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Arrow);
         }
 
         if (Gdx.input.isTouched()){
-            if (isPlayAgain){
+            if (isTryAgain){
                 game.setScreen(new GameScreen(game));
                 Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Arrow);
             }
