@@ -4,21 +4,22 @@ import java.util.Random;
 
 public class Dice {
     private int diceValue;
-    Random random = new Random();
+    private final Random random;
 
     public Dice() {
-        random = new Random();
-        this.diceValue = random.nextInt(6)+1;
+        this.random = new Random();
+        this.diceValue = random.nextInt(6) + 1;
     }
 
     public int getDiceValue() {
         return diceValue;
     }
+
     public void reroll() {
         this.diceValue = random.nextInt(6) + 1;
     }
 
-    void setDiceValue(int newDiceValue){
+    public void setDiceValue(int newDiceValue) {
         this.diceValue = newDiceValue;
     }
 }

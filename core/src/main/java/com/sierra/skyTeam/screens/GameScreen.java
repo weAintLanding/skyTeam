@@ -6,12 +6,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
-import com.sierra.skyTeam.view.*;
+import com.badlogic.gdx.math.Vector2;
+import com.sierra.skyTeam.model.Dice;
+import com.sierra.skyTeam.controller.DiceController;
+import com.sierra.skyTeam.view.DiceView;
+import com.sierra.skyTeam.view.Axis;
+import com.sierra.skyTeam.view.MarkerManager;
+import com.sierra.skyTeam.view.Field;
+import com.sierra.skyTeam.view.FieldGenerator;
+import com.sierra.skyTeam.view.InputHandler;
 
 import java.util.List;
 
@@ -20,34 +26,44 @@ public class GameScreen implements Screen {
     SpriteBatch batch;
     Texture background;
     Viewport viewport;
-    Dice dice;
+
+    Dice[] pilotDice; // Model for Pilot dice
+    Dice[] coPilotDice; // Model for CoPilot dice
+    DiceView diceView; // Dice View
+    DiceController diceController; // Dice Controller
+
     List<Field> fields;
-    ShapeRenderer shapeRenderer;
     Axis axis;
-    DicePosUpdater pilotHandler;
-    DicePosUpdater copilotHandler;
     MarkerManager markerManager;
 
-    public GameScreen (MainGame game) {
+    public GameScreen(MainGame game) {
         this.game = game;
         batch = new SpriteBatch();
         background = new Texture("board.png");
         viewport = new FitViewport(1280, 720);
-        dice = new Dice();
-        shapeRenderer = new ShapeRenderer();
+
+        // Initialize Dice Model, View, and Controller
+        pilotDice = new Dice[4];
+        coPilotDice = new Dice[4];
+        for (int i = 0; i < 4; i++) {
+            pilotDice[i] = new Dice();
+            coPilotDice[i] = new Dice();
+        }
+
+        diceView = new DiceView();
+        diceController = new DiceController(pilotDice, coPilotDice, diceView);
+
         fields = FieldGenerator.generateFields();
         axis = new Axis();
-        pilotHandler = new DicePosUpdater(dice, fields, viewport, true);
-        copilotHandler = new DicePosUpdater(dice, fields, viewport, false);
         markerManager = new MarkerManager();
     }
+
     public void show() {
-        dice.rollDice();
+        diceController.updateView(); // Ensure dice view matches initial model state
     }
+
     public void render(float delta) {
         draw();
-        pilotHandler.update();
-        copilotHandler.update();
         handleHover();
     }
 
@@ -56,16 +72,20 @@ public class GameScreen implements Screen {
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
-        batch.draw(background, 0, 0,
-            viewport.getWorldWidth(), viewport.getWorldHeight());
+
+        batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+
         for (Field field : fields) {
             field.switchRenderer(batch);
         }
-        fields.get(0).toggleSwitch();
+
+        fields.get(0).toggleSwitch(); // Example field toggle
         axis.render(batch);
         axis.setAxisValue(0);
-        dice.renderDice(batch, true);
-        dice.renderDice(batch, false);
+
+        // Render Dice using DiceController
+        diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice
+
         markerManager.draw(batch);
         batch.end();
     }
@@ -76,15 +96,17 @@ public class GameScreen implements Screen {
         float touchY = coordinates.y;
 
         boolean isHovered = false;
-        for(int i = 0; i < dice.getCurrentPilotDiceSprites().length; i++){
-            Sprite sprite = dice.getCurrentPilotDiceSprites()[i];
-            if(sprite.getBoundingRectangle().contains(touchX,touchY)){
+
+        // Check Pilot Dice for Hover
+        for (Sprite sprite : diceView.getCurrentPilotDiceSprites()) {
+            if (sprite.getBoundingRectangle().contains(touchX, touchY)) {
                 isHovered = true;
                 break;
             }
         }
-        for (int i = 0; i < dice.getCurrentCopilotDiceSprites().length; i++) {
-            Sprite sprite = dice.getCurrentCopilotDiceSprites()[i];
+
+        // Check CoPilot Dice for Hover
+        for (Sprite sprite : diceView.getCurrentCopilotDiceSprites()) {
             if (sprite.getBoundingRectangle().contains(touchX, touchY)) {
                 isHovered = true;
                 break;
@@ -97,17 +119,23 @@ public class GameScreen implements Screen {
             Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Arrow);
         }
     }
-    public void resize (int width, int height) {
+
+    public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
+
     @Override
     public void pause() {}
+
     @Override
     public void resume() {}
+
     @Override
     public void hide() {}
+
     public void dispose() {
         batch.dispose();
         background.dispose();
+        diceView.dispose();
     }
 }
