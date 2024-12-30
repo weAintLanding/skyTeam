@@ -27,6 +27,7 @@ public class GameScreen implements Screen {
     DicePosUpdater pilotHandler;
     DicePosUpdater copilotHandler;
     MarkerManager markerManager;
+    TrackerManager trackerManager;
 
     public GameScreen (MainGame game) {
         this.game = game;
@@ -40,6 +41,7 @@ public class GameScreen implements Screen {
         pilotHandler = new DicePosUpdater(dice, fields, viewport, true);
         copilotHandler = new DicePosUpdater(dice, fields, viewport, false);
         markerManager = new MarkerManager();
+        trackerManager = new TrackerManager();
     }
     public void show() {
         dice.rollDice();
@@ -49,6 +51,11 @@ public class GameScreen implements Screen {
         pilotHandler.update();
         copilotHandler.update();
         handleHover();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for(Field field : fields){
+            field.renderer(shapeRenderer);
+        }
+        shapeRenderer.end();
     }
 
     public void draw() {
@@ -67,6 +74,7 @@ public class GameScreen implements Screen {
         dice.renderDice(batch, true);
         dice.renderDice(batch, false);
         markerManager.draw(batch);
+        trackerManager.draw(batch);
         batch.end();
     }
 
