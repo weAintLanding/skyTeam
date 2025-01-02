@@ -192,7 +192,7 @@ public class tempGame {
             if(fieldInput > 0 && fieldInput <= 4){
                 dicePlaced = airplane.getBrakes().setBrakeFieldsTrue(fieldInput-1, diceValue);
             } else {
-                System.out.println("Enter Valid Field.");
+                System.out.println("Enter Valid fieldView.");
             }
 
             if(dicePlaced){
@@ -217,7 +217,7 @@ public class tempGame {
                 if(fieldInput>0 && fieldInput<4){
                     dicePlaced = airplane.getLandingGear().setLandingGearFieldsTrue(fieldInput - 1, diceValue);
                 } else {
-                    System.out.println("Enter Valid Field.");
+                    System.out.println("Enter Valid fieldView.");
                 }
 
                 if(dicePlaced) {
@@ -239,7 +239,7 @@ public class tempGame {
                 if(fieldInput>0 && fieldInput<5){
                     dicePlaced = airplane.getFlaps().setFlapFieldsTrue(fieldInput - 1, diceValue);
                 } else {
-                    System.out.println("Enter Valid Field.");
+                    System.out.println("Enter Valid fieldView.");
                 }
 
                 if(dicePlaced) {

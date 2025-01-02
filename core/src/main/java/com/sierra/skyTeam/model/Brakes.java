@@ -46,7 +46,7 @@ public class Brakes {
             }
             return true;
         }
-        System.out.println("Brake Field already activated.");
+        System.out.println("Brake fieldView already activated.");
         return false;
     }
 
@@ -55,7 +55,7 @@ public class Brakes {
     }
 
     public void displayBrakeFields() {
-        System.out.println("Brake Field Status: ");
+        System.out.println("Brake fieldView Status: ");
         for (int i = 0; i < brakeFields.length; i++) {
             String status;
             if (brakeFields[i].isSwitchedOn()){
@@ -63,7 +63,7 @@ public class Brakes {
             } else {
                 status = "Not Activated";
             }
-            System.out.println("Field " + (i + 1) + ". (" + brakeConstraints[i][0] + "): " + status);
+            System.out.println("fieldView " + (i + 1) + ". (" + brakeConstraints[i][0] + "): " + status);
         }
     }
 

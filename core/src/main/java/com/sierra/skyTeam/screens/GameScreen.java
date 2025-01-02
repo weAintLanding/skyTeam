@@ -2,22 +2,25 @@ package com.sierra.skyTeam.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
 import com.badlogic.gdx.math.Vector2;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.controller.DiceController;
-import com.sierra.skyTeam.view.DiceView;
-import com.sierra.skyTeam.view.Axis;
+import com.sierra.skyTeam.view.diceView;
+import com.sierra.skyTeam.view.axisView;
 import com.sierra.skyTeam.view.MarkerManager;
-import com.sierra.skyTeam.view.Field;
+import com.sierra.skyTeam.view.fieldView;
 import com.sierra.skyTeam.view.FieldGenerator;
 import com.sierra.skyTeam.view.InputHandler;
+import com.sierra.skyTeam.view.TrackerManager;
 
 import java.util.List;
 
@@ -29,11 +32,11 @@ public class GameScreen implements Screen {
 
     Dice[] pilotDice; // Model for Pilot dice
     Dice[] coPilotDice; // Model for CoPilot dice
-    DiceView diceView; // Dice View
+    diceView diceView; // Dice View
     DiceController diceController; // Dice Controller
 
-    List<Field> fields;
-    Axis axis;
+    List<fieldView> fields;
+    axisView axis;
     MarkerManager markerManager;
     TrackerManager trackerManager;
 
@@ -51,11 +54,11 @@ public class GameScreen implements Screen {
             coPilotDice[i] = new Dice();
         }
 
-        diceView = new DiceView();
+        diceView = new diceView();
         diceController = new DiceController(pilotDice, coPilotDice, diceView);
 
         fields = FieldGenerator.generateFields();
-        axis = new Axis();
+        axis = new axisView();
         markerManager = new MarkerManager();
         trackerManager = new TrackerManager();
     }
@@ -67,8 +70,9 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         draw();
         handleHover();
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(Field field : fields){
+        for(fieldView field : fields){
             field.renderer(shapeRenderer);
         }
         shapeRenderer.end();
@@ -82,7 +86,7 @@ public class GameScreen implements Screen {
 
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        for (Field field : fields) {
+        for (fieldView field : fields) {
             field.switchRenderer(batch);
         }
 
@@ -122,9 +126,9 @@ public class GameScreen implements Screen {
         }
 
         if (isHovered) {
-            Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Hand);
+            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
         } else {
-            Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Arrow);
+            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
         }
     }
 

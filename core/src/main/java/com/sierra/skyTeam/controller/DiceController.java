@@ -2,14 +2,14 @@ package com.sierra.skyTeam.controller;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sierra.skyTeam.model.Dice;
-import com.sierra.skyTeam.view.DiceView;
+import com.sierra.skyTeam.view.diceView;
 
 public class DiceController {
     private final Dice[] pilotDice;
     private final Dice[] coPilotDice;
-    private final DiceView diceView;
+    private final diceView diceView;
 
-    public DiceController(Dice[] pilotDice, Dice[] coPilotDice, DiceView diceView) {
+    public DiceController(Dice[] pilotDice, Dice[] coPilotDice, diceView diceView) {
         this.pilotDice = pilotDice;
         this.coPilotDice = coPilotDice;
         this.diceView = diceView;

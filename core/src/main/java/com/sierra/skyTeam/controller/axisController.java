@@ -2,13 +2,13 @@ package com.sierra.skyTeam.controller;
 
 import com.sierra.skyTeam.model.Players;
 import com.sierra.skyTeam.model.axisModel;
-import com.sierra.skyTeam.view.Axis;
+import com.sierra.skyTeam.view.axisView;
 
 public class axisController {
-    private final Axis axisView;
+    private final axisView axisView;
     private final axisModel axisModel;
 
-    public axisController(axisModel axisModel, Axis axisView) {
+    public axisController(axisModel axisModel, axisView axisView) {
         this.axisModel = axisModel;
         this.axisView = axisView;
     }

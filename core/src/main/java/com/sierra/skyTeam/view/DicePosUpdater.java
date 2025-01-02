@@ -15,15 +15,15 @@ public class DicePosUpdater {
     private final Sprite[] diceSprites;
     private final Dice[] diceArray;
     private final boolean[] isDiceMovable;
-    private final List<Field> fields;
+    private final List<fieldView> fieldViews;
     private final Viewport viewport;
     private Sprite selectedDice;
     private int lastClickedDiceValue = -1;
 
-    public DicePosUpdater(Dice[] diceArray, Sprite[] diceSprites, List<Field> fields, Viewport viewport, boolean[] isDiceMovable) {
+    public DicePosUpdater(Dice[] diceArray, Sprite[] diceSprites, List<fieldView> fieldViews, Viewport viewport, boolean[] isDiceMovable) {
         this.diceArray = diceArray;
         this.diceSprites = diceSprites;
-        this.fields = fields;
+        this.fieldViews = fieldViews;
         this.viewport = viewport;
         this.isDiceMovable = isDiceMovable;
     }
@@ -57,9 +57,9 @@ public class DicePosUpdater {
     }
 
     private void handleFieldPlacement(float touchX, float touchY) {
-        for (Field field : fields) {
-            if (field.getBounds().contains(touchX, touchY) && !field.isOccupied) {
-                field.placeDiceOnField(selectedDice);
+        for (fieldView fieldView : fieldViews) {
+            if (fieldView.getBounds().contains(touchX, touchY) && !fieldView.isOccupied) {
+                fieldView.placeDiceOnField(selectedDice);
                 for (int i = 0; i < diceSprites.length; i++) {
                     if (diceSprites[i] == selectedDice) {
                         isDiceMovable[i] = false;

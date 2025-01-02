@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Axis {
+public class axisView {
     private int axisValue;
     private Sprite axis;
 
-    public Axis() {
+    public axisView() {
         this.axisValue = 0;
         Texture texture = new Texture("Axis.png");
         axis = new Sprite(texture);

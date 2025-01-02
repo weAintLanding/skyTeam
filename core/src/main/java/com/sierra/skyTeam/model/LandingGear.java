@@ -33,11 +33,11 @@ public class LandingGear {
         if (landingGearFields[index].placeDice(diceValue) && !landingGearFields[index].isSwitchedOn()) {
             activatedLandingGearFields++;
             landingGearFields[index].setSwitchOn();
-            System.out.println("Landing Gear Field " + (index + 1) + " activated successfully.");
+            System.out.println("Landing Gear fieldView " + (index + 1) + " activated successfully.");
             airplane.getEngine().setBlueAeroMarker((airplane.getEngine().getBlueAeroMarker()) + 1);
             return true;
         }
-        System.out.println("Landing Gear Field already activated.");
+        System.out.println("Landing Gear fieldView already activated.");
         return false;
     }
 
@@ -54,7 +54,7 @@ public class LandingGear {
             } else {
                 status = "Not Activated";
             }
-            System.out.println("Field " + (i+1) + ". (" + landingGearConstraints[i][0] + "|" + landingGearConstraints[i][1] + "): " + status);
+            System.out.println("fieldView " + (i+1) + ". (" + landingGearConstraints[i][0] + "|" + landingGearConstraints[i][1] + "): " + status);
         }
     }
 

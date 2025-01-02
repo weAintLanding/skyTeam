@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.sierra.skyTeam.model.Dice;
 
-public class Field {
+public class fieldView {
     private Rectangle bounds;
     private int fieldSize = 45;
     Sprite switchImg;
@@ -17,14 +17,14 @@ public class Field {
     private int [] allowedValues;
     Dice dice = new Dice();
 
-    public Field (float x, float y){
+    public fieldView(float x, float y){
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
         this.hasSwitch = false;
         this.isOccupied = false;
     }
 
     //field that only allows specific values
-    public Field (float x, float y, boolean hasSwitch, int[] allowedValues){
+    public fieldView(float x, float y, boolean hasSwitch, int[] allowedValues){
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
         this.hasSwitch = hasSwitch;
         this.switchOn = false;
@@ -60,7 +60,7 @@ public class Field {
         }
     }
 
-//    public Field getClickedField(float touchX, float touchY) {
+//    public fieldView getClickedField(float touchX, float touchY) {
 //        if (bounds.contains(touchX, touchY)) {
 //            return this;
 //        }

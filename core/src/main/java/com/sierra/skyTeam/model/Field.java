@@ -14,7 +14,7 @@ public class Field {
         this.switchLight = false;
     }
 
-    /*public Field(String fieldType, Players owner) {
+    /*public fieldView(String fieldType, Players owner) {
         this.fieldType = fieldType;
         this.owner = owner;
         this.occupied = false;
@@ -24,7 +24,7 @@ public class Field {
 
     public boolean placeDice(int diceValue) {
         if (occupied) {
-            System.out.println("Field is already occupied. Cannot place another die.");
+            System.out.println("fieldView is already occupied. Cannot place another die.");
             return false;
         }
         this.diceValue = diceValue;
@@ -44,7 +44,7 @@ public class Field {
     }
 
     public void displayState() {
-        System.out.println("Field Type: " + fieldType);
+        System.out.println("fieldView Type: " + fieldType);
         System.out.println("Owner: " + owner);
         System.out.println("Occupied: " + occupied);
         if (occupied) {
