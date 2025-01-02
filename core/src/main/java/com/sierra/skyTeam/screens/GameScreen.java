@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
     List<Field> fields;
     Axis axis;
     MarkerManager markerManager;
+    TrackerManager trackerManager;
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -56,6 +57,7 @@ public class GameScreen implements Screen {
         fields = FieldGenerator.generateFields();
         axis = new Axis();
         markerManager = new MarkerManager();
+        trackerManager = new TrackerManager();
     }
 
     public void show() {
@@ -65,6 +67,11 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         draw();
         handleHover();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for(Field field : fields){
+            field.renderer(shapeRenderer);
+        }
+        shapeRenderer.end();
     }
 
     public void draw() {
@@ -87,6 +94,7 @@ public class GameScreen implements Screen {
         diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice
 
         markerManager.draw(batch);
+        trackerManager.draw(batch);
         batch.end();
     }
 
