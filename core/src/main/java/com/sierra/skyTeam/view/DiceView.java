@@ -50,11 +50,13 @@ public class DiceView {
         }
     }
 
-    public void render(SpriteBatch batch, boolean isPilot, float startX, float startY) {
+    public void render(SpriteBatch batch, boolean isPilot, float startX, float startY, Dice[] diceArray) {
         Sprite[] diceSprites = isPilot ? currentPilotDiceSprites : currentCopilotDiceSprites;
         for (int i = 0; i < diceSprites.length; i++) {
             Sprite sprite = diceSprites[i];
-            sprite.setPosition(startX, startY + i * 75); // Space dice vertically
+            if(!diceArray[i].isPlaced()){
+                sprite.setPosition(startX, startY + i * 75); // Space dice vertically
+            }
             sprite.setSize(50, 50); // Set size for rendering
             sprite.draw(batch);
         }

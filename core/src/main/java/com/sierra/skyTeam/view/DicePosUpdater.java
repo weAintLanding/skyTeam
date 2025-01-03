@@ -4,28 +4,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sierra.skyTeam.model.Dice;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.sierra.skyTeam.model.Dice;
 
 import java.util.List;
 
 public class DicePosUpdater {
     enum State { SELECTING, PLACING }
     private State currentState = State.SELECTING;
+    private final DiceView diceView;
     private final Sprite[] diceSprites;
     private final Dice[] diceArray;
-    private final boolean[] isDiceMovable;
-    private final List<fieldView> fieldViews;
+    private final List<FieldView> FieldViews;
     private final Viewport viewport;
     private Sprite selectedDice;
     private int lastClickedDiceValue = -1;
 
-    public DicePosUpdater(Dice[] diceArray, Sprite[] diceSprites, List<fieldView> fieldViews, Viewport viewport, boolean[] isDiceMovable) {
+    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews, Viewport viewport, boolean isPilot) {
+        this.diceView = diceView;
         this.diceArray = diceArray;
-        this.diceSprites = diceSprites;
-        this.fieldViews = fieldViews;
+        this.diceSprites = isPilot ? diceView.getCurrentPilotDiceSprites() : diceView.getCurrentCopilotDiceSprites();
+        this.FieldViews = FieldViews;
         this.viewport = viewport;
-        this.isDiceMovable = isDiceMovable;
     }
 
     public void update() {
@@ -47,9 +47,11 @@ public class DicePosUpdater {
 
     private void handleDiceSelection(float touchX, float touchY) {
         for (int i = 0; i < diceSprites.length; i++) {
-            if (isDiceMovable[i] && diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
+            if (!diceArray[i].isPlaced() && diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
                 selectedDice = diceSprites[i];
                 lastClickedDiceValue = diceArray[i].getDiceValue();
+                System.out.println(lastClickedDiceValue + " dice selected");
+                System.out.println(diceArray[i].isPlaced());
                 currentState = State.PLACING;
                 break;
             }
@@ -57,17 +59,53 @@ public class DicePosUpdater {
     }
 
     private void handleFieldPlacement(float touchX, float touchY) {
-        for (fieldView fieldView : fieldViews) {
-            if (fieldView.getBounds().contains(touchX, touchY) && !fieldView.isOccupied) {
-                fieldView.placeDiceOnField(selectedDice);
-                for (int i = 0; i < diceSprites.length; i++) {
-                    if (diceSprites[i] == selectedDice) {
-                        isDiceMovable[i] = false;
+        for (FieldView field : FieldViews) {
+            if (field.getBounds().contains(touchX, touchY)) {
+                if(field.hasSwitch){
+                    System.out.println("Field with switch");
+                    if (field.isDiceAllowed(lastClickedDiceValue)) {
+                        if (!field.isOccupied) {
+                            field.placeDiceOnField(selectedDice);
+                            System.out.println("Placing dice");
+                            if (field.hasSwitch() && !field.isSwitchOn()) { // Toggle the switch only if it has one and it's off
+                                field.toggleSwitch();
+                            }
+                            for (int i = 0; i < diceSprites.length; i++) {
+                                if (diceSprites[i] == selectedDice) {
+                                    diceArray[i].setPlaced(true); // No need to recheck isPilot
+                                    System.out.println(diceArray[i].isPlaced());
+                                    break;
+                                }
+                            }
+
+                            selectedDice = null;
+                            lastClickedDiceValue = -1;
+                            currentState = State.SELECTING;
+                            break;
+                        }
+                    } else {
+                        System.out.println("Dice value not allowed in this field.");
+                    }
+                } else {
+                    if (!field.isOccupied) {
+                        field.placeDiceOnField(selectedDice);
+                        System.out.println("Placing dice");
+
+                        for (int i = 0; i < diceSprites.length; i++) {
+                            if (diceSprites[i] == selectedDice) {
+                                diceArray[i].setPlaced(true); // No need to recheck isPilot
+                                break;
+                            }
+                        }
+
+                        selectedDice = null;
+                        lastClickedDiceValue = -1;
+                        currentState = State.SELECTING;
                         break;
+                    } else {
+                        System.out.println("Dice value not allowed in this field.");
                     }
                 }
-                resetSelection();
-                break;
             }
         }
     }

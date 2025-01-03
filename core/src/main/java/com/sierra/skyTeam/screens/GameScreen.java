@@ -16,7 +16,7 @@ import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.view.DiceView;
 import com.sierra.skyTeam.view.AxisView;
 import com.sierra.skyTeam.view.MarkerManager;
-import com.sierra.skyTeam.view.fieldView;
+import com.sierra.skyTeam.view.FieldView;
 import com.sierra.skyTeam.view.FieldGenerator;
 import com.sierra.skyTeam.view.InputHandler;
 import com.sierra.skyTeam.view.TrackerManager;
@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
     DiceView diceView; // Dice View
     DiceController diceController; // Dice Controller
 
-    List<fieldView> fields;
+    List<FieldView> fields;
     AxisView axis;
     MarkerManager markerManager;
     TrackerManager trackerManager;
@@ -53,16 +53,11 @@ public class GameScreen implements Screen {
 
         // Initialize Dice Model, View, and Controller
         axis = gameController.getAxisController().getAxisView();
+        diceView = gameController.getDiceController().getDiceView();
 
-        pilotDice = new Dice[4];
-        coPilotDice = new Dice[4];
-        for (int i = 0; i < 4; i++) {
-            pilotDice[i] = new Dice();
-            coPilotDice[i] = new Dice();
-        }
-
-        diceView = new DiceView();
-        diceController = new DiceController(pilotDice, coPilotDice, diceView);
+        diceController = gameController.getDiceController();
+        pilotDice = gameController.getPlayerController().getPilotDice();
+        coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
         fields = FieldGenerator.generateFields();
         markerManager = new MarkerManager();
@@ -75,10 +70,11 @@ public class GameScreen implements Screen {
 
     public void render(float delta) {
         draw();
+        gameController.getDiceController().updateHandler();
         handleHover();
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(fieldView field : fields){
+        for(FieldView field : fields){
             field.renderer(shapeRenderer);
         }
         shapeRenderer.end();
@@ -92,11 +88,11 @@ public class GameScreen implements Screen {
 
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        for (fieldView field : fields) {
+        for (FieldView field : fields) {
             field.switchRenderer(batch);
         }
 
-        fields.get(0).toggleSwitch(); // Example field toggle
+        //fields.get(4).toggleSwitch(); // Example field toggle
         axis.render(batch);
         axis.setAxisValue(0);
 

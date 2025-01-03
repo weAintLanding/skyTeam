@@ -41,7 +41,7 @@ public class tempGame {
                 +"6. Re-roll Dice\n"
                 +((currentPlayer==pilot) ? "7. Brakes":"")
             );
-            System.out.println("Your current available dice: " + currentPlayer.getDiceRolls());
+            System.out.println("Your current available dice: " + currentPlayer.getDiceRollsString());
             while (true){
                 System.out.print("Enter number for field: ");
                 int UsrInput;
@@ -93,7 +93,7 @@ public class tempGame {
                     case 6:
                         currentPlayer.reroll();
                         validInput = false;
-                        System.out.println("Your current available dice: " + currentPlayer.getDiceRolls());
+                        System.out.println("Your current available dice: " + currentPlayer.getDiceRollsString());
                         break;
                     case 7:
                         dice = diceAndCoffee(gameModel, input);

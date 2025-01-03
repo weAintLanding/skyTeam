@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Players {
     private final GameModel gameModel;
-    private final List<Dice> diceRolls;
+    private final Dice[] diceRolls;
     private Integer axisSlot = null;
     private Integer throttle = null;
     //private int radioSlots;
@@ -21,7 +21,8 @@ public class Players {
 
     public Players(GameModel gameModel) {
         this.gameModel = gameModel;
-        diceRolls = new ArrayList<>();
+        diceRolls = new Dice[4];
+        this.rollDice();
     }
 
     public Airplane getAirplane(){
@@ -30,19 +31,24 @@ public class Players {
 
     public void rollDice () {
         for(int i = 0; i < 4; i++){
-            diceRolls.add(new Dice());
+            diceRolls[i] = new Dice();
         }
     }
-    public String getDiceRolls () {
+    public Dice[] getDiceList() {
+        return diceRolls;
+    }
+    public String getDiceRollsString() {
         List<Integer> diceArray = new ArrayList<>();
-        for(int i = 0; i < diceRolls.size(); i++){
-            diceArray.add(diceRolls.get(i).getDiceValue());
+        for(Dice dice : diceRolls){
+            if(dice != null){
+                diceArray.add(dice.getDiceValue());
+            }
         }
         return diceArray.toString();
     }
     public boolean isDiceThere (int diceValue){
         for(Dice dice : diceRolls){
-            if(dice.getDiceValue() == diceValue) return true;
+            if(dice != null && dice.getDiceValue() == diceValue) return true;
         }
         return false;
     }
@@ -56,18 +62,19 @@ public class Players {
     }
     public void removeDice (int diceValue){
         for (Dice dice : diceRolls){
-            if (dice.getDiceValue() == diceValue){
-                diceRolls.remove(dice);
+            if (dice != null && dice.getDiceValue() == diceValue){
+                dice = null;
                 return;
             }
         }
     }
     public void reroll() {
         if (gameModel.getRerollsAvailable() > 0){
-            for (int i = 0; i < diceRolls.size(); i++) {
-                Dice dice = diceRolls.get(i);
-                int newValue = random.nextInt(6)+1;
-                dice.setDiceValue(newValue);
+            for (int i = 0; i < diceRolls.length; i++) {
+                if (diceRolls[i] != null) {
+                    int newValue = random.nextInt(6)+1;
+                    diceRolls[i].setDiceValue(newValue);
+                }
             }
             gameModel.decreaseRerollsAvailable();
             System.out.println("Dice Rerolled. Remaining rerolls: " + gameModel.getRerollsAvailable());

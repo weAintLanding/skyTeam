@@ -1,5 +1,6 @@
 package com.sierra.skyTeam.controller;
 
+import com.sierra.skyTeam.model.GameModel;
 import com.sierra.skyTeam.model.Players;
 import com.sierra.skyTeam.model.Airplane;
 import com.sierra.skyTeam.view.AxisView;
@@ -13,8 +14,8 @@ public class AxisController {
     SpriteBatch batch;
 
 
-    public AxisController(Airplane airplaneModel) {
-        this.airplaneModel = airplaneModel;
+    public AxisController(GameModel gameModel) {
+        this.airplaneModel = gameModel.getAirplane();
         this.axisView = new AxisView(airplaneModel.getAxis().getAxisValue());
 
         batch = new SpriteBatch();
