@@ -2,123 +2,146 @@ package com.sierra.skyTeam.model;
 
 import java.util.Scanner;
 
-public class tempGame {
-    GameModel gameModel;
-    private Airplane airplane;
-    private Pilot pilot;
-    private CoPilot copilot;
-    boolean axisChanged = false;
-    boolean throttleChanged = false;
-    boolean endOfGame = false;
+public class GameModel {
+    private final Airplane airplane;
+    private final Pilot pilot;
+    private final CoPilot copilot;
+    //private int roundNumber;
+    private int rerollsAvailable;
+    //private int startingPlayer;
+    private final ApproachTrack approachTrack;
+    private final AltitudeTrack altitudeTrack;
+    private Players currentPlayer;
+    boolean axisChanged;
+    boolean throttleChanged;
+    boolean endOfGame;
+    //private final int maxRounds = 5;
 
-    public void startGame(){
-        gameModel = new GameModel();
-        printOptions(gameModel);
+    public GameModel() {
+        this.airplane = new Airplane();
+        this.pilot = new Pilot(this);
+        this.copilot = new CoPilot(this);
+        boolean axisChanged = false;
+        boolean throttleChanged = false;
+        boolean endOfGame = false;
+        this.rerollsAvailable = 0;
+        this.currentPlayer = pilot;
+        this.approachTrack = new ApproachTrack();
+        this.altitudeTrack = new AltitudeTrack(this);
+
+        airplane.setGame(this);
     }
 
-    public void printOptions(GameModel gameModel){
-        pilot = gameModel.getPilot();
-        copilot = gameModel.getCoPilot();
-        airplane = gameModel.getAirplane();
-        roundReset(gameModel);
-        Scanner input = new Scanner(System.in);
-        int turns = 0;
-        while(true) {
-            if(turns == 8){
-                System.out.println("Round Over.");
-                gameModel.checkRoundConditions();
-                roundReset(gameModel);
-                turns = 0;
-            }
-            Players currentPlayer = gameModel.getCurrentPlayer();
-            System.out.println("Current Player: "+currentPlayer.getClass().getName());
-            System.out.println(
-                "1. axisModel\n"
-                +"2. Engine\n"
-                +"3. Radio\n"
-                +"4. Coffee\n"
-                +"5. "+((currentPlayer==pilot) ? "Landing gear\n" : "Flaps\n")
-                +"6. Re-roll Dice\n"
-                +((currentPlayer==pilot) ? "7. Brakes":"")
-            );
-            System.out.println("Your current available dice: " + currentPlayer.getDiceRolls());
-            while (true){
-                System.out.print("Enter number for field: ");
-                int UsrInput;
-                UsrInput = input.nextInt();
-                Dice dice;
-                boolean validInput = true;
+    public Pilot getPilot() {
+        return pilot;
+    }
+    public CoPilot getCoPilot() {
+        return copilot;
+    }
+    public Airplane getAirplane() {
+        return airplane;
+    }
 
-                switch(UsrInput){
-                    case 1:
-                        dice = diceAndCoffee(gameModel, input);
-                        if(currentPlayer.setAxis(dice)){
-                            turns++;
-                            break;
-                        }
-                        validInput = false;
-                        break;
-                    case 2:
-                        dice = diceAndCoffee(gameModel, input);
-                        if(currentPlayer.setThrottle(dice)){
-                            turns++;
-                            break;
-                        }
-                        validInput = false;
-                        break;
-                    case 3:
-                        dice = diceAndCoffee(gameModel, input);
-                        if(currentPlayer.setRadio(dice)){
-                            turns++;
-                            break;
-                        }
-                        validInput = false;
-                        break;
-                    case 4:
-                        dice = diceAndCoffee(gameModel, input);
-                        if(currentPlayer.setCoffee(dice)){
-                            turns++;
-                            break;
-                        }
-                        validInput = false;
-                        break;
-                    case 5:
-                        dice = diceAndCoffee(gameModel, input);
-                        if(gearAndFlaps(gameModel,input,dice)){
-                            turns++;
-                            break;
-                        }
-                        validInput = false;
-                        break;
-                    case 6:
-                        currentPlayer.reroll();
-                        validInput = false;
-                        System.out.println("Your current available dice: " + currentPlayer.getDiceRolls());
-                        break;
-                    case 7:
-                        dice = diceAndCoffee(gameModel, input);
-                        if(currentPlayer==copilot){
-                            validInput = false;
-                            break;
-                        }
-                        if(brakes(input,dice)){
-                            turns++;
-                            break;
-                        }
-                        validInput = false;
-                        break;
-                    default:
-                        System.out.println("Enter valid field.");
-                        validInput = false;
-                }
+    public Players getCurrentPlayer() {
+        return currentPlayer;
+    }
+    public void switchPlayer() {
+        currentPlayer = (currentPlayer == pilot) ? copilot : pilot;
+        System.out.println("Next turn.");
+    }
 
-                if(validInput){
-                    turnChecker();
-                    gameModel.switchPlayer();
-                    System.out.println();
-                    break;
-                }
+    public ApproachTrack getApproachTrack() {
+        return approachTrack;
+    }
+    public AltitudeTrack getAltitudeTrack() {
+        return altitudeTrack;
+    }
+
+    public void setRerollsAvailable() {
+        this.rerollsAvailable++;
+    }
+    public void decreaseRerollsAvailable() {
+        if (rerollsAvailable > 0) {
+            rerollsAvailable--;
+        }
+    }
+    public int getRerollsAvailable() {
+        return rerollsAvailable;
+    }
+
+    public boolean checkCrash() {
+        if (airplane.getAltitude() < 0) {
+            System.out.println("Crash: Altitude below safe levels");
+            return true;
+        }
+        /*int currentPosition = airplane.getApproachPosition();
+        if (approachTrack.hasAirplanesAt(currentPosition)) {
+            System.out.println("Crash: Collision detected at position " + currentPosition + ".");
+            return true;
+        }*/
+        return false;
+    }
+
+    public boolean checkCrashMove(int moves) {
+        if(approachTrack.hasAirplanesAt(airplane.getApproachPosition())){
+            return true;
+        }
+        if(moves == 2){
+            if(approachTrack.hasAirplanesAt(airplane.getApproachPosition()+1)){
+                return true;
             }
+        }
+        return false;
+    }
+
+    public boolean checkCrashAxis(){
+        if (airplane.getAxis().getAxisValue() < -2 || airplane.getAxis().getAxisValue() > 2) {
+            System.out.println("Crash: axisModel out of balance");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkWin() {
+        if (airplane.getApproachPosition() == 6 // Final position in the approach track
+                && airplane.getAltitude() == 0 // Altitude must be 0
+                && airplane.getAxis().getAxisValue() == 0 // axisModel must be balanced
+                && airplane.getLandingGear().getActivatedLandingGearFields() == 3 // Landing gear engaged
+                && airplane.getBrakes().getActivatedBrakeFields() == 3 // Brakes engaged
+                && airplane.getFlaps().getActivatedFlapFields() == 4) { // Flaps fully engaged
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkEndOfGame() {
+        return altitudeTrack.getCurrentAltitude() == 0 && airplane.getApproachPosition() == 6;
+    }
+
+    public boolean checkLandingConditions() {
+        if (airplane.getLandingGear().getActivatedLandingGearFields() < 3) {
+            System.out.println("Landing conditions not met: Landing gear incomplete.");
+            return false;
+        }
+        if (airplane.getFlaps().getActivatedFlapFields() < 4) {
+            System.out.println("Landing conditions not met: Landing gear incomplete.");
+            return false;
+        }
+        if (airplane.getAxis().getAxisValue() != 0) {
+            System.out.println("Landing conditions not met: axisModel not balanced.");
+            return false;
+        }
+        if (airplane.getAltitude() > 0) {
+            System.out.println("Landing conditions not met: Altitude too high.");
+            return false;
+        }
+        return true;
+    }
+
+    public void checkRoundConditions(){
+        if(!pilot.isAxis() || !copilot.isAxis() || !pilot.isThrottle() || !copilot.isThrottle()){
+            System.out.println("Round conditions not met. Plane Crashed.");
+            System.exit(0);
         }
     }
 
@@ -137,7 +160,7 @@ public class tempGame {
             }
         }
         if(endOfGame){
-            gameModel.checkWin();
+            this.checkWin();
         }
     }
 
@@ -279,4 +302,10 @@ public class tempGame {
 
         if(gameModel.checkEndOfGame()) endOfGame = true;
     }
+
 }
+
+
+
+
+

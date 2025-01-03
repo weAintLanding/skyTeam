@@ -4,11 +4,11 @@ public class AltitudeTrack {
     private final int[] altitudes = {6000, 5000, 4000, 3000, 2000, 1000, 0};
     private final int[] rerollTokens = {1,0,0,0,1,0,0};
     private int currentAltitudeIndex;
-    private final Game game;
+    private final GameModel gameModel;
 
-    public AltitudeTrack(Game game) {
+    public AltitudeTrack(GameModel gameModel) {
         currentAltitudeIndex = -1;
-        this.game = game;
+        this.gameModel = gameModel;
     }
 
     public int getCurrentAltitude() {
@@ -24,13 +24,13 @@ public class AltitudeTrack {
             currentAltitudeIndex++;
             System.out.print("Descending and Current Altitude is: " + getCurrentAltitude());
             if (getRerollTokens() > 0) {
-                game.setRerollsAvailable();
+                gameModel.setRerollsAvailable();
             }
-            System.out.println(" | Reroll Tokens: " + game.getRerollsAvailable());
+            System.out.println(" | Reroll Tokens: " + gameModel.getRerollsAvailable());
             System.out.println();
         } else {
             System.out.println("Already at the final altitude (landed).");
-            System.out.println(" | Reroll Tokens: " + game.getRerollsAvailable());
+            System.out.println(" | Reroll Tokens: " + gameModel.getRerollsAvailable());
             System.out.println();
         }
     }

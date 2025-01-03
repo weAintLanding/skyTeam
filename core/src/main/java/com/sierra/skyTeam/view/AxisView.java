@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class axisView {
+public class AxisView {
     private int axisValue;
     private Sprite axis;
 
-    public axisView() {
-        this.axisValue = 0;
+    public AxisView(int axisValue) {
+        this.axisValue = axisValue;
         Texture texture = new Texture("Axis.png");
         axis = new Sprite(texture);
         axis.setPosition(525, 410);

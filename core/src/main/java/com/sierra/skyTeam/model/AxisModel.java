@@ -1,10 +1,10 @@
 package com.sierra.skyTeam.model;
 
-public class axisModel {
+public class AxisModel {
     private final Airplane airplane;
     private int axisValue = 0;
 
-    public axisModel(Airplane airplane) {
+    public AxisModel(Airplane airplane) {
         this.airplane = airplane;
     }
 

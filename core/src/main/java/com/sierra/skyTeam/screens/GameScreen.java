@@ -13,40 +13,47 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
 import com.badlogic.gdx.math.Vector2;
 import com.sierra.skyTeam.model.Dice;
-import com.sierra.skyTeam.controller.DiceController;
-import com.sierra.skyTeam.view.diceView;
-import com.sierra.skyTeam.view.axisView;
+import com.sierra.skyTeam.view.DiceView;
+import com.sierra.skyTeam.view.AxisView;
 import com.sierra.skyTeam.view.MarkerManager;
 import com.sierra.skyTeam.view.fieldView;
 import com.sierra.skyTeam.view.FieldGenerator;
 import com.sierra.skyTeam.view.InputHandler;
 import com.sierra.skyTeam.view.TrackerManager;
+import com.sierra.skyTeam.controller.DiceController;
+import com.sierra.skyTeam.controller.GameController;
 
 import java.util.List;
 
 public class GameScreen implements Screen {
     MainGame game;
+    GameController gameController;
+
     SpriteBatch batch;
     Texture background;
     Viewport viewport;
 
+    //MVC components
     Dice[] pilotDice; // Model for Pilot dice
     Dice[] coPilotDice; // Model for CoPilot dice
-    diceView diceView; // Dice View
+    DiceView diceView; // Dice View
     DiceController diceController; // Dice Controller
 
     List<fieldView> fields;
-    axisView axis;
+    AxisView axis;
     MarkerManager markerManager;
     TrackerManager trackerManager;
 
     public GameScreen(MainGame game) {
         this.game = game;
+        this.gameController = new GameController();
         batch = new SpriteBatch();
         background = new Texture("board.png");
         viewport = new FitViewport(1280, 720);
 
         // Initialize Dice Model, View, and Controller
+        axis = gameController.getAxisController().getAxisView();
+
         pilotDice = new Dice[4];
         coPilotDice = new Dice[4];
         for (int i = 0; i < 4; i++) {
@@ -54,11 +61,10 @@ public class GameScreen implements Screen {
             coPilotDice[i] = new Dice();
         }
 
-        diceView = new diceView();
+        diceView = new DiceView();
         diceController = new DiceController(pilotDice, coPilotDice, diceView);
 
         fields = FieldGenerator.generateFields();
-        axis = new axisView();
         markerManager = new MarkerManager();
         trackerManager = new TrackerManager();
     }

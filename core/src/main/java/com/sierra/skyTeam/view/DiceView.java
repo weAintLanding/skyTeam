@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sierra.skyTeam.model.Dice;
 
-public class diceView {
+public class DiceView {
     private final Sprite[] pilotDiceSprites; // Preloaded textures for Pilot dice faces
     private final Sprite[] copilotDiceSprites; // Preloaded textures for CoPilot dice faces
     private final Sprite[] currentPilotDiceSprites; // Sprites for currently displayed Pilot dice
     private final Sprite[] currentCopilotDiceSprites; // Sprites for currently displayed CoPilot dice
 
-    public diceView() {
+    public DiceView() {
         pilotDiceSprites = new Sprite[6];
         copilotDiceSprites = new Sprite[6];
         currentPilotDiceSprites = new Sprite[4];
