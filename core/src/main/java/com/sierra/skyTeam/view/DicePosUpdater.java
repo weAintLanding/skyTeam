@@ -67,9 +67,6 @@ public class DicePosUpdater {
                         if (!field.isOccupied) {
                             field.placeDiceOnField(selectedDice);
                             System.out.println("Placing dice");
-                            if (field.hasSwitch() && !field.isSwitchOn()) { // Toggle the switch only if it has one and it's off
-                                field.toggleSwitch();
-                            }
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
                                     diceArray[i].setPlaced(true); // No need to recheck isPilot

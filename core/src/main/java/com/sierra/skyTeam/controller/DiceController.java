@@ -24,12 +24,12 @@ public class DiceController {
     DicePosUpdater pilotHandler;
     DicePosUpdater copilotHandler;
 
-    public DiceController(GameModel gameModel, GameController gameController) {
+    public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView) {
         this.pilotDice = gameModel.getPilot().getDiceList();
         this.copilotDice = gameModel.getCoPilot().getDiceList();
 
         this.diceView = new DiceView();
-        fieldsView = FieldGenerator.generateFields();
+        this.fieldsView = fieldsView;
         viewport = new FitViewport(1280, 720);
 
         pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, true);

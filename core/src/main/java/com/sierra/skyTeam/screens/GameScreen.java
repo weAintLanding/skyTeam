@@ -46,7 +46,8 @@ public class GameScreen implements Screen {
 
     public GameScreen(MainGame game) {
         this.game = game;
-        this.gameController = new GameController();
+        fields = FieldGenerator.generateFields();
+        this.gameController = new GameController(fields);
         batch = new SpriteBatch();
         background = new Texture("board.png");
         viewport = new FitViewport(1280, 720);
@@ -59,7 +60,6 @@ public class GameScreen implements Screen {
         pilotDice = gameController.getPlayerController().getPilotDice();
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
-        fields = FieldGenerator.generateFields();
         markerManager = new MarkerManager();
         trackerManager = new TrackerManager();
     }
