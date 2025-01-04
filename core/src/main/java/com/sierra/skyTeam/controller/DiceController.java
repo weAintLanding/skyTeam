@@ -5,10 +5,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.model.GameModel;
-import com.sierra.skyTeam.view.DicePosUpdater;
-import com.sierra.skyTeam.view.DiceView;
-import com.sierra.skyTeam.view.FieldGenerator;
-import com.sierra.skyTeam.view.FieldView;
+import com.sierra.skyTeam.view.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +20,19 @@ public class DiceController {
 
     DicePosUpdater pilotHandler;
     DicePosUpdater copilotHandler;
+    CoffeeManager coffeeManager;
 
-    public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView) {
+    public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView, CoffeeManager coffeeManager) {
         this.pilotDice = gameModel.getPilot().getDiceList();
         this.copilotDice = gameModel.getCoPilot().getDiceList();
 
         this.diceView = new DiceView();
         this.fieldsView = fieldsView;
+        this.coffeeManager = coffeeManager;
         viewport = new FitViewport(1280, 720);
 
-        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, true);
-        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView, viewport, false);
+        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, true);
+        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, false);
 
         updateView(); // Sync initial state
     }

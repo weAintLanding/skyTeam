@@ -13,13 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
 import com.badlogic.gdx.math.Vector2;
 import com.sierra.skyTeam.model.Dice;
-import com.sierra.skyTeam.view.DiceView;
-import com.sierra.skyTeam.view.AxisView;
-import com.sierra.skyTeam.view.MarkerManager;
-import com.sierra.skyTeam.view.FieldView;
-import com.sierra.skyTeam.view.FieldGenerator;
-import com.sierra.skyTeam.view.InputHandler;
-import com.sierra.skyTeam.view.TrackerManager;
+import com.sierra.skyTeam.view.*;
 import com.sierra.skyTeam.controller.DiceController;
 import com.sierra.skyTeam.controller.GameController;
 
@@ -40,14 +34,19 @@ public class GameScreen implements Screen {
     DiceController diceController; // Dice Controller
 
     List<FieldView> fields;
+    List<FieldView> coffeeFields;
     AxisView axis;
     MarkerManager markerManager;
     TrackerManager trackerManager;
+    CoffeeManager coffeeManager;
 
     public GameScreen(MainGame game) {
         this.game = game;
         fields = FieldGenerator.generateFields();
-        this.gameController = new GameController(fields);
+        coffeeFields = FieldGenerator.getCoffeeFieldViews();
+        coffeeManager = new CoffeeManager(coffeeFields);
+
+        this.gameController = new GameController(fields, coffeeManager);
         batch = new SpriteBatch();
         background = new Texture("board.png");
         viewport = new FitViewport(1280, 720);
@@ -101,6 +100,7 @@ public class GameScreen implements Screen {
 
         markerManager.draw(batch);
         trackerManager.draw(batch);
+        coffeeManager.draw(batch);
         batch.end();
     }
 

@@ -19,13 +19,15 @@ public class DicePosUpdater {
     private final Viewport viewport;
     private Sprite selectedDice;
     private int lastClickedDiceValue = -1;
+    private final CoffeeManager coffeeManager;
 
-    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews, Viewport viewport, boolean isPilot) {
+    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews,Viewport viewport, CoffeeManager coffeeManager, boolean isPilot) {
         this.diceView = diceView;
         this.diceArray = diceArray;
         this.diceSprites = isPilot ? diceView.getCurrentPilotDiceSprites() : diceView.getCurrentCopilotDiceSprites();
         this.FieldViews = FieldViews;
         this.viewport = viewport;
+        this.coffeeManager = coffeeManager;
     }
 
     public void update() {
@@ -74,17 +76,21 @@ public class DicePosUpdater {
                                     break;
                                 }
                             }
-
-                            selectedDice = null;
-                            lastClickedDiceValue = -1;
-                            currentState = State.SELECTING;
+                            resetSelection();
                             break;
+                        } else {
+                            System.out.println("Field is occupied");
                         }
                     } else {
                         System.out.println("Dice value not allowed in this field.");
+                        resetSelection();
+                        break;
                     }
                 } else {
                     if (!field.isOccupied) {
+                        if(isCoffeeField(field)) {
+                            handleCoffeeFieldPlacement(field);
+                        }
                         field.placeDiceOnField(selectedDice);
                         System.out.println("Placing dice");
 
@@ -94,10 +100,7 @@ public class DicePosUpdater {
                                 break;
                             }
                         }
-
-                        selectedDice = null;
-                        lastClickedDiceValue = -1;
-                        currentState = State.SELECTING;
+                        resetSelection();
                         break;
                     } else {
                         System.out.println("Dice value not allowed in this field.");
@@ -105,6 +108,17 @@ public class DicePosUpdater {
                 }
             }
         }
+    }
+
+    private void handleCoffeeFieldPlacement(FieldView field){
+        if(!field.isOccupied){
+            coffeeManager.placeCoffee();
+            System.out.println("Dice placed in coffee field");
+        }
+    }
+
+    private boolean isCoffeeField(FieldView field) {
+        return coffeeManager.coffeeFields.contains(field);
     }
 
     private void resetSelection() {

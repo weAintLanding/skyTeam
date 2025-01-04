@@ -5,6 +5,7 @@ import java.util.List;
 
 public class FieldGenerator {
     static int leftColX = 418; static int rightColX = 815;
+    private static List<FieldView> coffeeFieldViews;
     public static List<FieldView> generateFields() {
         List<FieldView> FieldViews = new ArrayList<>();
         FieldView pilotRadio = generatePilotRadio();
@@ -15,7 +16,9 @@ public class FieldGenerator {
         List<FieldView> axisFieldViews = generateAxisFields();
         List<FieldView> throttleFieldViews = generateThrottleFields();
         List<FieldView> brakeFieldViews = generateBrakeFields();
-        List<FieldView> coffeeFieldViews = generateCoffeeFields();
+
+        coffeeFieldViews = generateCoffeeFields();
+
         FieldViews.add(pilotRadio);
         FieldViews.add(rerollTokenFieldView);
         FieldViews.addAll(copilotRadio);
@@ -97,6 +100,13 @@ public class FieldGenerator {
         coffeeFieldViews.add(new FieldView(545, 58));
         coffeeFieldViews.add(new FieldView(617, 58));
         coffeeFieldViews.add(new FieldView(689, 58));
+        return coffeeFieldViews;
+    }
+
+    public static List<FieldView> getCoffeeFieldViews() {
+        if(coffeeFieldViews == null) {
+            System.out.println("It dont work");
+        }
         return coffeeFieldViews;
     }
 }
