@@ -65,4 +65,9 @@ public class DiceController {
         // Render CoPilot dice with an offset
         diceView.render(batch, false, startX + 1064, startY, copilotDice);
     }
+
+    public void dispose(){
+        pilotHandler.dispose();
+        copilotHandler.dispose();
+    }
 }

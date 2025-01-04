@@ -71,12 +71,6 @@ public class GameScreen implements Screen {
         draw();
         gameController.getDiceController().updateHandler();
         handleHover();
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(FieldView field : fields){
-            field.renderer(shapeRenderer);
-        }
-        shapeRenderer.end();
     }
 
     public void draw() {
@@ -151,5 +145,6 @@ public class GameScreen implements Screen {
         batch.dispose();
         background.dispose();
         diceView.dispose();
+        diceController.dispose();
     }
 }
