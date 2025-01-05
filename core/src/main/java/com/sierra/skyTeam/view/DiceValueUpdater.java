@@ -11,8 +11,8 @@ import com.sierra.skyTeam.model.Dice;
 
 public class DiceValueUpdater {
     private boolean showOptions = false;
-    private Sprite diceChangerPlusSprite;
-    private Sprite diceChangerMinusSprite;
+    private final Sprite diceChangerPlusSprite;
+    private final Sprite diceChangerMinusSprite;
     public CoffeeView selectedCoffee;
     private Sprite selectedDice;
     Viewport viewport;
@@ -23,12 +23,14 @@ public class DiceValueUpdater {
     private boolean isConfirmationPending = false;
     private boolean lastActionWasIncrease;
     private boolean lastActionWasDecrease;
-    private  boolean lastActionWasIncreaseBy2;
+    private boolean lastActionWasIncreaseBy2;
     private boolean lastActionWasDecreaseBy2;
+    boolean hasIncreasedFrom1 = false;
+    boolean hasDecreasedFrom6 = false;
     private boolean showPlusSprite;
     private boolean showMinusSprite;
-    private Runnable onDiceValueChangedCallback;
-    private Runnable onCoffeeInteractionCallBack;
+    private final Runnable onDiceValueChangedCallback;
+    private final Runnable onCoffeeInteractionCallBack;
 
     public DiceValueUpdater(Viewport viewport, DiceView diceView,
                             Dice[] pilotDice, Dice[] copilotDice,
@@ -62,6 +64,7 @@ public class DiceValueUpdater {
 
     public void hideOptions() {
         showOptions = false;
+        resetAllBooleans();
     }
 
     public void setSelectedDice(Sprite selectedDice){
@@ -101,6 +104,7 @@ public class DiceValueUpdater {
                 diceChangerMinusSprite.draw(batch);
             }
             changeDiceValue();
+            valueChecker();
             if(isConfirmationPending) waitForConfirmation();
         }
     }
@@ -115,7 +119,7 @@ public class DiceValueUpdater {
                 if(getDiceValueFromSelectedIndex(selectedIndex) == 1){
                     changeDiceValue(1);
                     lastActionWasIncrease = true;
-                    showMinusSprite = false;
+                    hasIncreasedFrom1 = true;
 
                 } else if (isConfirmationPending && lastActionWasDecreaseBy2) {
                     //if the last action was -2, we do this
@@ -123,30 +127,28 @@ public class DiceValueUpdater {
                     lastActionWasIncreaseBy2 = true; // last action was +2
                     lastActionWasDecreaseBy2 = false; // reset -2 boolean
                     lastActionWasDecrease = false; // reset -1 boolean
-                    showMinusSprite = true;
 
                 } else if (isConfirmationPending && lastActionWasDecrease) {
                     changeDiceValue(2);
                     lastActionWasIncreaseBy2 = true;
                     lastActionWasDecrease = false;
                     lastActionWasDecreaseBy2 = false;
-                    showMinusSprite = true;
 
                 } else {
                     //default action is +1
                     changeDiceValue(1);
                     lastActionWasIncrease = true;
-                    showMinusSprite = true;
-
                 }
                 showPlusSprite = false;
+                showMinusSprite = !hasIncreasedFrom1;
             }
 
             if (showMinusSprite && diceChangerMinusSprite.getBoundingRectangle().contains(touchX, touchY)) {
                 if(getDiceValueFromSelectedIndex(selectedIndex) == 6){
                     changeDiceValue(-1);
                     lastActionWasIncrease = true;
-                    showPlusSprite = false;
+                    hasDecreasedFrom6 = true;
+
                 }else if (isConfirmationPending && lastActionWasIncreaseBy2) {
                     //if the last action was +2, we do this
                     changeDiceValue(-2);
@@ -159,15 +161,13 @@ public class DiceValueUpdater {
                     lastActionWasDecreaseBy2 = true;
                     lastActionWasIncrease = false;
                     lastActionWasIncreaseBy2 = false;
-                    showPlusSprite = true;
 
                 } else {
                     changeDiceValue(-1);
                     lastActionWasDecrease = true;
-                    showPlusSprite = true;
-
                 }
                 showMinusSprite = false;
+                showPlusSprite = !hasDecreasedFrom6;
             }
             isConfirmationPending = true;
         }
@@ -221,6 +221,22 @@ public class DiceValueUpdater {
                 hideOptions();
             }
         }
+    }
+
+    private void valueChecker() {
+        if (hasDecreasedFrom6 || hasIncreasedFrom1) {
+            showMinusSprite = false;
+            showPlusSprite = false;
+        }
+    }
+
+    private void resetAllBooleans() {
+        lastActionWasIncrease = false;
+        lastActionWasDecrease = false;
+        lastActionWasIncreaseBy2 = false;
+        lastActionWasDecreaseBy2 = false;
+        hasIncreasedFrom1 = false;
+        hasDecreasedFrom6 = false;
     }
 
     private void resetSelection() {

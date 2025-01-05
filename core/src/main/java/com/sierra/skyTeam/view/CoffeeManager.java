@@ -8,7 +8,7 @@ public class CoffeeManager {
     List<CoffeeView> coffees = new ArrayList<>();
     List<CoffeeView> activeCoffees = new ArrayList<>();
     List<FieldView> coffeeFields;
-    int nextAvailableSlot = 2;
+    int nextAvailableSlot = 0;
     public CoffeeManager(List<FieldView> coffeeFields) {
         this.coffeeFields = coffeeFields;
         coffees.add(new CoffeeView(412, 75));
