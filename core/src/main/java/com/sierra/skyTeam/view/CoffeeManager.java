@@ -8,7 +8,7 @@ public class CoffeeManager {
     List<CoffeeView> coffees = new ArrayList<>();
     List<CoffeeView> activeCoffees = new ArrayList<>();
     List<FieldView> coffeeFields;
-    int nextAvailableSlot = 0;
+    int nextAvailableSlot = 2;
     public CoffeeManager(List<FieldView> coffeeFields) {
         this.coffeeFields = coffeeFields;
         coffees.add(new CoffeeView(412, 75));
@@ -19,7 +19,7 @@ public class CoffeeManager {
     public void placeCoffee() {
         if(nextAvailableSlot < coffees.size()){
             activeCoffees.add(coffees.get(nextAvailableSlot));
-            nextAvailableSlot++;
+            nextAvailableSlot = (nextAvailableSlot + 1) % coffees.size();
         }
     }
 

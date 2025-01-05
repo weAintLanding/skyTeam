@@ -20,6 +20,13 @@ public class DiceValueUpdater {
     private final Dice[] pilotDice;
     private final Dice[] copilotDice;
     int selectedIndex = -1;
+    private boolean isConfirmationPending = false;
+    private boolean lastActionWasIncrease;
+    private boolean lastActionWasDecrease;
+    private  boolean lastActionWasIncreaseBy2;
+    private boolean lastActionWasDecreaseBy2;
+    private boolean showPlusSprite;
+    private boolean showMinusSprite;
     private Runnable onDiceValueChangedCallback;
     private Runnable onCoffeeInteractionCallBack;
 
@@ -39,6 +46,18 @@ public class DiceValueUpdater {
 
     public void showOptions() {
         showOptions = true;
+        int diceValue = getDiceValueFromSelectedIndex(selectedIndex);
+        if(diceValue == 1) {
+            showPlusSprite = true;
+            showMinusSprite = false;
+        } else if (diceValue == 6) {
+            showPlusSprite = false;
+            showMinusSprite = true;
+        } else {
+            showPlusSprite = true;
+            showMinusSprite = true;
+        }
+        resetSelection();
     }
 
     public void hideOptions() {
@@ -70,92 +89,149 @@ public class DiceValueUpdater {
     }
     public void render(SpriteBatch batch) {
         if (showOptions) {
-            diceChangerPlusSprite.setScale(0.25F);
-            diceChangerPlusSprite.setPosition(selectedDice.getX() - 55, selectedDice.getY() - 15);
-            diceChangerPlusSprite.draw(batch);
-            diceChangerMinusSprite.setScale(0.25F);
-            diceChangerMinusSprite.setPosition(selectedDice.getX() + 40, selectedDice.getY() - 15);
-            diceChangerMinusSprite.draw(batch);
-            increaseDiceValue();
-            decreaseDiceValue();
+            if (showPlusSprite) {
+                diceChangerPlusSprite.setScale(0.25F);
+                diceChangerPlusSprite.setPosition(selectedDice.getX() - 55, selectedDice.getY() - 15);
+                diceChangerPlusSprite.draw(batch);
+            }
+
+            if (showMinusSprite) {
+                diceChangerMinusSprite.setScale(0.25F);
+                diceChangerMinusSprite.setPosition(selectedDice.getX() + 40, selectedDice.getY() - 15);
+                diceChangerMinusSprite.draw(batch);
+            }
+            changeDiceValue();
+            if(isConfirmationPending) waitForConfirmation();
         }
     }
 
-    public void increaseDiceValue() {
+    private void changeDiceValue() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             Vector2 coordinates = InputHandler.scaledInput(viewport);
             float touchX = coordinates.x;
             float touchY = coordinates.y;
-            if(diceChangerPlusSprite.getBoundingRectangle().contains(touchX, touchY)){
-                if (selectedIndex != -1) {
-                    boolean isPilotDice = selectedIndex < diceView.getCurrentPilotDiceSprites().length;
-                    int diceArrayIndex = selectedIndex % 4; // Get the index within the pilot/copilot arrays
 
-                    if (isPilotDice) {
-                        Dice selectedPilotDice = pilotDice[diceArrayIndex];
-                        if (selectedPilotDice.getDiceValue() < 6) {
-                            selectedPilotDice.setDiceValue(selectedPilotDice.getDiceValue() + 1);
-                            diceView.updateSprites(pilotDice, copilotDice);
+            if (showPlusSprite && diceChangerPlusSprite.getBoundingRectangle().contains(touchX, touchY)) {
+                if(getDiceValueFromSelectedIndex(selectedIndex) == 1){
+                    changeDiceValue(1);
+                    lastActionWasIncrease = true;
+                    showMinusSprite = false;
 
-                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
-                                onDiceValueChangedCallback.run();
-                                onCoffeeInteractionCallBack.run();
-                            }
-                        }
-                    } else {
-                        Dice selectedCopilotDice = copilotDice[diceArrayIndex];
-                        if (selectedCopilotDice.getDiceValue() < 6) {
-                            selectedCopilotDice.setDiceValue(selectedCopilotDice.getDiceValue() + 1);
-                            diceView.updateSprites(pilotDice, copilotDice);
+                } else if (isConfirmationPending && lastActionWasDecreaseBy2) {
+                    //if the last action was -2, we do this
+                    changeDiceValue(2);
+                    lastActionWasIncreaseBy2 = true; // last action was +2
+                    lastActionWasDecreaseBy2 = false; // reset -2 boolean
+                    lastActionWasDecrease = false; // reset -1 boolean
+                    showMinusSprite = true;
 
-                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
-                                onDiceValueChangedCallback.run();
-                                onCoffeeInteractionCallBack.run();
-                            }
-                        }
-                    }
-                    hideOptions();
+                } else if (isConfirmationPending && lastActionWasDecrease) {
+                    changeDiceValue(2);
+                    lastActionWasIncreaseBy2 = true;
+                    lastActionWasDecrease = false;
+                    lastActionWasDecreaseBy2 = false;
+                    showMinusSprite = true;
+
+                } else {
+                    //default action is +1
+                    changeDiceValue(1);
+                    lastActionWasIncrease = true;
+                    showMinusSprite = true;
+
                 }
+                showPlusSprite = false;
+            }
+
+            if (showMinusSprite && diceChangerMinusSprite.getBoundingRectangle().contains(touchX, touchY)) {
+                if(getDiceValueFromSelectedIndex(selectedIndex) == 6){
+                    changeDiceValue(-1);
+                    lastActionWasIncrease = true;
+                    showPlusSprite = false;
+                }else if (isConfirmationPending && lastActionWasIncreaseBy2) {
+                    //if the last action was +2, we do this
+                    changeDiceValue(-2);
+                    lastActionWasDecreaseBy2 = true; // last action was -2
+                    lastActionWasIncreaseBy2 = false; // reset -2 boolean
+                    lastActionWasIncrease = false; // reset -1 boolean
+
+                } else if (isConfirmationPending && lastActionWasIncrease) {
+                    changeDiceValue(-2);
+                    lastActionWasDecreaseBy2 = true;
+                    lastActionWasIncrease = false;
+                    lastActionWasIncreaseBy2 = false;
+                    showPlusSprite = true;
+
+                } else {
+                    changeDiceValue(-1);
+                    lastActionWasDecrease = true;
+                    showPlusSprite = true;
+
+                }
+                showMinusSprite = false;
+            }
+            isConfirmationPending = true;
+        }
+    }
+
+    public void updateDiceValue(Dice dice, int changeAmount) {
+        if(dice != null && ((dice.getDiceValue() + changeAmount) <= 6) &&
+            ((dice.getDiceValue() + changeAmount) >= 1)){
+            dice.setDiceValue(dice.getDiceValue() + changeAmount);
+            diceView.updateSprites(pilotDice, copilotDice);
+        }
+    }
+
+    public void changeDiceValue(int changeAmount) {
+        if (selectedIndex != -1) {
+            boolean isPilotDice = selectedIndex < diceView.getCurrentPilotDiceSprites().length;
+            int diceArrayIndex = selectedIndex % 4;
+
+            if (isPilotDice) {
+                Dice selectedPilotDice = pilotDice[diceArrayIndex];
+                updateDiceValue(selectedPilotDice, changeAmount);
+            } else {
+                Dice selectedCopilotDice = copilotDice[diceArrayIndex];
+                updateDiceValue(selectedCopilotDice, changeAmount);
             }
         }
     }
 
-    public void decreaseDiceValue() {
+    private int getDiceValueFromSelectedIndex(int selectedIndex) {
+        boolean isPilotDice = selectedIndex < diceView.getCurrentPilotDiceSprites().length;
+        int diceArrayIndex = selectedIndex % 4;
+
+        if (isPilotDice) {
+            Dice selectedPilotDice = pilotDice[diceArrayIndex];
+            return selectedPilotDice.getDiceValue();
+        } else {
+            Dice selectedCopilotDice = copilotDice[diceArrayIndex];
+            return selectedCopilotDice.getDiceValue();
+        }
+    }
+
+    private void waitForConfirmation() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             Vector2 coordinates = InputHandler.scaledInput(viewport);
             float touchX = coordinates.x;
             float touchY = coordinates.y;
-            if(diceChangerMinusSprite.getBoundingRectangle().contains(touchX, touchY)){
-                if (selectedIndex != -1) {
-                    boolean isPilotDice = selectedIndex < diceView.getCurrentPilotDiceSprites().length;
-                    int diceArrayIndex = selectedIndex % 4;
 
-                    if (isPilotDice) {
-                        Dice selectedPilotDice = pilotDice[diceArrayIndex];
-                        if (selectedPilotDice.getDiceValue() > 1) {
-                            selectedPilotDice.setDiceValue(selectedPilotDice.getDiceValue() - 1);
-                            diceView.updateSprites(pilotDice, copilotDice);
-
-                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
-                                onDiceValueChangedCallback.run();
-                                onCoffeeInteractionCallBack.run();
-                            }
-                        }
-                    } else {
-                        Dice selectedCopilotDice = copilotDice[diceArrayIndex];
-                        if (selectedCopilotDice.getDiceValue() > 1) {
-                            selectedCopilotDice.setDiceValue(selectedCopilotDice.getDiceValue() - 1);
-                            diceView.updateSprites(pilotDice, copilotDice);
-
-                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
-                                onDiceValueChangedCallback.run();
-                                onCoffeeInteractionCallBack.run();
-                            }
-                        }
-                    }
-                    hideOptions();
-                }
+            if (selectedDice.getBoundingRectangle().contains(touchX, touchY)) {
+                resetSelection();
+                removeCoffee();
+                hideOptions();
             }
+        }
+    }
+
+    private void resetSelection() {
+        if (onDiceValueChangedCallback != null) {
+            onDiceValueChangedCallback.run();
+        }
+    }
+
+    public void removeCoffee() {
+        if(onCoffeeInteractionCallBack != null){
+            onCoffeeInteractionCallBack.run();
         }
     }
 
@@ -167,18 +243,11 @@ public class DiceValueUpdater {
         return diceChangerMinusSprite;
     }
 
-    public boolean getShowOptions() {
-        return showOptions;
+    public boolean showPlusSprite() {
+        return showPlusSprite;
     }
 
-    private void disposeDiceChangeSprites() {
-        if (diceChangerPlusSprite != null) {
-            diceChangerPlusSprite.getTexture().dispose(); // Dispose the texture
-            diceChangerPlusSprite = null; // Set the sprite to null
-        }
-        if (diceChangerMinusSprite != null) {
-            diceChangerMinusSprite.getTexture().dispose(); // Dispose the texture
-            diceChangerMinusSprite = null; // Set the sprite to null
-        }
+    public boolean showMinusSprite() {
+        return showMinusSprite;
     }
 }

@@ -108,11 +108,13 @@ public class GameScreen implements Screen {
             }
         }
 
-        if(diceController.getDiceValueUpdater().getDiceChangerPlusSprite().getBoundingRectangle().contains(touchX, touchY)){
+        if(diceController.getDiceValueUpdater().getDiceChangerPlusSprite().getBoundingRectangle().contains(touchX, touchY)
+            && diceController.getDiceValueUpdater().showPlusSprite()){
             isHovered = true;
         }
 
-        if(diceController.getDiceValueUpdater().getDiceChangerMinusSprite().getBoundingRectangle().contains(touchX, touchY)){
+        if(diceController.getDiceValueUpdater().getDiceChangerMinusSprite().getBoundingRectangle().contains(touchX, touchY)
+            && diceController.getDiceValueUpdater().showMinusSprite()){
             isHovered = true;
         }
 
