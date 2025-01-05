@@ -2,9 +2,6 @@ package com.sierra.skyTeam.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,6 +12,7 @@ import java.util.List;
 public class DicePosUpdater {
     enum State { SELECTING, PLACING }
     private State currentState = State.SELECTING;
+    private final CoffeeManager coffeeManager;
     private final DiceView diceView;
     private boolean isPilot;
     private final Sprite[] diceSprites;
@@ -23,9 +21,10 @@ public class DicePosUpdater {
     private final Viewport viewport;
     private Sprite selectedDice;
     private int lastClickedDiceValue = -1;
-    private final CoffeeManager coffeeManager;
+    private CoffeeView selectedCoffee = null;
+    DiceValueUpdater diceValueUpdater;
 
-    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews,Viewport viewport, CoffeeManager coffeeManager, boolean isPilot) {
+    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews,Viewport viewport, CoffeeManager coffeeManager, DiceValueUpdater diceValueUpdater, boolean isPilot) {
         this.diceView = diceView;
         this.diceArray = diceArray;
         this.isPilot = isPilot;
@@ -33,6 +32,7 @@ public class DicePosUpdater {
         this.FieldViews = FieldViews;
         this.viewport = viewport;
         this.coffeeManager = coffeeManager;
+        this.diceValueUpdater = diceValueUpdater;
     }
 
     public void update() {
@@ -41,21 +41,41 @@ public class DicePosUpdater {
         float touchY = coordinates.y;
 
         handleHoverEffect(touchX, touchY);
-
         if (selectedDice != null) {
             handleSelectedEffect();
         }
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            switch (currentState) {
-                case SELECTING:
-                    handleDiceSelection(touchX, touchY);
-                    break;
-                case PLACING:
-                    handleDiceSelection(touchX, touchY);
-                    handleFieldPlacement(touchX, touchY);
-                    break;
+            handleInput(touchX, touchY);
+        }
+    }
+
+    private void handleInput(float touchX, float touchY) {
+        for (CoffeeView coffee : coffeeManager.getActiveCoffees()) {
+            if (coffee.getSprite().getBoundingRectangle().contains(touchX, touchY)) {
+                selectedCoffee = coffee;
+                System.out.println("Coffee clicked");
             }
+        }
+
+        for (int i = 0; i < diceSprites.length; i++) {
+            if (!diceArray[i].isPlaced() && diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
+                selectedDice = diceSprites[i];
+                lastClickedDiceValue = diceArray[i].getDiceValue();
+                System.out.println(lastClickedDiceValue + " dice selected");
+                currentState = State.PLACING;
+                selectedDice.setColor(1, 1, 1, 1);
+                break;
+            }
+        }
+        if (selectedCoffee != null && selectedDice != null) {
+            diceValueUpdater.setSelectedDice(selectedDice);
+            diceValueUpdater.setSelectedCoffee(selectedCoffee);
+            diceValueUpdater.showOptions();
+        }
+
+        if (currentState == State.PLACING) {
+            handleFieldPlacement(touchX, touchY);
         }
     }
 
@@ -75,20 +95,6 @@ public class DicePosUpdater {
 
     private void handleSelectedEffect() {
         selectedDice.setColor(1, 1, 1, 1);
-    }
-
-    private void handleDiceSelection(float touchX, float touchY) {
-        for (int i = 0; i < diceSprites.length; i++) {
-            if (!diceArray[i].isPlaced() && diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
-                selectedDice = diceSprites[i];
-                lastClickedDiceValue = diceArray[i].getDiceValue();
-                System.out.println(lastClickedDiceValue + " dice selected");
-                System.out.println(diceArray[i].isPlaced());
-                selectedDice.setColor(1, 1, 1, 1);
-                currentState = State.PLACING;
-                break;
-            }
-        }
     }
 
     private void handleFieldPlacement(float touchX, float touchY) {
@@ -152,7 +158,7 @@ public class DicePosUpdater {
         return coffeeManager.coffeeFields.contains(field);
     }
 
-    private void resetSelection() {
+    public void resetSelection() {
         selectedDice = null;
         lastClickedDiceValue = -1;
         currentState = State.SELECTING;

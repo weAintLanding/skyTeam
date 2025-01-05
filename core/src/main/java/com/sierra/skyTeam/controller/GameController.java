@@ -20,10 +20,11 @@ public class GameController {
     private List<FieldView> fieldsView;
     private CoffeeManager coffeeManager;
 
-    public GameController(List<FieldView> fieldsView, CoffeeManager coffeeManager){
+    public GameController(List<FieldView> fieldsView){
         this.gameModel = new GameModel();
         this.airplaneModel = gameModel.getAirplane();
         this.fieldsView = fieldsView;
+        this.coffeeManager = new CoffeeManager(FieldGenerator.getCoffeeFieldViews());
 
         this.axisController = new AxisController(gameModel);
         this.playerController = new PlayerController(gameModel);

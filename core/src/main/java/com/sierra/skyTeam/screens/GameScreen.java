@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
@@ -38,15 +37,12 @@ public class GameScreen implements Screen {
     AxisView axis;
     MarkerManager markerManager;
     TrackerManager trackerManager;
-    CoffeeManager coffeeManager;
 
     public GameScreen(MainGame game) {
         this.game = game;
         fields = FieldGenerator.generateFields();
-        coffeeFields = FieldGenerator.getCoffeeFieldViews();
-        coffeeManager = new CoffeeManager(coffeeFields);
 
-        this.gameController = new GameController(fields, coffeeManager);
+        this.gameController = new GameController(fields);
         batch = new SpriteBatch();
         background = new Texture("board.png");
         viewport = new FitViewport(1280, 720);
@@ -89,12 +85,11 @@ public class GameScreen implements Screen {
         axis.render(batch);
         axis.setAxisValue(0);
 
-        // Render Dice using DiceController
-        diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice
-
         markerManager.draw(batch);
         trackerManager.draw(batch);
-        coffeeManager.draw(batch);
+
+        // Render Dice using DiceController
+        diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice
         batch.end();
     }
 
@@ -111,6 +106,14 @@ public class GameScreen implements Screen {
                 isHovered = true;
                 break;
             }
+        }
+
+        if(diceController.getDiceValueUpdater().getDiceChangerPlusSprite().getBoundingRectangle().contains(touchX, touchY)){
+            isHovered = true;
+        }
+
+        if(diceController.getDiceValueUpdater().getDiceChangerMinusSprite().getBoundingRectangle().contains(touchX, touchY)){
+            isHovered = true;
         }
 
         // Check CoPilot Dice for Hover
@@ -145,6 +148,5 @@ public class GameScreen implements Screen {
         batch.dispose();
         background.dispose();
         diceView.dispose();
-        diceController.dispose();
     }
 }

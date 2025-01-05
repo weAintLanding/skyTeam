@@ -7,26 +7,28 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class CoffeeView {
     Sprite coffee;
     Texture coffeeTexture;
+    boolean used;
     public CoffeeView(float x, float y) {
         coffeeTexture = new Texture("coffee.png");
         coffee = new Sprite(coffeeTexture);
         coffee.setPosition(x, y);
         coffee.setScale(0.37F);
+        this.used = false;
     }
 
-    public void setCoffee(float x, float y) {
-        coffee.setPosition(x, y);
-    }
-
-    public float getX(){
-        return coffee.getX();
-    }
-
-    public float getY(){
-        return coffee.getY();
+    public Sprite getSprite(){
+        return coffee;
     }
 
     public void render(SpriteBatch batch) {
-        coffee.draw(batch);
+        if(!used) {
+            coffee.draw(batch);
+        }
+    }
+
+    public void dispose() {
+        if(coffeeTexture != null){
+            coffeeTexture.dispose();
+        }
     }
 }

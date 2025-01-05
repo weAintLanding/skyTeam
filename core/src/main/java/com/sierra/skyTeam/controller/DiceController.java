@@ -7,7 +7,6 @@ import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.model.GameModel;
 import com.sierra.skyTeam.view.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DiceController {
@@ -18,9 +17,11 @@ public class DiceController {
     List<FieldView> fieldsView;
     Viewport viewport;
 
+    //the handlers/managers
     DicePosUpdater pilotHandler;
     DicePosUpdater copilotHandler;
     CoffeeManager coffeeManager;
+    DiceValueUpdater diceValueUpdater;
 
     public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView, CoffeeManager coffeeManager) {
         this.pilotDice = gameModel.getPilot().getDiceList();
@@ -31,14 +32,20 @@ public class DiceController {
         this.coffeeManager = coffeeManager;
         viewport = new FitViewport(1280, 720);
 
-        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, true);
-        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, false);
+        this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged);
 
-        updateView(); // Sync initial state
+        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, diceValueUpdater, true);
+        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false);
+
+        updateView();
     }
 
     public DiceView getDiceView(){
         return diceView;
+    }
+
+    public DiceValueUpdater getDiceValueUpdater() {
+        return diceValueUpdater;
     }
 
     public void rerollDice(boolean isPilot) {
@@ -47,6 +54,15 @@ public class DiceController {
             dice.reroll();
         }
         updateView();
+    }
+
+    private void onDiceValueChanged() {
+        resetSelections();
+    }
+
+    public void resetSelections() {
+        pilotHandler.resetSelection();
+        copilotHandler.resetSelection();
     }
 
     public void updateView() {
@@ -61,13 +77,14 @@ public class DiceController {
     public void render(SpriteBatch batch, float startX, float startY) {
         // Render Pilot dice
         diceView.render(batch, true, startX, startY, pilotDice);
-
         // Render CoPilot dice with an offset
         diceView.render(batch, false, startX + 1064, startY, copilotDice);
+        //Coffee render
+        coffeeManager.draw(batch);
+        // Pop-up render
+        diceValueUpdater.render(batch);
     }
 
     public void dispose(){
-        pilotHandler.dispose();
-        copilotHandler.dispose();
     }
 }

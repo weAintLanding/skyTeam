@@ -1,7 +1,5 @@
 package com.sierra.skyTeam.view;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.sierra.skyTeam.model.Dice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +7,6 @@ import java.util.List;
 public class CoffeeManager {
     List<CoffeeView> coffees = new ArrayList<>();
     List<FieldView> coffeeFields;
-    private Dice[] diceList;
-    private int originalValue;
     int nextAvailableSlot = 0;
     public CoffeeManager(List<FieldView> coffeeFields) {
         this.coffeeFields = coffeeFields;
@@ -21,14 +17,16 @@ public class CoffeeManager {
 
     public void placeCoffee() {
         if(nextAvailableSlot < coffees.size()){
-            CoffeeView coffee = coffees.get(nextAvailableSlot);
             nextAvailableSlot++;
-            System.out.println(nextAvailableSlot);
         }
     }
 
-    public void selectDice(DiceView dice){
-
+    public List<CoffeeView> getActiveCoffees() {
+        List<CoffeeView> activeCoffees = new ArrayList<>();
+        for (int i = 0; i < nextAvailableSlot; i++) {
+            activeCoffees.add(coffees.get(i));
+        }
+        return activeCoffees;
     }
 
     public void draw(SpriteBatch batch){
