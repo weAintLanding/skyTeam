@@ -161,6 +161,7 @@ public class DicePosUpdater {
     public void resetSelection() {
         selectedDice = null;
         lastClickedDiceValue = -1;
+        selectedCoffee = null;
         currentState = State.SELECTING;
     }
 

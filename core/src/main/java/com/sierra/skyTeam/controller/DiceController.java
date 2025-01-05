@@ -32,7 +32,7 @@ public class DiceController {
         this.coffeeManager = coffeeManager;
         viewport = new FitViewport(1280, 720);
 
-        this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged);
+        this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged, this::onCoffeeInteraction);
 
         pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, diceValueUpdater, true);
         copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false);
@@ -58,6 +58,9 @@ public class DiceController {
 
     private void onDiceValueChanged() {
         resetSelections();
+    }
+    private void onCoffeeInteraction() {
+        coffeeManager.removeCoffee(diceValueUpdater.selectedCoffee);
     }
 
     public void resetSelections() {

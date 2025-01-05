@@ -6,6 +6,7 @@ import java.util.List;
 
 public class CoffeeManager {
     List<CoffeeView> coffees = new ArrayList<>();
+    List<CoffeeView> activeCoffees = new ArrayList<>();
     List<FieldView> coffeeFields;
     int nextAvailableSlot = 0;
     public CoffeeManager(List<FieldView> coffeeFields) {
@@ -17,21 +18,22 @@ public class CoffeeManager {
 
     public void placeCoffee() {
         if(nextAvailableSlot < coffees.size()){
+            activeCoffees.add(coffees.get(nextAvailableSlot));
             nextAvailableSlot++;
         }
     }
 
     public List<CoffeeView> getActiveCoffees() {
-        List<CoffeeView> activeCoffees = new ArrayList<>();
-        for (int i = 0; i < nextAvailableSlot; i++) {
-            activeCoffees.add(coffees.get(i));
-        }
         return activeCoffees;
     }
 
+    public void removeCoffee(CoffeeView coffee) {
+        activeCoffees.remove(coffee);
+    }
+
     public void draw(SpriteBatch batch){
-        for(int i = 0; i < nextAvailableSlot; i++){
-            coffees.get(i).render(batch);
+        for(CoffeeView coffee : activeCoffees){
+            coffee.render(batch);
         }
     }
 }

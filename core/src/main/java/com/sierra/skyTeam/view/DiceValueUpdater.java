@@ -13,7 +13,7 @@ public class DiceValueUpdater {
     private boolean showOptions = false;
     private Sprite diceChangerPlusSprite;
     private Sprite diceChangerMinusSprite;
-    private CoffeeView selectedCoffee;
+    public CoffeeView selectedCoffee;
     private Sprite selectedDice;
     Viewport viewport;
     DiceView diceView;
@@ -21,10 +21,12 @@ public class DiceValueUpdater {
     private final Dice[] copilotDice;
     int selectedIndex = -1;
     private Runnable onDiceValueChangedCallback;
+    private Runnable onCoffeeInteractionCallBack;
 
     public DiceValueUpdater(Viewport viewport, DiceView diceView,
                             Dice[] pilotDice, Dice[] copilotDice,
-                            Runnable onDiceValueChangedCallBack){
+                            Runnable onDiceValueChangedCallBack,
+                            Runnable onCoffeeInteractionCallBack){
         diceChangerPlusSprite = new Sprite(new Texture("diceChangerPlus.png"));
         diceChangerMinusSprite = new Sprite(new Texture("diceChangerMinus.png"));
         this.viewport = viewport;
@@ -32,6 +34,7 @@ public class DiceValueUpdater {
         this.pilotDice = pilotDice;
         this.copilotDice = copilotDice;
         this.onDiceValueChangedCallback = onDiceValueChangedCallBack;
+        this.onCoffeeInteractionCallBack = onCoffeeInteractionCallBack;
     }
 
     public void showOptions() {
@@ -49,7 +52,6 @@ public class DiceValueUpdater {
 
     public void setSelectedCoffee(CoffeeView selectedCoffee) {
         this.selectedCoffee = selectedCoffee;
-        selectedCoffee.used = true;
     }
 
     private int getSelectedDiceIndex(Sprite selectedDice) {
@@ -94,16 +96,23 @@ public class DiceValueUpdater {
                         if (selectedPilotDice.getDiceValue() < 6) {
                             selectedPilotDice.setDiceValue(selectedPilotDice.getDiceValue() + 1);
                             diceView.updateSprites(pilotDice, copilotDice);
+
+                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
+                                onDiceValueChangedCallback.run();
+                                onCoffeeInteractionCallBack.run();
+                            }
                         }
                     } else {
                         Dice selectedCopilotDice = copilotDice[diceArrayIndex];
                         if (selectedCopilotDice.getDiceValue() < 6) {
                             selectedCopilotDice.setDiceValue(selectedCopilotDice.getDiceValue() + 1);
-                            diceView.updateSprites(pilotDice, copilotDice);  // Update the sprites
+                            diceView.updateSprites(pilotDice, copilotDice);
+
+                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
+                                onDiceValueChangedCallback.run();
+                                onCoffeeInteractionCallBack.run();
+                            }
                         }
-                    }
-                    if (onDiceValueChangedCallback != null) {
-                        onDiceValueChangedCallback.run();
                     }
                     hideOptions();
                 }
@@ -126,16 +135,23 @@ public class DiceValueUpdater {
                         if (selectedPilotDice.getDiceValue() > 1) {
                             selectedPilotDice.setDiceValue(selectedPilotDice.getDiceValue() - 1);
                             diceView.updateSprites(pilotDice, copilotDice);
+
+                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
+                                onDiceValueChangedCallback.run();
+                                onCoffeeInteractionCallBack.run();
+                            }
                         }
                     } else {
                         Dice selectedCopilotDice = copilotDice[diceArrayIndex];
                         if (selectedCopilotDice.getDiceValue() > 1) {
                             selectedCopilotDice.setDiceValue(selectedCopilotDice.getDiceValue() - 1);
                             diceView.updateSprites(pilotDice, copilotDice);
+
+                            if (onDiceValueChangedCallback != null && onCoffeeInteractionCallBack != null) {
+                                onDiceValueChangedCallback.run();
+                                onCoffeeInteractionCallBack.run();
+                            }
                         }
-                    }
-                    if (onDiceValueChangedCallback != null) {
-                        onDiceValueChangedCallback.run();
                     }
                     hideOptions();
                 }
