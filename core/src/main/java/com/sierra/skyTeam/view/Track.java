@@ -3,13 +3,21 @@ package com.sierra.skyTeam.view;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Tracker {
+public class Track {
     private final Sprite trackerSprite;
+    ApproachAirplaneView[] airplaneView;
     int index;
     float scale = 0.37F;
 
-    public Tracker (Sprite trackerSprite){
+    public Track(Sprite trackerSprite){
         this.trackerSprite = trackerSprite;
+        this.index = 0;
+        this.trackerSprite.setScale(scale);
+    }
+
+    public Track(Sprite trackerSprite, ApproachAirplaneView[] airplaneView){
+        this.trackerSprite = trackerSprite;
+        this.airplaneView = airplaneView;
         this.index = 0;
         this.trackerSprite.setScale(scale);
     }

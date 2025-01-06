@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
     List<FieldView> coffeeFields;
     AxisView axis;
     MarkerManager markerManager;
-    TrackerManager trackerManager;
+    TrackManager trackerManager;
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
         markerManager = new MarkerManager();
-        trackerManager = new TrackerManager();
+        trackerManager = new TrackManager();
     }
 
     public void show() {
