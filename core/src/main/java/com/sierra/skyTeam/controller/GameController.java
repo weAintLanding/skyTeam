@@ -1,5 +1,6 @@
 package com.sierra.skyTeam.controller;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sierra.skyTeam.model.Airplane;
 import com.sierra.skyTeam.model.GameModel;
 import com.sierra.skyTeam.view.CoffeeManager;
@@ -20,15 +21,16 @@ public class GameController {
     private List<FieldView> fieldsView;
     private CoffeeManager coffeeManager;
 
-    public GameController(List<FieldView> fieldsView){
+    public GameController(){
         this.gameModel = new GameModel();
         this.airplaneModel = gameModel.getAirplane();
-        this.fieldsView = fieldsView;
-        this.coffeeManager = new CoffeeManager(FieldGenerator.getCoffeeFieldViews());
+        this.fieldsView = FieldGenerator.generateFields();;
+
+
 
         this.axisController = new AxisController(gameModel);
         this.playerController = new PlayerController(gameModel);
-        this.diceController = new DiceController(gameModel, this, fieldsView, coffeeManager);
+        this.diceController = new DiceController(gameModel, this, fieldsView);
     }
 
     public AxisController getAxisController() {
@@ -39,5 +41,11 @@ public class GameController {
     }
     public DiceController getDiceController() {
         return diceController;
+    }
+
+    public void draw(SpriteBatch batch) {
+        for (FieldView field : fieldsView) {
+            field.switchRenderer(batch);
+        }
     }
 }

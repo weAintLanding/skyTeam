@@ -23,13 +23,13 @@ public class DiceController {
     CoffeeManager coffeeManager;
     DiceValueUpdater diceValueUpdater;
 
-    public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView, CoffeeManager coffeeManager) {
+    public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView) {
         this.pilotDice = gameModel.getPilot().getDiceList();
         this.copilotDice = gameModel.getCoPilot().getDiceList();
+        this.coffeeManager = new CoffeeManager(FieldGenerator.getCoffeeFieldViews());
 
         this.diceView = new DiceView();
         this.fieldsView = fieldsView;
-        this.coffeeManager = coffeeManager;
         viewport = new FitViewport(1280, 720);
 
         this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged, this::onCoffeeInteraction);

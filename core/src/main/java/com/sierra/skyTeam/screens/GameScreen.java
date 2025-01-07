@@ -40,9 +40,8 @@ public class GameScreen implements Screen {
 
     public GameScreen(MainGame game) {
         this.game = game;
-        fields = FieldGenerator.generateFields();
+        this.gameController = new GameController();
 
-        this.gameController = new GameController(fields);
         batch = new SpriteBatch();
         background = new Texture("board.png");
         viewport = new FitViewport(1280, 720);
@@ -77,9 +76,7 @@ public class GameScreen implements Screen {
 
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        for (FieldView field : fields) {
-            field.switchRenderer(batch);
-        }
+        gameController.draw(batch);
 
         //fields.get(4).toggleSwitch(); // Example field toggle
         axis.render(batch);
