@@ -31,7 +31,7 @@ public class Players {
 
     public void rollDice () {
         for(int i = 0; i < 4; i++){
-            diceRolls[i] = new Dice();
+            diceRolls[i] = new Dice(2);
         }
     }
     public Dice[] getDiceList() {

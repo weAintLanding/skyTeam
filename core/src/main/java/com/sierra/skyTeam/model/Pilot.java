@@ -1,5 +1,4 @@
 package com.sierra.skyTeam.model;
-
 public class Pilot extends Players {
     public Pilot(GameModel gameModel) {
         super(gameModel);
@@ -9,6 +8,7 @@ public class Pilot extends Players {
             radioPlayer[i] = new Field("Radio Pilot");
         }
     }
+}
 
 
     /*@Override
@@ -17,4 +17,4 @@ public class Pilot extends Players {
             super.setRadio(diceValue);
         } else System.out.println(this.getClass().getSimpleName() + " cannot place more dice in the Radio slot");
     }*/
-}
+

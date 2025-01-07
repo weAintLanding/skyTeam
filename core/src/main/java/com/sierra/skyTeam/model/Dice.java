@@ -7,7 +7,7 @@ public class Dice {
     private final Random random;
     private boolean isPlaced;
 
-    public Dice() {
+    public Dice(int i) {
         this.random = new Random();
         this.diceValue = random.nextInt(6) + 1;
         this.isPlaced = false;
