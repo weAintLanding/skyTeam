@@ -50,12 +50,12 @@ public class FieldView {
 
     public boolean canPlaceDice(boolean isPilot) {
         if (pilotOnly && isPilot) {
-            return true;
+            return false;
         }
         if (!pilotOnly && !isPilot) {
-            return true;
+            return false;
         }
-        return bothPilots;
+        return !bothPilots;
     }
 
     public boolean isDiceAllowed (int diceValue,boolean isPilot) {
@@ -63,7 +63,7 @@ public class FieldView {
             System.out.println("Dice Not Allowed.");
             return false;
         }
-        if (!canPlaceDice(isPilot)) {
+        if (canPlaceDice(isPilot)) {
             System.out.println("Player not allowed to place dice in this field.");
             return false;
         }
@@ -100,15 +100,16 @@ public class FieldView {
 //        return null;
 //    }
 
-    public void placeDiceOnField (Sprite selectedDice, boolean isPilot) {
-        if (!canPlaceDice(isPilot)) {
+    public boolean placeDiceOnField (Sprite selectedDice, boolean isPilot) {
+        if (canPlaceDice(isPilot)) {
             System.out.println("Player not allowed to place dice on this field.");
-            return;
+            return false;
         }
         float centerX = bounds.x + (bounds.width - selectedDice.getWidth()) / 2;
         float centerY = bounds.y + (bounds.height - selectedDice.getHeight()) / 2;
         selectedDice.setPosition(centerX, centerY);
         this.isOccupied = true;
+        return true;
     }
 
     public Rectangle getBounds() {
