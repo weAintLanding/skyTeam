@@ -104,7 +104,7 @@ public class DicePosUpdater {
                     System.out.println("Field with switch");
                     if (field.isDiceAllowed(lastClickedDiceValue)) {
                         if (!field.isOccupied) {
-                            field.placeDiceOnField(selectedDice);
+                            field.placeDiceOnField(selectedDice, isPilot);
                             System.out.println("Placing dice");
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
@@ -114,6 +114,8 @@ public class DicePosUpdater {
                                 }
                             }
                             resetSelection();
+                            System.out.println("Resetting selection");
+
                             break;
                         } else {
                             System.out.println("Field is occupied");
@@ -121,6 +123,8 @@ public class DicePosUpdater {
                     } else {
                         System.out.println("Dice value not allowed in this field.");
                         resetSelection();
+                        System.out.println("Resetting selection");
+
                         break;
                     }
                 } else {
@@ -128,7 +132,7 @@ public class DicePosUpdater {
                         if(isCoffeeField(field)) {
                             handleCoffeeFieldPlacement(field);
                         }
-                        field.placeDiceOnField(selectedDice);
+                        field.placeDiceOnField(selectedDice, isPilot);
                         System.out.println("Placing dice");
 
                         for (int i = 0; i < diceSprites.length; i++) {
@@ -138,6 +142,8 @@ public class DicePosUpdater {
                             }
                         }
                         resetSelection();
+                        System.out.println("Resetting selection");
+
                         break;
                     } else {
                         System.out.println("Dice value not allowed in this field.");

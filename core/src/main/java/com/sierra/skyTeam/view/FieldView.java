@@ -16,6 +16,8 @@ public class FieldView {
     private int diceValue;
     private int [] allowedValues;
     Dice dice = new Dice();
+    private boolean pilotOnly;
+
 
     public FieldView(float x, float y){
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
@@ -24,12 +26,13 @@ public class FieldView {
     }
 
     //field that only allows specific values
-    public FieldView(float x, float y, boolean hasSwitch, int[] allowedValues){
+    public FieldView(float x, float y, boolean hasSwitch, boolean pilotOnly, int[] allowedValues){
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
         this.hasSwitch = hasSwitch;
         this.switchOn = false;
         this.isOccupied = false;
         this.allowedValues = allowedValues;
+        this.pilotOnly = pilotOnly;
 
         if(hasSwitch){
             switchImg = new Sprite(new Texture("switch.png"));
@@ -38,11 +41,22 @@ public class FieldView {
         }
     }
 
+    public boolean canPlaceDice(boolean isPilot) {
+        if (pilotOnly && isPilot) {
+            return true;
+        }
+        if (!pilotOnly && !isPilot) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isDiceAllowed (int diceValue) {
         if(allowedValues == null){
             System.out.println("Dice Not Allowed.");
             return false;
         }
+
         for(int allowedValue : allowedValues){
             if(diceValue == allowedValue){
                 this.diceValue = diceValue;
@@ -70,7 +84,11 @@ public class FieldView {
 //        return null;
 //    }
 
-    public void placeDiceOnField (Sprite selectedDice) {
+    public void placeDiceOnField (Sprite selectedDice, boolean isPilot) {
+        if (!canPlaceDice(isPilot)) {
+            System.out.println("Player not allowed to place dice on this field.");
+            return;
+        }
         float centerX = bounds.x + (bounds.width - selectedDice.getWidth()) / 2;
         float centerY = bounds.y + (bounds.height - selectedDice.getHeight()) / 2;
         selectedDice.setPosition(centerX, centerY);
