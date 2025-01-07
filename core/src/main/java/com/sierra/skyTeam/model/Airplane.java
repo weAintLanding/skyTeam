@@ -4,8 +4,8 @@ public class Airplane{
     private int altitude = 6000;
     private int approachPosition = 0;
 
-    private Game game;
-    private final axisModel axisModel;
+    private GameModel gameModel;
+    private final AxisModel axisModel;
     private final Engine engine;
     private final Brakes brakes;
     private final LandingGear landingGear;
@@ -15,7 +15,7 @@ public class Airplane{
 
     public Airplane(){
         engine = new Engine(this);
-        axisModel = new axisModel(this);
+        axisModel = new AxisModel(this);
         brakes = new Brakes(this);
         landingGear = new LandingGear(this);
         flaps = new Flaps(this);
@@ -23,14 +23,14 @@ public class Airplane{
         concentration = new Concentration();
     }
 
-    public void setGame(Game game){
-        this.game = game;
+    public void setGame(GameModel gameModel){
+        this.gameModel = gameModel;
     }
-    public Game getGame(){
-        return game;
+    public GameModel getGame(){
+        return gameModel;
     }
 
-    public axisModel getAxis() {
+    public AxisModel getAxis() {
         return axisModel;
     }
     public Engine getEngine(){

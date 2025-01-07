@@ -2,60 +2,70 @@ package com.sierra.skyTeam.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
+import com.badlogic.gdx.math.Vector2;
+import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.view.*;
+import com.sierra.skyTeam.controller.DiceController;
+import com.sierra.skyTeam.controller.GameController;
 
 import java.util.List;
 
 public class GameScreen implements Screen {
     MainGame game;
+    GameController gameController;
+
     SpriteBatch batch;
     Texture background;
     Viewport viewport;
-    Dice dice;
-    List<Field> fields;
-    ShapeRenderer shapeRenderer;
-    Axis axis;
-    DicePosUpdater pilotHandler;
-    DicePosUpdater copilotHandler;
-    MarkerManager markerManager;
-    TrackerManager trackerManager;
 
-    public GameScreen (MainGame game) {
+    //MVC components
+    Dice[] pilotDice; // Model for Pilot dice
+    Dice[] coPilotDice; // Model for CoPilot dice
+    DiceView diceView; // Dice View
+    DiceController diceController; // Dice Controller
+
+    List<FieldView> fields;
+    List<FieldView> coffeeFields;
+    AxisView axis;
+    MarkerManager markerManager;
+    TrackManager trackerManager;
+
+    public GameScreen(MainGame game) {
         this.game = game;
+        this.gameController = new GameController();
+
         batch = new SpriteBatch();
         background = new Texture("board.png");
         viewport = new FitViewport(1280, 720);
-        dice = new Dice();
-        shapeRenderer = new ShapeRenderer();
-        fields = FieldGenerator.generateFields();
-        axis = new Axis();
-        pilotHandler = new DicePosUpdater(dice, fields, viewport, true);
-        copilotHandler = new DicePosUpdater(dice, fields, viewport, false);
+
+        // Initialize Dice Model, View, and Controller
+        axis = gameController.getAxisController().getAxisView();
+        diceView = gameController.getDiceController().getDiceView();
+
+        diceController = gameController.getDiceController();
+        pilotDice = gameController.getPlayerController().getPilotDice();
+        coPilotDice = gameController.getPlayerController().getCoPilotDice();
+
         markerManager = new MarkerManager();
-        trackerManager = new TrackerManager();
+        trackerManager = new TrackManager();
     }
+
     public void show() {
-        dice.rollDice();
+        diceController.updateView(); // Ensure dice view matches initial model state
     }
+
     public void render(float delta) {
         draw();
-        pilotHandler.update();
-        copilotHandler.update();
+        gameController.getDiceController().updateHandler();
         handleHover();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(Field field : fields){
-            field.renderer(shapeRenderer);
-        }
-        shapeRenderer.end();
     }
 
     public void draw() {
@@ -63,18 +73,20 @@ public class GameScreen implements Screen {
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
-        batch.draw(background, 0, 0,
-            viewport.getWorldWidth(), viewport.getWorldHeight());
-        for (Field field : fields) {
-            field.switchRenderer(batch);
-        }
-        fields.get(0).toggleSwitch();
+
+        batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+
+        gameController.draw(batch);
+
+        //fields.get(4).toggleSwitch(); // Example field toggle
         axis.render(batch);
         axis.setAxisValue(0);
-        dice.renderDice(batch, true);
-        dice.renderDice(batch, false);
+
         markerManager.draw(batch);
         trackerManager.draw(batch);
+
+        // Render Dice using DiceController
+        diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice
         batch.end();
     }
 
@@ -84,15 +96,27 @@ public class GameScreen implements Screen {
         float touchY = coordinates.y;
 
         boolean isHovered = false;
-        for(int i = 0; i < dice.getCurrentPilotDiceSprites().length; i++){
-            Sprite sprite = dice.getCurrentPilotDiceSprites()[i];
-            if(sprite.getBoundingRectangle().contains(touchX,touchY)){
+
+        // Check Pilot Dice for Hover
+        for (Sprite sprite : diceView.getCurrentPilotDiceSprites()) {
+            if (sprite.getBoundingRectangle().contains(touchX, touchY)) {
                 isHovered = true;
                 break;
             }
         }
-        for (int i = 0; i < dice.getCurrentCopilotDiceSprites().length; i++) {
-            Sprite sprite = dice.getCurrentCopilotDiceSprites()[i];
+
+        if(diceController.getDiceValueUpdater().getDiceChangerPlusSprite().getBoundingRectangle().contains(touchX, touchY)
+            && diceController.getDiceValueUpdater().showPlusSprite()){
+            isHovered = true;
+        }
+
+        if(diceController.getDiceValueUpdater().getDiceChangerMinusSprite().getBoundingRectangle().contains(touchX, touchY)
+            && diceController.getDiceValueUpdater().showMinusSprite()){
+            isHovered = true;
+        }
+
+        // Check CoPilot Dice for Hover
+        for (Sprite sprite : diceView.getCurrentCopilotDiceSprites()) {
             if (sprite.getBoundingRectangle().contains(touchX, touchY)) {
                 isHovered = true;
                 break;
@@ -100,22 +124,28 @@ public class GameScreen implements Screen {
         }
 
         if (isHovered) {
-            Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Hand);
+            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
         } else {
-            Gdx.graphics.setSystemCursor(com.badlogic.gdx.graphics.Cursor.SystemCursor.Arrow);
+            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
         }
     }
-    public void resize (int width, int height) {
+
+    public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
+
     @Override
     public void pause() {}
+
     @Override
     public void resume() {}
+
     @Override
     public void hide() {}
+
     public void dispose() {
         batch.dispose();
         background.dispose();
+        diceView.dispose();
     }
 }

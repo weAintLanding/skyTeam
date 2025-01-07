@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.List;
 
 public class Players {
-    private final Game game;
-    private final List<Dice> diceRolls;
+    private final GameModel gameModel;
+    private final Dice[] diceRolls;
     private Integer axisSlot = null;
     private Integer throttle = null;
     //private int radioSlots;
@@ -19,30 +19,36 @@ public class Players {
     Random random = new Random();
 
 
-    public Players(Game game) {
-        this.game = game;
-        diceRolls = new ArrayList<>();
+    public Players(GameModel gameModel) {
+        this.gameModel = gameModel;
+        diceRolls = new Dice[4];
+        this.rollDice();
     }
 
     public Airplane getAirplane(){
-        return game.getAirplane();
+        return gameModel.getAirplane();
     }
 
     public void rollDice () {
         for(int i = 0; i < 4; i++){
-            diceRolls.add(new Dice());
+            diceRolls[i] = new Dice();
         }
     }
-    public String getDiceRolls () {
+    public Dice[] getDiceList() {
+        return diceRolls;
+    }
+    public String getDiceRollsString() {
         List<Integer> diceArray = new ArrayList<>();
-        for(int i = 0; i < diceRolls.size(); i++){
-            diceArray.add(diceRolls.get(i).getDiceValue());
+        for(Dice dice : diceRolls){
+            if(dice != null){
+                diceArray.add(dice.getDiceValue());
+            }
         }
         return diceArray.toString();
     }
     public boolean isDiceThere (int diceValue){
         for(Dice dice : diceRolls){
-            if(dice.getDiceValue() == diceValue) return true;
+            if(dice != null && dice.getDiceValue() == diceValue) return true;
         }
         return false;
     }
@@ -56,21 +62,22 @@ public class Players {
     }
     public void removeDice (int diceValue){
         for (Dice dice : diceRolls){
-            if (dice.getDiceValue() == diceValue){
-                diceRolls.remove(dice);
+            if (dice != null && dice.getDiceValue() == diceValue){
+                dice = null;
                 return;
             }
         }
     }
     public void reroll() {
-        if (game.getRerollsAvailable() > 0){
-            for (int i = 0; i < diceRolls.size(); i++) {
-                Dice dice = diceRolls.get(i);
-                int newValue = random.nextInt(6)+1;
-                dice.setDiceValue(newValue);
+        if (gameModel.getRerollsAvailable() > 0){
+            for (int i = 0; i < diceRolls.length; i++) {
+                if (diceRolls[i] != null) {
+                    int newValue = random.nextInt(6)+1;
+                    diceRolls[i].setDiceValue(newValue);
+                }
             }
-            game.decreaseRerollsAvailable();
-            System.out.println("Dice Rerolled. Remaining rerolls: " + game.getRerollsAvailable());
+            gameModel.decreaseRerollsAvailable();
+            System.out.println("Dice Rerolled. Remaining rerolls: " + gameModel.getRerollsAvailable());
         } else {
             System.out.println("No rerolls available.");
         }
@@ -136,7 +143,7 @@ public class Players {
             if(!field.isOccupied()){
                 field.placeDice(diceValue);
                 removeDice(diceValue);
-                game.getApproachTrack().removeAirplaneWithRadio(this.getAirplane().getApproachPosition(), diceValue);
+                gameModel.getApproachTrack().removeAirplaneWithRadio(this.getAirplane().getApproachPosition(), diceValue);
                 return true;
             }
         }

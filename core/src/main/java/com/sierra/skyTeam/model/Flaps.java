@@ -59,7 +59,7 @@ public class Flaps {
             } else {
                 status = "Not Activated.";
             }
-            System.out.println("Field " + (i+1) + ". (" + flapConstraints[i][0] + "|" + flapConstraints[i][1] + "): " + status);
+            System.out.println("fieldView " + (i+1) + ". (" + flapConstraints[i][0] + "|" + flapConstraints[i][1] + "): " + status);
         }
     }
 
