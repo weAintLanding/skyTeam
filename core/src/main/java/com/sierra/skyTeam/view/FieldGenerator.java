@@ -63,10 +63,20 @@ public class FieldGenerator {
         int [] allowedValues2 = {2,3};
         int [] allowedValues3 = {4,5};
         int [] allowedValues4 = {5,6};
-        flaps.add(new FieldView(rightColX,414, true, false,allowedValues1));
-        flaps.add(new FieldView(rightColX, 307, true,false, allowedValues2));
-        flaps.add(new FieldView(rightColX, 200, true, false,allowedValues3));
-        flaps.add(new FieldView(rightColX, 93, true, false,allowedValues4));
+        FieldView flapField1 = new FieldView(rightColX, 414, true, false, allowedValues1);
+        FieldView flapField2 = new FieldView(rightColX, 307, true, false, allowedValues2);
+        FieldView flapField3 = new FieldView(rightColX, 200, true, false, allowedValues3);
+        FieldView flapField4 = new FieldView(rightColX, 93, true, false, allowedValues4);
+
+        flapField2.setPreviousField(flapField1);
+        flapField3.setPreviousField(flapField2);
+        flapField4.setPreviousField(flapField3);
+
+        flaps.add(flapField1);
+        flaps.add(flapField2);
+        flaps.add(flapField3);
+        flaps.add(flapField4);
+
         return flaps;
     }
 
