@@ -89,9 +89,16 @@ public class FieldGenerator {
         int[] allowedValues1 = {2};
         int[] allowedValues2 = {4};
         int[] allowedValues3 = {6};
-        brakeFieldViews.add(new FieldView(545, 175,true, true, allowedValues1));
-        brakeFieldViews.add(new FieldView(617, 175, true,true, allowedValues2));
-        brakeFieldViews.add(new FieldView(689, 175, true,true, allowedValues3));
+        FieldView brakeField1 = new FieldView(545, 175, true, true, allowedValues1);
+        FieldView brakeField2 = new FieldView(617, 175, true, true, allowedValues2);
+        FieldView brakeField3 = new FieldView(689, 175, true, true, allowedValues3);
+
+        brakeField2.setPreviousField(brakeField1);
+        brakeField3.setPreviousField(brakeField2);
+
+        brakeFieldViews.add(brakeField1);
+        brakeFieldViews.add(brakeField2);
+        brakeFieldViews.add(brakeField3);
         return brakeFieldViews;
     }
 

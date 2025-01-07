@@ -15,8 +15,9 @@ public class FieldView {
     boolean isOccupied;
     private int diceValue;
     private int [] allowedValues;
-    Dice dice = new Dice();
+    Dice dice = new Dice(2);
     private boolean pilotOnly;
+    private FieldView previousField;
 
 
     public FieldView(float x, float y){
@@ -41,6 +42,10 @@ public class FieldView {
         }
     }
 
+    public void setPreviousField(FieldView previousField) {
+        this.previousField = previousField;
+    }
+
     public boolean canPlaceDice(boolean isPilot) {
         if (pilotOnly && isPilot) {
             return true;
@@ -58,6 +63,11 @@ public class FieldView {
         }
         if (!canPlaceDice(isPilot)) {
             System.out.println("Player not allowed to place dice in this field.");
+            return false;
+        }
+
+        if (previousField != null && !previousField.switchOn) {
+            System.out.println("Previous field must be activated first.");
             return false;
         }
 
