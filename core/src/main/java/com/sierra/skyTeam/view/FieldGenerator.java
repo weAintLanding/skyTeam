@@ -13,8 +13,10 @@ public class FieldGenerator {
         List<FieldView> copilotRadio = generateCopilotRadio();
         List<FieldView> landingGear = generateLandingGear();
         List<FieldView> flaps = generateFlaps();
-        List<FieldView> axisFieldViews = generateAxisFields();
-        List<FieldView> throttleFieldViews = generateThrottleFields();
+        List<FieldView> pilotAxisFieldViews = generatePilotAxisFields();
+        List<FieldView> copilotAxisFieldViews = generateCopilotAxisFields();
+        List<FieldView> pilotThrottleFieldViews = generatePilotThrottleField();
+        List<FieldView> copilotThrottleFieldViews = generateCopilotThrottleField();
         List<FieldView> brakeFieldViews = generateBrakeFields();
 
         coffeeFieldViews = generateCoffeeFields();
@@ -24,25 +26,27 @@ public class FieldGenerator {
         FieldViews.addAll(copilotRadio);
         FieldViews.addAll(landingGear);
         FieldViews.addAll(flaps);
-        FieldViews.addAll(axisFieldViews);
-        FieldViews.addAll(throttleFieldViews);
+        FieldViews.addAll(pilotAxisFieldViews);
+        FieldViews.addAll(copilotAxisFieldViews);
+        FieldViews.addAll(pilotThrottleFieldViews);
+        FieldViews.addAll(copilotThrottleFieldViews);
         FieldViews.addAll(brakeFieldViews);
         FieldViews.addAll(coffeeFieldViews);
         return FieldViews;
     }
 
     private static FieldView generateRerollTokenField() {
-        return new FieldView((leftColX+2), 630);
+        return new FieldView((leftColX+2), 630, false, false);
     }
 
     private static FieldView generatePilotRadio() {
-        return new FieldView(leftColX, 565);
+        return new FieldView(leftColX, 565, true, false);
     }
 
     private static List<FieldView> generateCopilotRadio() {
         List<FieldView> copilotRadio = new ArrayList<>();
-        copilotRadio.add(new FieldView(rightColX, 635));
-        copilotRadio.add(new FieldView(rightColX, 565));
+        copilotRadio.add(new FieldView(rightColX, 635, false, false));
+        copilotRadio.add(new FieldView(rightColX, 565, false, false));
         return copilotRadio;
     }
 
@@ -80,18 +84,28 @@ public class FieldGenerator {
         return flaps;
     }
 
-    private static List<FieldView> generateAxisFields() {
-        List<FieldView> axisFieldViews = new ArrayList<>();
-        axisFieldViews.add(new FieldView(493, 555));
-        axisFieldViews.add(new FieldView(740, 555));
-        return axisFieldViews;
+    private static List<FieldView> generatePilotAxisFields() {
+        List<FieldView> axisPilotFieldViews = new ArrayList<>();
+        axisPilotFieldViews.add(new FieldView(493, 555, true, false));
+        return axisPilotFieldViews;
     }
 
-    private static List<FieldView> generateThrottleFields() {
-        List<FieldView> throttleFieldViews = new ArrayList<>();
-        throttleFieldViews.add(new FieldView(543,315));
-        throttleFieldViews.add(new FieldView(690,315));
-        return throttleFieldViews;
+    private static List<FieldView> generateCopilotAxisFields() {
+        List<FieldView> axisCopilotFieldViews = new ArrayList<>();
+        axisCopilotFieldViews.add(new FieldView(740, 555, false, false));
+        return axisCopilotFieldViews;
+    }
+
+    private static List<FieldView> generatePilotThrottleField() {
+        List<FieldView> throttlePilotFieldViews = new ArrayList<>();
+        throttlePilotFieldViews.add(new FieldView(543,315, true, false));
+        return throttlePilotFieldViews;
+    }
+
+    private static List<FieldView> generateCopilotThrottleField() {
+        List<FieldView> throttleCopilotFieldViews = new ArrayList<>();
+        throttleCopilotFieldViews.add(new FieldView(690,315, false, false));
+        return throttleCopilotFieldViews;
     }
 
     private static List<FieldView> generateBrakeFields() {
@@ -114,9 +128,9 @@ public class FieldGenerator {
 
     private static List<FieldView> generateCoffeeFields(){
         List<FieldView> coffeeFieldViews = new ArrayList<>();
-        coffeeFieldViews.add(new FieldView(545, 58));
-        coffeeFieldViews.add(new FieldView(617, 58));
-        coffeeFieldViews.add(new FieldView(689, 58));
+        coffeeFieldViews.add(new FieldView(545, 58, false, true));
+        coffeeFieldViews.add(new FieldView(617, 58, false, true));
+        coffeeFieldViews.add(new FieldView(689, 58, false, true));
         return coffeeFieldViews;
     }
 

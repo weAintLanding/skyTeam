@@ -17,13 +17,15 @@ public class FieldView {
     private int [] allowedValues;
     Dice dice = new Dice(2);
     private boolean pilotOnly;
+    private boolean bothPilots;
     private FieldView previousField;
 
-
-    public FieldView(float x, float y){
+    public FieldView(float x, float y, boolean pilotOnly, boolean bothPilots){
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
         this.hasSwitch = false;
         this.isOccupied = false;
+        this.pilotOnly = pilotOnly;
+        this.bothPilots = bothPilots;
     }
 
     //field that only allows specific values
@@ -53,7 +55,7 @@ public class FieldView {
         if (!pilotOnly && !isPilot) {
             return true;
         }
-        return false;
+        return bothPilots;
     }
 
     public boolean isDiceAllowed (int diceValue,boolean isPilot) {
@@ -81,6 +83,7 @@ public class FieldView {
         }
         return false;
     }
+
     public void toggleSwitch() {
         if (hasSwitch && !switchOn && !isOccupied) {
             System.out.println("toggle switch");
@@ -105,7 +108,6 @@ public class FieldView {
         float centerX = bounds.x + (bounds.width - selectedDice.getWidth()) / 2;
         float centerY = bounds.y + (bounds.height - selectedDice.getHeight()) / 2;
         selectedDice.setPosition(centerX, centerY);
-        //this.dice = selectedDice
         this.isOccupied = true;
     }
 
