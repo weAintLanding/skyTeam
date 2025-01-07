@@ -51,9 +51,13 @@ public class FieldView {
         return false;
     }
 
-    public boolean isDiceAllowed (int diceValue) {
+    public boolean isDiceAllowed (int diceValue,boolean isPilot) {
         if(allowedValues == null){
             System.out.println("Dice Not Allowed.");
+            return false;
+        }
+        if (!canPlaceDice(isPilot)) {
+            System.out.println("Player not allowed to place dice in this field.");
             return false;
         }
 
@@ -67,9 +71,8 @@ public class FieldView {
         }
         return false;
     }
-
     public void toggleSwitch() {
-        if(hasSwitch && !switchOn && !isOccupied){
+        if (hasSwitch && !switchOn && !isOccupied) {
             System.out.println("toggle switch");
             this.switchOn = true;
             int offset = 24;

@@ -102,7 +102,7 @@ public class DicePosUpdater {
             if (field.getBounds().contains(touchX, touchY)) {
                 if(field.hasSwitch){
                     System.out.println("Field with switch");
-                    if (field.isDiceAllowed(lastClickedDiceValue)) {
+                    if (field.isDiceAllowed(lastClickedDiceValue, isPilot)) {
                         if (!field.isOccupied) {
                             field.placeDiceOnField(selectedDice, isPilot);
                             System.out.println("Placing dice");
