@@ -1,6 +1,5 @@
 package com.sierra.skyTeam.view;
 
-import com.sierra.skyTeam.model.Field;
 import com.sierra.skyTeam.model.FieldModel;
 
 import java.util.ArrayList;

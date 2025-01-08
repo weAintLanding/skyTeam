@@ -10,13 +10,13 @@ import java.util.List;
 public class GameController {
     private final MainGame game;
 
-    private GameModel gameModel;
+    private final GameModel gameModel;
 
-    private AxisController axisController;
-    private PlayerController playerController;
-    private DiceController diceController;
+    private final AxisController axisController;
+    private final PlayerController playerController;
+    private final DiceController diceController;
 
-    private List<FieldView> fieldsView;
+    private final List<FieldView> fieldsView;
 
     public GameController(MainGame game){
         this.game = game;

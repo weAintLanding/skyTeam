@@ -6,11 +6,11 @@ public class FieldModel {
     private Dice placedDice;
     private int diceValue;
     private boolean isOccupied;
-    private boolean pilotOnly;
-    private boolean bothPilots;
-    private boolean hasSwitch;
+    private final boolean pilotOnly;
+    private final boolean bothPilots;
+    private final boolean hasSwitch;
     private boolean switchOn;
-    private int[] allowedValues;
+    private final int[] allowedValues;
     private FieldModel previousField;
 
     public FieldModel(boolean pilotOnly, boolean bothPilots, boolean hasSwitch, int[] allowedValues) {

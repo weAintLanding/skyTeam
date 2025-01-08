@@ -7,7 +7,6 @@ import com.sierra.skyTeam.model.Players;
 import com.sierra.skyTeam.model.Airplane;
 import com.sierra.skyTeam.view.AxisView;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sierra.skyTeam.view.FieldGenerator;
 
 public class AxisController {

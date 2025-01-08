@@ -14,7 +14,6 @@ public class DicePosUpdater {
     enum State { SELECTING, PLACING }
     private State currentState = State.SELECTING;
     private final CoffeeManager coffeeManager;
-    private final DiceView diceView;
     private final boolean isPilot;
     private final Sprite[] diceSprites;
     private final Dice[] diceArray;
@@ -26,7 +25,6 @@ public class DicePosUpdater {
     DiceValueUpdater diceValueUpdater;
 
     public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews,Viewport viewport, CoffeeManager coffeeManager, DiceValueUpdater diceValueUpdater, boolean isPilot) {
-        this.diceView = diceView;
         this.diceArray = diceArray;
         this.isPilot = isPilot;
         this.diceSprites = isPilot ? diceView.getCurrentPilotDiceSprites() : diceView.getCurrentCopilotDiceSprites();
@@ -174,8 +172,5 @@ public class DicePosUpdater {
         lastClickedDiceValue = -1;
         selectedCoffee = null;
         currentState = State.SELECTING;
-    }
-
-    public void dispose() {
     }
 }

@@ -49,7 +49,7 @@ public class FieldView {
         return fieldModel;
     }
 
-    public void renderer(com.badlogic.gdx.graphics.glutils.ShapeRenderer shapeRenderer) {
+    /*public void renderer(com.badlogic.gdx.graphics.glutils.ShapeRenderer shapeRenderer) {
         shapeRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
-    }
+    }*/
 }
