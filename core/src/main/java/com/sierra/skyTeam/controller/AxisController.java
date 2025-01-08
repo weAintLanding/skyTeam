@@ -37,8 +37,8 @@ public class AxisController {
         this.pilot = gameModel.getPilot();
         this.copilot = gameModel.getCoPilot();
 
-        this.pilotField = FieldGenerator.getPilotAxisField();
-        this.copilotField = FieldGenerator.getCopilotAxisField();
+        this.pilotField = FieldGenerator.getPilotAxisFieldView();
+        this.copilotField = FieldGenerator.getCopilotAxisFieldView();
 
         this.pilotFieldSet = false;
         this.copilotFieldSet = false;
@@ -55,12 +55,12 @@ public class AxisController {
     }
 
     public void draw(SpriteBatch batch) {
-        if(pilotField.isFieldOccupied() && !pilotFieldSet){
+        if(pilotField.getFieldModel().isOccupied() && !pilotFieldSet){
             System.out.println("This works.");
             pilot.setAxis(pilotField.getDice());
             pilotFieldSet = true;
         }
-        if(copilotField.isFieldOccupied() && !copilotFieldSet){
+        if(copilotField.getFieldModel().isOccupied() && !copilotFieldSet){
             copilot.setAxis(copilotField.getDice());
             copilotFieldSet = true;
         }

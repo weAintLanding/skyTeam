@@ -31,7 +31,7 @@ public class Players {
 
     public void rollDice () {
         for(int i = 0; i < 4; i++){
-            diceRolls[i] = new Dice(2);
+            diceRolls[i] = new Dice();
         }
     }
     public Dice[] getDiceList() {
@@ -46,12 +46,14 @@ public class Players {
         }
         return diceArray.toString();
     }
+
     public boolean isDiceThere (int diceValue){
         for(Dice dice : diceRolls){
             if(dice != null && dice.getDiceValue() == diceValue) return true;
         }
         return false;
     }
+
     public Dice getDice (int diceValue){
         for(Dice dice : diceRolls){
             if(dice.getDiceValue() == diceValue){

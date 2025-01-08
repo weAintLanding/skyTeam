@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.sierra.skyTeam.model.Dice;
+import com.sierra.skyTeam.model.FieldModel;
 
 import java.util.List;
 
@@ -64,7 +65,6 @@ public class DicePosUpdater {
                 selectedDice = diceSprites[i];
                 lastClickedDiceValue = diceArray[i].getDiceValue();
                 lastClickedDice = diceArray[i];
-                System.out.println(lastClickedDiceValue + " dice selected");
                 currentState = State.PLACING;
                 selectedDice.setColor(1, 1, 1, 1);
                 break;
@@ -99,14 +99,24 @@ public class DicePosUpdater {
         selectedDice.setColor(1, 1, 1, 1);
     }
 
+    private Dice getDiceFromSprite(Sprite sprite) {
+        for (int i = 0; i < diceSprites.length; i++) {
+            if (diceSprites[i] == sprite) {
+                return diceArray[i];
+            }
+        }
+        return null;
+    }
+
     private void handleFieldPlacement(float touchX, float touchY) {
         for (FieldView field : FieldViews) {
             if (field.getBounds().contains(touchX, touchY)) {
-                if(field.hasSwitch){
+                FieldModel fieldModel = field.getFieldModel();
+                if(fieldModel.hasSwitch()){
                     System.out.println("Field with switch");
-                    if (field.isDiceAllowed(lastClickedDiceValue, isPilot)){
-                        if (!field.isOccupied) {
-                            field.placeDiceOnField(selectedDice, isPilot);
+                    if (fieldModel.isDiceAllowed(lastClickedDiceValue, isPilot)){
+                        if (!fieldModel.isOccupied()) {
+                            fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field);
                             System.out.println("Placing dice");
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
@@ -126,12 +136,12 @@ public class DicePosUpdater {
                         break;
                     }
                 } else {
-                    if (!field.isOccupied) {
+                    if (!fieldModel.isOccupied()) {
                         if(isCoffeeField(field)) {
                             handleCoffeeFieldPlacement(field);
                         }
                         System.out.println("Placing dice");
-                        if (field.placeDiceOnField(selectedDice, isPilot)){
+                        if (fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field)){
                             field.setDice(lastClickedDice);
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
@@ -151,7 +161,8 @@ public class DicePosUpdater {
     }
 
     private void handleCoffeeFieldPlacement(FieldView field){
-        if(!field.isOccupied){
+        FieldModel fieldModel = field.getFieldModel();
+        if(!fieldModel.isOccupied()){
             coffeeManager.placeCoffee();
             System.out.println("Dice placed in coffee field");
         }

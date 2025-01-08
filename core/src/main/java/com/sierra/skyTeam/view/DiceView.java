@@ -42,11 +42,13 @@ public class DiceView {
         for (int i = 0; i < pilotDice.length; i++) {
             int pilotDiceValue = pilotDice[i].getDiceValue() - 1;
             currentPilotDiceSprites[i].setTexture(pilotDiceSprites[pilotDiceValue].getTexture());
+            pilotDice[i].setDiceSprite(currentPilotDiceSprites[i]);
         }
 
         for (int i = 0; i < copilotDice.length; i++) {
             int copilotDiceValue = copilotDice[i].getDiceValue() - 1;
             currentCopilotDiceSprites[i].setTexture(copilotDiceSprites[copilotDiceValue].getTexture());
+            copilotDice[i].setDiceSprite(currentCopilotDiceSprites[i]);
         }
     }
 

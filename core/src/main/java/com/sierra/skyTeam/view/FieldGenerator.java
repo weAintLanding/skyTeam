@@ -1,18 +1,22 @@
 package com.sierra.skyTeam.view;
 
+import com.sierra.skyTeam.model.Field;
+import com.sierra.skyTeam.model.FieldModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FieldGenerator {
     static int leftColX = 418; static int rightColX = 815;
     private static List<FieldView> coffeeFieldViews;
+    private static FieldView pilotRadio;
+    private static List<FieldView> copilotRadio;
     private static FieldView pilotAxisFieldView;
     private static FieldView copilotAxisFieldView;
+
     public static List<FieldView> generateFields() {
         List<FieldView> FieldViews = new ArrayList<>();
-        FieldView pilotRadio = generatePilotRadio();
         FieldView rerollTokenFieldView = generateRerollTokenField();
-        List<FieldView> copilotRadio = generateCopilotRadio();
         List<FieldView> landingGear = generateLandingGear();
         List<FieldView> flaps = generateFlaps();
         pilotAxisFieldView = generatePilotAxisField();
@@ -21,6 +25,8 @@ public class FieldGenerator {
         FieldView copilotThrottleFieldView = generateCopilotThrottleField();
         List<FieldView> brakeFieldViews = generateBrakeFields();
 
+        pilotRadio = generatePilotRadio();
+        copilotRadio = generateCopilotRadio();
         coffeeFieldViews = generateCoffeeFields();
 
         FieldViews.add(pilotRadio);
@@ -38,17 +44,20 @@ public class FieldGenerator {
     }
 
     private static FieldView generateRerollTokenField() {
-        return new FieldView((leftColX+2), 630, false, false);
+        FieldModel token = new FieldModel(false, false, false, null);
+        return new FieldView((leftColX+2), 630, token);
     }
 
     private static FieldView generatePilotRadio() {
-        return new FieldView(leftColX, 565, true, false);
+        FieldModel pilotRadioFieldModel = new FieldModel(true, false, false, null);
+        return new FieldView(leftColX, 565, pilotRadioFieldModel);
     }
 
     private static List<FieldView> generateCopilotRadio() {
+        FieldModel copilotRadioFieldModel = new FieldModel(false, false, false, null);
         List<FieldView> copilotRadio = new ArrayList<>();
-        copilotRadio.add(new FieldView(rightColX, 635, false, false));
-        copilotRadio.add(new FieldView(rightColX, 565, false, false));
+        copilotRadio.add(new FieldView(rightColX, 635, copilotRadioFieldModel));
+        copilotRadio.add(new FieldView(rightColX, 565, copilotRadioFieldModel));
         return copilotRadio;
     }
 
@@ -57,9 +66,12 @@ public class FieldGenerator {
         int [] allowedValues1 = {1,2};
         int [] allowedValues2 = {3,4};
         int [] allowedValues3 = {5,6};
-        landingGear.add(new FieldView(leftColX, 414, true,true, allowedValues1));
-        landingGear.add(new FieldView(leftColX, 307, true,true, allowedValues2));
-        landingGear.add(new FieldView(leftColX, 200, true,true, allowedValues3));
+        FieldModel landingGearFieldModel1 = new FieldModel(true, false, true, allowedValues1);
+        FieldModel landingGearFieldModel2 = new FieldModel(true, false, true, allowedValues2);
+        FieldModel landingGearFieldModel3 = new FieldModel(true, false, true, allowedValues3);
+        landingGear.add(new FieldView(leftColX, 414, landingGearFieldModel1));
+        landingGear.add(new FieldView(leftColX, 307, landingGearFieldModel2));
+        landingGear.add(new FieldView(leftColX, 200, landingGearFieldModel3));
         return landingGear;
     }
 
@@ -69,14 +81,20 @@ public class FieldGenerator {
         int [] allowedValues2 = {2,3};
         int [] allowedValues3 = {4,5};
         int [] allowedValues4 = {5,6};
-        FieldView flapField1 = new FieldView(rightColX, 414, true, false, allowedValues1);
-        FieldView flapField2 = new FieldView(rightColX, 307, true, false, allowedValues2);
-        FieldView flapField3 = new FieldView(rightColX, 200, true, false, allowedValues3);
-        FieldView flapField4 = new FieldView(rightColX, 93, true, false, allowedValues4);
 
-        flapField2.setPreviousField(flapField1);
-        flapField3.setPreviousField(flapField2);
-        flapField4.setPreviousField(flapField3);
+        FieldModel flapFieldModel1 = new FieldModel(false, false, true, allowedValues1);
+        FieldModel flapFieldModel2 = new FieldModel(false, false, true, allowedValues2);
+        FieldModel flapFieldModel3 = new FieldModel(false, false, true, allowedValues3);
+        FieldModel flapFieldModel4 = new FieldModel(false, false, true, allowedValues4);
+
+        FieldView flapField1 = new FieldView(rightColX, 414, flapFieldModel1);
+        FieldView flapField2 = new FieldView(rightColX, 307, flapFieldModel2);
+        FieldView flapField3 = new FieldView(rightColX, 200, flapFieldModel3);
+        FieldView flapField4 = new FieldView(rightColX, 93, flapFieldModel4);
+
+        flapFieldModel2.setPreviousField(flapFieldModel1);
+        flapFieldModel3.setPreviousField(flapFieldModel2);
+        flapFieldModel4.setPreviousField(flapFieldModel3);
 
         flaps.add(flapField1);
         flaps.add(flapField2);
@@ -87,19 +105,31 @@ public class FieldGenerator {
     }
 
     private static FieldView generatePilotAxisField() {
-        return new FieldView(493, 555, true, false);
+        FieldModel pilotAxisFieldModel = new FieldModel(true, false, false, null);
+        return new FieldView(493, 555, pilotAxisFieldModel);
     }
 
     private static FieldView generateCopilotAxisField() {
-        return new FieldView(740, 555, false, false);
+        FieldModel copilotAxisFieldModel = new FieldModel(false, false, false, null);
+        return new FieldView(740, 555, copilotAxisFieldModel);
     }
 
     private static FieldView generatePilotThrottleField() {
-        return new FieldView(543,315, true, false);
+        FieldModel pilotThrottleFieldModel = new FieldModel(true, false, false, null);
+        return new FieldView(543,315, pilotThrottleFieldModel);
     }
 
     private static FieldView generateCopilotThrottleField() {
-        return new FieldView(690,315, false, false);
+        FieldModel copilotThrottleFieldModel = new FieldModel(false, false, false, null);
+        return new FieldView(690,315, copilotThrottleFieldModel);
+    }
+
+    public static FieldView getPilotAxisFieldView() {
+        return pilotAxisFieldView;
+    }
+
+    public static FieldView getCopilotAxisFieldView() {
+        return copilotAxisFieldView;
     }
 
     private static List<FieldView> generateBrakeFields() {
@@ -107,12 +137,17 @@ public class FieldGenerator {
         int[] allowedValues1 = {2};
         int[] allowedValues2 = {4};
         int[] allowedValues3 = {6};
-        FieldView brakeField1 = new FieldView(545, 175, true, true, allowedValues1);
-        FieldView brakeField2 = new FieldView(617, 175, true, true, allowedValues2);
-        FieldView brakeField3 = new FieldView(689, 175, true, true, allowedValues3);
 
-        brakeField2.setPreviousField(brakeField1);
-        brakeField3.setPreviousField(brakeField2);
+        FieldModel brakeFieldModel1 = new FieldModel(true, false, true, allowedValues1);
+        FieldModel brakeFieldModel2 = new FieldModel(true, false, true, allowedValues1);
+        FieldModel brakeFieldModel3 = new FieldModel(true, false, true, allowedValues1);
+
+        FieldView brakeField1 = new FieldView(545, 175, brakeFieldModel1);
+        FieldView brakeField2 = new FieldView(617, 175, brakeFieldModel2);
+        FieldView brakeField3 = new FieldView(689, 175, brakeFieldModel3);
+
+        brakeFieldModel2.setPreviousField(brakeFieldModel1);
+        brakeFieldModel3.setPreviousField(brakeFieldModel2);
 
         brakeFieldViews.add(brakeField1);
         brakeFieldViews.add(brakeField2);
@@ -121,10 +156,11 @@ public class FieldGenerator {
     }
 
     private static List<FieldView> generateCoffeeFields(){
+        FieldModel coffeeFieldModel = new FieldModel(false, true, false, null);
         List<FieldView> coffeeFieldViews = new ArrayList<>();
-        coffeeFieldViews.add(new FieldView(545, 58, false, true));
-        coffeeFieldViews.add(new FieldView(617, 58, false, true));
-        coffeeFieldViews.add(new FieldView(689, 58, false, true));
+        coffeeFieldViews.add(new FieldView(545, 58, coffeeFieldModel));
+        coffeeFieldViews.add(new FieldView(617, 58, coffeeFieldModel));
+        coffeeFieldViews.add(new FieldView(689, 58, coffeeFieldModel));
         return coffeeFieldViews;
     }
 
@@ -135,17 +171,11 @@ public class FieldGenerator {
         return coffeeFieldViews;
     }
 
-    public static FieldView getPilotAxisField() {
-        if(pilotAxisFieldView == null) {
-            System.out.println("It dont work");
-        }
-        return pilotAxisFieldView;
+    public static FieldView getPilotRadio() {
+        return pilotRadio;
     }
 
-    public static FieldView getCopilotAxisField() {
-        if(copilotAxisFieldView == null) {
-            System.out.println("It dont work");
-        }
-        return copilotAxisFieldView;
+    public static List<FieldView> getCopilotRadio() {
+        return copilotRadio;
     }
 }
