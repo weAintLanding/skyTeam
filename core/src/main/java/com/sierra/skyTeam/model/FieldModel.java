@@ -9,6 +9,7 @@ public class FieldModel {
     private final boolean pilotOnly;
     private final boolean bothPilots;
     private final boolean hasSwitch;
+    private boolean diceProcessed;
     private boolean switchOn;
     private final int[] allowedValues;
     private FieldModel previousField;
@@ -78,8 +79,12 @@ public class FieldModel {
         return placedDice;
     }
 
-    public boolean hasDice() {
-        return placedDice != null;
+    public boolean isDiceProcessed() {
+        return diceProcessed;
+    }
+
+    public void setDiceProcessed(boolean diceProcessed) {
+        this.diceProcessed = diceProcessed;
     }
 
     public void toggleSwitch() {

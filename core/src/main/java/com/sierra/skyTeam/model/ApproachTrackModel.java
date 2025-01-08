@@ -1,22 +1,22 @@
-package com.sierra.skyTeam.view;
+package com.sierra.skyTeam.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.sierra.skyTeam.view.ApproachAirplaneView;
+import com.sierra.skyTeam.view.Track;
 
-public class TrackManager {
+public class ApproachTrackModel {
     Track approachTrack;
-    Track altitudeTrack;
     ApproachAirplaneView[] airplaneViews;
     boolean [] isAirplaneRemoved;
     float[] yPositions = {94, 165, 236, 307, 378, 449, 521};
     float approachX = 78;
-    float altitudeX = 750;
-    float approachCurrentY, altitudeCurrentY;
+    float approachCurrentY;
     float offset = 60;
 
-    public TrackManager(){
+    public ApproachTrackModel(){
         airplaneViews = new ApproachAirplaneView[9];
         isAirplaneRemoved = new boolean[9];
         for (int i = 0; i < airplaneViews.length; i++) {
@@ -25,33 +25,16 @@ public class TrackManager {
         }
         setAirplanes();
         approachTrack = new Track(new Sprite(new Texture("approachTracker.png")), airplaneViews);
-        altitudeTrack = new Track(new Sprite(new Texture("altitudeTracker.png")));
         approachCurrentY = yPositions[0];
-        altitudeCurrentY = yPositions[0];
         approachTrack.setTrackerPosition(approachX, approachCurrentY);
-        altitudeTrack.setTrackerPosition(altitudeX, altitudeCurrentY);
     }
-
-    public void updateTrackerPosition(String tracker, int newIndex){
-        switch(tracker.toLowerCase()){
-            case "approach":
-                if(newIndex >= 0 && newIndex < yPositions.length) {
-                        approachCurrentY = yPositions[newIndex];
-                        approachTrack.updateIndex(newIndex, approachX, approachCurrentY);
-                } else {
-                    System.out.println("Invalid index");
-                }
-                break;
-            case "altitude":
-                if(newIndex >= 0 && newIndex < yPositions.length) {
-                    altitudeCurrentY = yPositions[newIndex];
-                    altitudeTrack.updateIndex(newIndex, altitudeX, altitudeCurrentY);
-                } else {
-                    System.out.println("Invalid index");
-                }
-                break;
-            default:
-                System.out.println("Invalid index");
+    //will be used for throttle logic
+    public void updateTrack(Track approachTrack, int newIndex){
+        if(newIndex >= 0 && newIndex < yPositions.length) {
+            approachCurrentY = yPositions[newIndex];
+            approachTrack.updateIndex(newIndex, approachX, approachCurrentY);
+        } else {
+            System.out.println("Invalid index");
         }
     }
 
@@ -70,7 +53,6 @@ public class TrackManager {
             airplaneView.setRotation(randomRotation);
         }
     }
-
     //this method should not be run in draw/render or else all sprites at the position will be removed
     //or we add a boolean to remove only one
     public void removeAirplane(int trackPos) {
@@ -84,9 +66,8 @@ public class TrackManager {
         }
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch) {
         approachTrack.draw(batch);
-        altitudeTrack.draw(batch);
         for(int i = 0; i < airplaneViews.length; i++){
             if(!isAirplaneRemoved[i]){
                 airplaneViews[i].draw(batch);

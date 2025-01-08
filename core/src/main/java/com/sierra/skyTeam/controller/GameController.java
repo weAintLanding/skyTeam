@@ -15,6 +15,8 @@ public class GameController {
     private final AxisController axisController;
     private final PlayerController playerController;
     private final DiceController diceController;
+    private final RadioController radioController;
+    private final AltitudeController altitudeController;
 
     private final List<FieldView> fieldsView;
 
@@ -27,6 +29,9 @@ public class GameController {
         this.axisController = new AxisController(gameModel, game);
         this.playerController = new PlayerController(gameModel);
         this.diceController = new DiceController(gameModel, this, fieldsView);
+        this.radioController = new RadioController();
+        this.altitudeController = new AltitudeController();
+        altitudeController.setRound(2);
     }
 
     public AxisController getAxisController() {
@@ -44,5 +49,7 @@ public class GameController {
             field.switchRenderer(batch);
         }
         axisController.draw();
+        radioController.draw(batch);
+        altitudeController.draw(batch);
     }
 }

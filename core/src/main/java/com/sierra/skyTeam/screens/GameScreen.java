@@ -31,12 +31,8 @@ public class GameScreen implements Screen {
     Dice[] coPilotDice; // Model for CoPilot dice
     DiceView diceView; // Dice View
     DiceController diceController; // Dice Controller
-
-    List<FieldView> fields;
-    List<FieldView> coffeeFields;
     AxisView axis;
     MarkerManager markerManager;
-    TrackManager trackerManager;
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -55,7 +51,6 @@ public class GameScreen implements Screen {
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
         markerManager = new MarkerManager();
-        trackerManager = new TrackManager();
     }
 
     public void show() {
@@ -82,7 +77,6 @@ public class GameScreen implements Screen {
         axis.render(batch);
 
         markerManager.draw(batch);
-        trackerManager.draw(batch);
 
         // Render Dice using DiceController
         diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice
