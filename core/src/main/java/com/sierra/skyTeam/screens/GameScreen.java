@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(MainGame game) {
         this.game = game;
-        this.gameController = new GameController();
+        this.gameController = new GameController(game);
 
         batch = new SpriteBatch();
         background = new Texture("board.png");
@@ -80,7 +80,6 @@ public class GameScreen implements Screen {
 
         //fields.get(4).toggleSwitch(); // Example field toggle
         axis.render(batch);
-        axis.setAxisValue(0);
 
         markerManager.draw(batch);
         trackerManager.draw(batch);

@@ -14,8 +14,8 @@ public class FieldView {
     boolean switchOn;
     boolean isOccupied;
     private int diceValue;
+    private Dice dice;
     private int [] allowedValues;
-    Dice dice = new Dice(2);
     private boolean pilotOnly;
     private boolean bothPilots;
     private FieldView previousField;
@@ -84,6 +84,10 @@ public class FieldView {
         return false;
     }
 
+    public void setDice(Dice dice) {
+        this.dice = dice;
+    }
+
     public void toggleSwitch() {
         if (hasSwitch && !switchOn && !isOccupied) {
             System.out.println("toggle switch");
@@ -132,5 +136,13 @@ public class FieldView {
 
     public boolean isSwitchOn() {
         return switchOn;
+    }
+
+    public boolean isFieldOccupied(){
+        return isOccupied;
+    }
+
+    public Dice getDice(){
+        return dice;
     }
 }

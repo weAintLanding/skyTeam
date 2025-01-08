@@ -21,6 +21,7 @@ public class DicePosUpdater {
     private final Viewport viewport;
     private Sprite selectedDice;
     private int lastClickedDiceValue = -1;
+    private Dice lastClickedDice = null;
     private CoffeeView selectedCoffee = null;
     DiceValueUpdater diceValueUpdater;
 
@@ -62,6 +63,7 @@ public class DicePosUpdater {
             if (!diceArray[i].isPlaced() && diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
                 selectedDice = diceSprites[i];
                 lastClickedDiceValue = diceArray[i].getDiceValue();
+                lastClickedDice = diceArray[i];
                 System.out.println(lastClickedDiceValue + " dice selected");
                 currentState = State.PLACING;
                 selectedDice.setColor(1, 1, 1, 1);
@@ -130,6 +132,7 @@ public class DicePosUpdater {
                         }
                         System.out.println("Placing dice");
                         if (field.placeDiceOnField(selectedDice, isPilot)){
+                            field.setDice(lastClickedDice);
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
                                     diceArray[i].setPlaced(true); // No need to recheck isPilot
@@ -162,6 +165,7 @@ public class DicePosUpdater {
         System.out.println("Resetting selection");
         selectedDice = null;
         lastClickedDiceValue = -1;
+        lastClickedDice = null;
         selectedCoffee = null;
         currentState = State.SELECTING;
     }

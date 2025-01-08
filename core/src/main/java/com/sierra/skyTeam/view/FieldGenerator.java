@@ -6,6 +6,8 @@ import java.util.List;
 public class FieldGenerator {
     static int leftColX = 418; static int rightColX = 815;
     private static List<FieldView> coffeeFieldViews;
+    private static FieldView pilotAxisFieldView;
+    private static FieldView copilotAxisFieldView;
     public static List<FieldView> generateFields() {
         List<FieldView> FieldViews = new ArrayList<>();
         FieldView pilotRadio = generatePilotRadio();
@@ -13,8 +15,8 @@ public class FieldGenerator {
         List<FieldView> copilotRadio = generateCopilotRadio();
         List<FieldView> landingGear = generateLandingGear();
         List<FieldView> flaps = generateFlaps();
-        FieldView pilotAxisFieldView = generatePilotAxisField();
-        FieldView copilotAxisFieldView = generateCopilotAxisField();
+        pilotAxisFieldView = generatePilotAxisField();
+        copilotAxisFieldView = generateCopilotAxisField();
         FieldView pilotThrottleFieldView = generatePilotThrottleField();
         FieldView copilotThrottleFieldView = generateCopilotThrottleField();
         List<FieldView> brakeFieldViews = generateBrakeFields();
@@ -131,5 +133,19 @@ public class FieldGenerator {
             System.out.println("It dont work");
         }
         return coffeeFieldViews;
+    }
+
+    public static FieldView getPilotAxisField() {
+        if(pilotAxisFieldView == null) {
+            System.out.println("It dont work");
+        }
+        return pilotAxisFieldView;
+    }
+
+    public static FieldView getCopilotAxisField() {
+        if(copilotAxisFieldView == null) {
+            System.out.println("It dont work");
+        }
+        return copilotAxisFieldView;
     }
 }

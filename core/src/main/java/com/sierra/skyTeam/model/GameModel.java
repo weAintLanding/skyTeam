@@ -147,7 +147,7 @@ public class GameModel {
 
     private void turnChecker(){
         if(pilot.isAxis() && copilot.isAxis() && !axisChanged){
-            airplane.getAxis().changeAxis(pilot,copilot);
+            //airplane.getAxis().changeAxis(pilot,copilot);
             System.out.println("Current axisModel Value: " + airplane.getAxis().getAxisValue());
             axisChanged = true;
         }
