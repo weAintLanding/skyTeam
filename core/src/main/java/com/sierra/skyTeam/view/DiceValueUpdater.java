@@ -20,6 +20,7 @@ public class DiceValueUpdater {
     private final Dice[] pilotDice;
     private final Dice[] copilotDice;
     int selectedIndex = -1;
+    int initialDiceValue;
     private boolean isConfirmationPending = false;
     private boolean lastActionWasIncrease;
     private boolean lastActionWasDecrease;
@@ -70,6 +71,11 @@ public class DiceValueUpdater {
     public void setSelectedDice(Sprite selectedDice){
         this.selectedDice = selectedDice;
         selectedIndex = getSelectedDiceIndex(selectedDice);
+
+        boolean isPilotDice = selectedIndex < diceView.getCurrentPilotDiceSprites().length;
+        int diceArrayIndex = selectedIndex % 4;
+        Dice dice = isPilotDice ? pilotDice[diceArrayIndex] : copilotDice[diceArrayIndex];
+        initialDiceValue = dice.getDiceValue();
     }
 
     public void setSelectedCoffee(CoffeeView selectedCoffee) {
@@ -116,7 +122,7 @@ public class DiceValueUpdater {
             float touchY = coordinates.y;
 
             if (showPlusSprite && diceChangerPlusSprite.getBoundingRectangle().contains(touchX, touchY)) {
-                if(getDiceValueFromSelectedIndex(selectedIndex) == 1){
+                if(initialDiceValue == 1){
                     changeDiceValue(1);
                     lastActionWasIncrease = true;
                     hasIncreasedFrom1 = true;
@@ -144,7 +150,7 @@ public class DiceValueUpdater {
             }
 
             if (showMinusSprite && diceChangerMinusSprite.getBoundingRectangle().contains(touchX, touchY)) {
-                if(getDiceValueFromSelectedIndex(selectedIndex) == 6){
+                if(initialDiceValue == 6){
                     changeDiceValue(-1);
                     lastActionWasIncrease = true;
                     hasDecreasedFrom6 = true;
@@ -178,6 +184,7 @@ public class DiceValueUpdater {
             ((dice.getDiceValue() + changeAmount) >= 1)){
             dice.setDiceValue(dice.getDiceValue() + changeAmount);
             diceView.updateSprites(pilotDice, copilotDice);
+            System.out.println("Sprites updated!");
         }
     }
 
@@ -186,13 +193,8 @@ public class DiceValueUpdater {
             boolean isPilotDice = selectedIndex < diceView.getCurrentPilotDiceSprites().length;
             int diceArrayIndex = selectedIndex % 4;
 
-            if (isPilotDice) {
-                Dice selectedPilotDice = pilotDice[diceArrayIndex];
-                updateDiceValue(selectedPilotDice, changeAmount);
-            } else {
-                Dice selectedCopilotDice = copilotDice[diceArrayIndex];
-                updateDiceValue(selectedCopilotDice, changeAmount);
-            }
+            Dice selectedDice = isPilotDice ? pilotDice[diceArrayIndex] : copilotDice[diceArrayIndex];
+            updateDiceValue(selectedDice, changeAmount);
         }
     }
 
@@ -217,7 +219,14 @@ public class DiceValueUpdater {
 
             if (selectedDice.getBoundingRectangle().contains(touchX, touchY)) {
                 resetSelection();
-                removeCoffee();
+                boolean isPilotDice = selectedIndex < diceView.getCurrentPilotDiceSprites().length;
+                int diceArrayIndex = selectedIndex % 4;
+                Dice dice = isPilotDice ? pilotDice[diceArrayIndex] : copilotDice[diceArrayIndex];
+                if(dice.getDiceValue() != initialDiceValue){
+                    removeCoffee();
+                }else {
+                    System.out.println("Value unchanged. Coffee will be not be used.");
+                }
                 hideOptions();
             }
         }
