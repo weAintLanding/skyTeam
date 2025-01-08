@@ -4,19 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.sierra.skyTeam.model.Dice;
-import com.sierra.skyTeam.model.Field;
 import com.sierra.skyTeam.model.FieldModel;
 
 public class FieldView {
-    private Rectangle bounds;
-    private int fieldSize = 45;
+    private final Rectangle bounds;
     private Sprite switchImg;
-    private FieldModel fieldModel;
+    private final FieldModel fieldModel;
     private boolean switchMoved;
-    private Dice dice;
 
     public FieldView(float x, float y, FieldModel fieldModel){
+        int fieldSize = 45;
         this.bounds = new Rectangle(x, y, fieldSize, fieldSize);
         this.fieldModel = fieldModel;
 
@@ -42,14 +39,6 @@ public class FieldView {
             switchImg.setX(switchImg.getX() + 24);
             switchMoved = false;
         }
-    }
-
-    public Dice getDice() {
-        return dice;
-    }
-
-    public void setDice(Dice dice) {
-        this.dice = dice;
     }
 
     public Rectangle getBounds() {

@@ -1,6 +1,7 @@
 package com.sierra.skyTeam.controller;
 
 import com.sierra.skyTeam.MainGame;
+import com.sierra.skyTeam.model.FieldModel;
 import com.sierra.skyTeam.model.GameModel;
 import com.sierra.skyTeam.model.Players;
 import com.sierra.skyTeam.model.Airplane;
@@ -8,9 +9,6 @@ import com.sierra.skyTeam.view.AxisView;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sierra.skyTeam.view.FieldGenerator;
-import com.sierra.skyTeam.view.FieldView;
-
-import java.util.List;
 
 public class AxisController {
     private final MainGame game;
@@ -21,8 +19,8 @@ public class AxisController {
     private final Players pilot;
     private final Players copilot;
 
-    private final FieldView pilotField;
-    private final FieldView copilotField;
+    private final FieldModel pilotField;
+    private final FieldModel copilotField;
     private boolean pilotFieldSet;
     private boolean copilotFieldSet;
     private boolean axisChanged;
@@ -37,8 +35,8 @@ public class AxisController {
         this.pilot = gameModel.getPilot();
         this.copilot = gameModel.getCoPilot();
 
-        this.pilotField = FieldGenerator.getPilotAxisFieldView();
-        this.copilotField = FieldGenerator.getCopilotAxisFieldView();
+        this.pilotField = FieldGenerator.getPilotAxisFieldView().getFieldModel();
+        this.copilotField = FieldGenerator.getCopilotAxisFieldView().getFieldModel();
 
         this.pilotFieldSet = false;
         this.copilotFieldSet = false;
@@ -50,22 +48,22 @@ public class AxisController {
     }
 
 
-    public void updateAxis(Players pilot, Players copilot, SpriteBatch batch){
+    public void updateAxis(Players pilot, Players copilot){
         airplaneModel.getAxis().changeAxis(pilot,copilot,game);
     }
 
-    public void draw(SpriteBatch batch) {
-        if(pilotField.getFieldModel().isOccupied() && !pilotFieldSet){
+    public void draw() {
+        if(pilotField.isOccupied() && !pilotFieldSet){
             System.out.println("This works.");
-            pilot.setAxis(pilotField.getDice());
+            pilot.setAxis(pilotField.getPlacedDice());
             pilotFieldSet = true;
         }
-        if(copilotField.getFieldModel().isOccupied() && !copilotFieldSet){
-            copilot.setAxis(copilotField.getDice());
+        if(copilotField.isOccupied() && !copilotFieldSet){
+            copilot.setAxis(copilotField.getPlacedDice());
             copilotFieldSet = true;
         }
         if(pilotFieldSet && copilotFieldSet && !axisChanged){
-            this.updateAxis(pilot,copilot,batch);
+            this.updateAxis(pilot,copilot);
             axisChanged = true;
         }
         axisView.setAxisValue(airplaneModel.getAxis().getAxisValue());

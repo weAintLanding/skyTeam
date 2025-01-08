@@ -23,10 +23,9 @@ public class FieldModel {
     }
 
     public boolean canPlaceDice (boolean isPilot) {
-        if (pilotOnly && !isPilot) return true;
-        if (!pilotOnly && isPilot) return true;
-        if (bothPilots) return true;
-        return isOccupied;
+        if (pilotOnly && isPilot) return false;
+        if (!pilotOnly && !isPilot) return false;
+        return !bothPilots;
     }
 
     public boolean isDiceAllowed (int diceValue,boolean isPilot) {
@@ -56,7 +55,7 @@ public class FieldModel {
     }
 
     public boolean placeDice(Dice dice, boolean isPilot, FieldView fieldView) {
-        if (canPlaceDice(isPilot) || !isDiceAllowed(dice.getDiceValue(), isPilot)) {
+        if (canPlaceDice(isPilot)) {
             return false;
         }
         this.placedDice = dice;

@@ -43,6 +43,6 @@ public class GameController {
         for (FieldView field : fieldsView) {
             field.switchRenderer(batch);
         }
-        axisController.draw(batch);
+        axisController.draw();
     }
 }

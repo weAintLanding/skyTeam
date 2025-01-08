@@ -15,14 +15,13 @@ public class DicePosUpdater {
     private State currentState = State.SELECTING;
     private final CoffeeManager coffeeManager;
     private final DiceView diceView;
-    private boolean isPilot;
+    private final boolean isPilot;
     private final Sprite[] diceSprites;
     private final Dice[] diceArray;
     private final List<FieldView> FieldViews;
     private final Viewport viewport;
     private Sprite selectedDice;
     private int lastClickedDiceValue = -1;
-    private Dice lastClickedDice = null;
     private CoffeeView selectedCoffee = null;
     DiceValueUpdater diceValueUpdater;
 
@@ -64,7 +63,6 @@ public class DicePosUpdater {
             if (!diceArray[i].isPlaced() && diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
                 selectedDice = diceSprites[i];
                 lastClickedDiceValue = diceArray[i].getDiceValue();
-                lastClickedDice = diceArray[i];
                 currentState = State.PLACING;
                 selectedDice.setColor(1, 1, 1, 1);
                 break;
@@ -138,11 +136,10 @@ public class DicePosUpdater {
                 } else {
                     if (!fieldModel.isOccupied()) {
                         if(isCoffeeField(field)) {
-                            handleCoffeeFieldPlacement(field);
+                            handleCoffeeFieldPlacement(fieldModel);
                         }
                         System.out.println("Placing dice");
                         if (fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field)){
-                            field.setDice(lastClickedDice);
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
                                     diceArray[i].setPlaced(true); // No need to recheck isPilot
@@ -160,8 +157,7 @@ public class DicePosUpdater {
         }
     }
 
-    private void handleCoffeeFieldPlacement(FieldView field){
-        FieldModel fieldModel = field.getFieldModel();
+    private void handleCoffeeFieldPlacement(FieldModel fieldModel){
         if(!fieldModel.isOccupied()){
             coffeeManager.placeCoffee();
             System.out.println("Dice placed in coffee field");
@@ -176,7 +172,6 @@ public class DicePosUpdater {
         System.out.println("Resetting selection");
         selectedDice = null;
         lastClickedDiceValue = -1;
-        lastClickedDice = null;
         selectedCoffee = null;
         currentState = State.SELECTING;
     }

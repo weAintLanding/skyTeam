@@ -54,10 +54,11 @@ public class FieldGenerator {
     }
 
     private static List<FieldView> generateCopilotRadio() {
-        FieldModel copilotRadioFieldModel = new FieldModel(false, false, false, null);
+        FieldModel copilotRadioFieldModel1 = new FieldModel(false, false, false, null);
+        FieldModel copilotRadioFieldModel2 = new FieldModel(false, false, false, null);
         List<FieldView> copilotRadio = new ArrayList<>();
-        copilotRadio.add(new FieldView(rightColX, 635, copilotRadioFieldModel));
-        copilotRadio.add(new FieldView(rightColX, 565, copilotRadioFieldModel));
+        copilotRadio.add(new FieldView(rightColX, 635, copilotRadioFieldModel1));
+        copilotRadio.add(new FieldView(rightColX, 565, copilotRadioFieldModel2));
         return copilotRadio;
     }
 
@@ -139,8 +140,8 @@ public class FieldGenerator {
         int[] allowedValues3 = {6};
 
         FieldModel brakeFieldModel1 = new FieldModel(true, false, true, allowedValues1);
-        FieldModel brakeFieldModel2 = new FieldModel(true, false, true, allowedValues1);
-        FieldModel brakeFieldModel3 = new FieldModel(true, false, true, allowedValues1);
+        FieldModel brakeFieldModel2 = new FieldModel(true, false, true, allowedValues2);
+        FieldModel brakeFieldModel3 = new FieldModel(true, false, true, allowedValues3);
 
         FieldView brakeField1 = new FieldView(545, 175, brakeFieldModel1);
         FieldView brakeField2 = new FieldView(617, 175, brakeFieldModel2);
@@ -156,11 +157,13 @@ public class FieldGenerator {
     }
 
     private static List<FieldView> generateCoffeeFields(){
-        FieldModel coffeeFieldModel = new FieldModel(false, true, false, null);
+        FieldModel coffeeFieldModel1 = new FieldModel(false, true, false, null);
+        FieldModel coffeeFieldModel2 = new FieldModel(false, true, false, null);
+        FieldModel coffeeFieldModel3 = new FieldModel(false, true, false, null);
         List<FieldView> coffeeFieldViews = new ArrayList<>();
-        coffeeFieldViews.add(new FieldView(545, 58, coffeeFieldModel));
-        coffeeFieldViews.add(new FieldView(617, 58, coffeeFieldModel));
-        coffeeFieldViews.add(new FieldView(689, 58, coffeeFieldModel));
+        coffeeFieldViews.add(new FieldView(545, 58, coffeeFieldModel1));
+        coffeeFieldViews.add(new FieldView(617, 58, coffeeFieldModel2));
+        coffeeFieldViews.add(new FieldView(689, 58, coffeeFieldModel3));
         return coffeeFieldViews;
     }
 
