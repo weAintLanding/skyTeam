@@ -1,7 +1,6 @@
 package com.sierra.skyTeam.controller;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.model.GameModel;
@@ -30,14 +29,15 @@ public class DiceController {
 
         this.diceView = new DiceView();
         this.fieldsView = fieldsView;
-        viewport = new FitViewport(1280, 720);
+        updateView();
+    }
 
+    public void setViewport(Viewport viewport) {
+        this.viewport = viewport;
         this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged, this::onCoffeeInteraction);
 
         pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, diceValueUpdater, true);
         copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false);
-
-        updateView();
     }
 
     public DiceView getDiceView(){

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,8 +17,6 @@ import com.sierra.skyTeam.view.*;
 import com.sierra.skyTeam.controller.DiceController;
 import com.sierra.skyTeam.controller.GameController;
 
-import java.util.List;
-
 public class GameScreen implements Screen {
     MainGame game;
     GameController gameController;
@@ -25,6 +24,7 @@ public class GameScreen implements Screen {
     SpriteBatch batch;
     Texture background;
     Viewport viewport;
+    OrthographicCamera camera;
 
     //MVC components
     Dice[] pilotDice; // Model for Pilot dice
@@ -40,13 +40,16 @@ public class GameScreen implements Screen {
 
         batch = new SpriteBatch();
         background = new Texture("board.png");
-        viewport = new FitViewport(1280, 720);
+
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(1280, 720, camera);
 
         // Initialize Dice Model, View, and Controller
         axis = gameController.getAxisController().getAxisView();
         diceView = gameController.getDiceController().getDiceView();
 
         diceController = gameController.getDiceController();
+        diceController.setViewport(viewport);
         pilotDice = gameController.getPlayerController().getPilotDice();
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
@@ -54,6 +57,10 @@ public class GameScreen implements Screen {
     }
 
     public void show() {
+        camera.position.set(640, 360, 0);
+        camera.update();
+        viewport.apply();
+        batch.setProjectionMatrix(viewport.getCamera().combined);
         diceController.updateView(); // Ensure dice view matches initial model state
     }
 
@@ -65,15 +72,11 @@ public class GameScreen implements Screen {
 
     public void draw() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        viewport.apply();
-        batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
 
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
         gameController.draw(batch);
-
-        //fields.get(4).toggleSwitch(); // Example field toggle
         axis.render(batch);
 
         markerManager.draw(batch);

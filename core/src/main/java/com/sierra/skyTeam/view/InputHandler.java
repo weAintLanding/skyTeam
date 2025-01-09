@@ -6,12 +6,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class InputHandler {
     public static Vector2 scaledInput(Viewport viewport) {
-        float touchX = Gdx.input.getX();
-        float touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
-        float scaleX = viewport.getWorldWidth() / Gdx.graphics.getWidth();
-        float scaleY = viewport.getWorldHeight() / Gdx.graphics.getHeight();
-        touchX *= scaleX;
-        touchY *= scaleY;
-        return new Vector2(touchX, touchY);
+        Vector2 coordinates = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        return new Vector2(coordinates);
     }
 }
