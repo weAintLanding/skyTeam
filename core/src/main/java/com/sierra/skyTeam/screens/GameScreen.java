@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
     DiceController diceController; // Dice Controller
     AxisView axis;
     MarkerManager markerManager;
+    EndTurn endTurn;
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -55,6 +56,7 @@ public class GameScreen implements Screen {
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
         markerManager = new MarkerManager();
+        endTurn = new EndTurn();
     }
 
     public void show() {
@@ -119,6 +121,8 @@ public class GameScreen implements Screen {
                 break;
             }
         }
+
+        isHovered = isHovered || endTurn.isHovered(touchX, touchY);
 
         if (isHovered) {
             Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
