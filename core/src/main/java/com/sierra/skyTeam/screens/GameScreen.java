@@ -32,7 +32,6 @@ public class GameScreen implements Screen {
     DiceView diceView; // Dice View
     DiceController diceController; // Dice Controller
     AxisView axis;
-    MarkerManager markerManager;
     EndTurn endTurn;
 
     public GameScreen(MainGame game) {
@@ -55,7 +54,6 @@ public class GameScreen implements Screen {
         pilotDice = gameController.getPlayerController().getPilotDice();
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
-        markerManager = new MarkerManager();
         endTurn = new EndTurn();
     }
 
@@ -82,7 +80,6 @@ public class GameScreen implements Screen {
         gameController.draw(batch);
         axis.render(batch);
 
-        markerManager.draw(batch);
 
         // Render Dice using DiceController
         diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice

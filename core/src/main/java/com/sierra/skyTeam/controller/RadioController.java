@@ -26,6 +26,10 @@ public class RadioController {
         }
     }
 
+    public ApproachTrackModel getTrackManager() {
+        return trackManager;
+    }
+
     public void handleDicePlacement(){
         for(FieldModel fieldModel : radioFieldModels){
             if(fieldModel.isOccupied() && !fieldModel.isDiceProcessed()){

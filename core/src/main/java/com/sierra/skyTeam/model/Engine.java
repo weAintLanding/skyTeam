@@ -35,7 +35,7 @@ public class Engine {
         this.redBrakeMarker = redBrakeMarker;
     }
 
-    public void movePlane(int pilotValue, int copilotValue) {
+    public void movePlane(int pilotValue, int copilotValue, ApproachTrackModel trackManager) {
         int engineSum = pilotValue + copilotValue;
 
         if (engineSum <= blueAeroMarker) {
@@ -46,6 +46,7 @@ public class Engine {
                 System.exit(0);
             }
             System.out.println("Plane moves 1 position.");
+            trackManager.updateTrackBy1();
             airplane.setApproachPosition(airplane.getApproachPosition() + 1);
         } else {
             if(airplane.getGame().checkCrashMove(2)){
@@ -53,6 +54,7 @@ public class Engine {
                 System.exit(0);
             }
             System.out.println("Plane moves 2 positions.");
+            trackManager.updateTrackBy2();
             airplane.setApproachPosition(airplane.getApproachPosition() + 2);
         }
     }

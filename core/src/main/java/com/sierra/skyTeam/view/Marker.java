@@ -63,7 +63,7 @@ public class Marker {
 
     public void brakesUpdate(int value){
         switch(value){
-            case 3:
+            case 2:
                 markerSprite.setPosition(x + 33, y - 20);
                 markerSprite.setRotation(rotation + 18);
                 break;
@@ -77,7 +77,6 @@ public class Marker {
                 break;
             default:
                 System.out.println("Invalid Value");
-                //no 5 or 6, idk. the board is stupid.
         }
     }
 

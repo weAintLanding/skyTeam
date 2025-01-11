@@ -17,6 +17,12 @@ public class GameController {
     private final DiceController diceController;
     private final RadioController radioController;
     private final AltitudeController altitudeController;
+    private final EngineController engineController;
+    private final LandingGearController landingGearController;
+    private final FlapsController flapsController;
+    private final BrakesController brakesController;
+
+    MarkerManager markerManager;
 
     private final List<FieldView> fieldsView;
 
@@ -31,6 +37,12 @@ public class GameController {
         this.diceController = new DiceController(gameModel, this, fieldsView);
         this.radioController = new RadioController();
         this.altitudeController = new AltitudeController();
+        this.engineController = new EngineController(gameModel, markerManager, radioController.getTrackManager());
+        this.markerManager = new MarkerManager(gameModel.getAirplane().getEngine());
+        this.landingGearController = new LandingGearController(gameModel, markerManager);
+        this.flapsController = new FlapsController(gameModel, markerManager);
+        this.brakesController = new BrakesController(gameModel, markerManager);
+
         altitudeController.setRound(1);
     }
 
@@ -49,7 +61,14 @@ public class GameController {
             field.switchRenderer(batch);
         }
         axisController.draw();
+        engineController.draw();
         radioController.draw(batch);
         altitudeController.draw(batch);
+
+        markerManager.draw(batch);
+
+        landingGearController.draw();
+        flapsController.draw();
+        brakesController.draw();
     }
 }

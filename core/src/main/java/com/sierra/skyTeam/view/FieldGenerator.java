@@ -12,17 +12,22 @@ public class FieldGenerator {
     private static List<FieldView> copilotRadio;
     private static FieldView pilotAxisFieldView;
     private static FieldView copilotAxisFieldView;
+    private static FieldView pilotThrottleFieldView;
+    private static FieldView copilotThrottleFieldView;
+    private static List<FieldView> landingGearFieldViews;
+    private static List<FieldView> flapsFieldViews;
+    private static List<FieldView> brakeFieldViews;
 
     public static List<FieldView> generateFields() {
         List<FieldView> FieldViews = new ArrayList<>();
         FieldView rerollTokenFieldView = generateRerollTokenField();
-        List<FieldView> landingGear = generateLandingGear();
-        List<FieldView> flaps = generateFlaps();
+        landingGearFieldViews = generateLandingGear();
+        flapsFieldViews = generateFlaps();
         pilotAxisFieldView = generatePilotAxisField();
         copilotAxisFieldView = generateCopilotAxisField();
-        FieldView pilotThrottleFieldView = generatePilotThrottleField();
-        FieldView copilotThrottleFieldView = generateCopilotThrottleField();
-        List<FieldView> brakeFieldViews = generateBrakeFields();
+        pilotThrottleFieldView = generatePilotThrottleField();
+        copilotThrottleFieldView = generateCopilotThrottleField();
+        brakeFieldViews = generateBrakeFields();
 
         pilotRadio = generatePilotRadio();
         copilotRadio = generateCopilotRadio();
@@ -31,8 +36,8 @@ public class FieldGenerator {
         FieldViews.add(pilotRadio);
         FieldViews.add(rerollTokenFieldView);
         FieldViews.addAll(copilotRadio);
-        FieldViews.addAll(landingGear);
-        FieldViews.addAll(flaps);
+        FieldViews.addAll(landingGearFieldViews);
+        FieldViews.addAll(flapsFieldViews);
         FieldViews.add(pilotAxisFieldView);
         FieldViews.add(copilotAxisFieldView);
         FieldViews.add(pilotThrottleFieldView);
@@ -132,6 +137,14 @@ public class FieldGenerator {
         return copilotAxisFieldView;
     }
 
+    public static FieldView getPilotThrottleFieldView() {
+        return pilotThrottleFieldView;
+    }
+
+    public static FieldView getCopilotThrottleFieldView(){
+        return copilotThrottleFieldView;
+    }
+
     private static List<FieldView> generateBrakeFields() {
         List<FieldView> brakeFieldViews = new ArrayList<>();
         int[] allowedValues1 = {2};
@@ -171,6 +184,18 @@ public class FieldGenerator {
             System.out.println("It dont work");
         }
         return coffeeFieldViews;
+    }
+
+    public static List<FieldView> getLandingGearFieldViews() {
+        return landingGearFieldViews;
+    }
+
+    public static List<FieldView> getFlapsFieldViews() {
+        return flapsFieldViews;
+    }
+
+    public static List<FieldView> getBrakeFieldViews() {
+        return brakeFieldViews;
     }
 
     public static FieldView getPilotRadio() {

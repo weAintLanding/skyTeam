@@ -132,7 +132,7 @@ public class tempGame {
             if(endOfGame){
                 airplane.getEngine().landPlane(pilot.getThrottle(), copilot.getThrottle());
             }else {
-                airplane.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle());
+                //airplane.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle());
                 throttleChanged = true;
             }
         }
@@ -190,7 +190,7 @@ public class tempGame {
             boolean dicePlaced = false;
             if(fieldInput == 4) return false;
             if(fieldInput > 0 && fieldInput <= 4){
-                dicePlaced = airplane.getBrakes().setBrakeFieldsTrue(fieldInput-1, diceValue);
+                //dicePlaced = airplane.getBrakes().setBrakeFieldsTrue(fieldInput-1, diceValue);
             } else {
                 System.out.println("Enter Valid fieldView.");
             }
@@ -215,7 +215,7 @@ public class tempGame {
                 boolean dicePlaced = false;
                 if(fieldInput == 4) return false;
                 if(fieldInput>0 && fieldInput<4){
-                    dicePlaced = airplane.getLandingGear().setLandingGearFieldsTrue(fieldInput - 1, diceValue);
+                    //dicePlaced = airplane.getLandingGear().setLandingGearFieldsTrue(fieldInput - 1, diceValue);
                 } else {
                     System.out.println("Enter Valid fieldView.");
                 }
@@ -237,7 +237,7 @@ public class tempGame {
                 boolean dicePlaced = false;
                 if(fieldInput == 5) return false;
                 if(fieldInput>0 && fieldInput<5){
-                    dicePlaced = airplane.getFlaps().setFlapFieldsTrue(fieldInput - 1, diceValue);
+                    //dicePlaced = airplane.getFlaps().setFlapFieldsTrue(fieldInput - 1, diceValue);
                 } else {
                     System.out.println("Enter Valid fieldView.");
                 }

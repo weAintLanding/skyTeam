@@ -11,6 +11,7 @@ public class ApproachTrackModel {
     Track approachTrack;
     ApproachAirplaneView[] airplaneViews;
     boolean [] isAirplaneRemoved;
+    int currentPosition;
     float[] yPositions = {94, 165, 236, 307, 378, 449, 521};
     float approachX = 78;
     float approachCurrentY;
@@ -24,15 +25,27 @@ public class ApproachTrackModel {
             isAirplaneRemoved[i] = false;
         }
         setAirplanes();
+        currentPosition = 0;
         approachTrack = new Track(new Sprite(new Texture("approachTracker.png")), airplaneViews);
-        approachCurrentY = yPositions[0];
+        approachCurrentY = yPositions[currentPosition];
         approachTrack.setTrackerPosition(approachX, approachCurrentY);
     }
     //will be used for throttle logic
-    public void updateTrack(Track approachTrack, int newIndex){
-        if(newIndex >= 0 && newIndex < yPositions.length) {
-            approachCurrentY = yPositions[newIndex];
-            approachTrack.updateIndex(newIndex, approachX, approachCurrentY);
+    public void updateTrackBy1(){
+        int newPosition = currentPosition + 1;
+        if(newPosition >= 0 && newPosition < yPositions.length) {
+            approachCurrentY = yPositions[newPosition];
+            approachTrack.updateIndex(newPosition, approachX, approachCurrentY);
+        } else {
+            System.out.println("Invalid index");
+        }
+    }
+
+    public void updateTrackBy2(){
+        int newPosition = currentPosition + 2;
+        if(newPosition >= 0 && newPosition < yPositions.length) {
+            approachCurrentY = yPositions[newPosition];
+            approachTrack.updateIndex(newPosition, approachX, approachCurrentY);
         } else {
             System.out.println("Invalid index");
         }

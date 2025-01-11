@@ -8,6 +8,9 @@ import com.sierra.skyTeam.model.Airplane;
 import com.sierra.skyTeam.view.AxisView;
 
 import com.sierra.skyTeam.view.FieldGenerator;
+import com.sierra.skyTeam.view.FieldView;
+
+import java.util.List;
 
 public class AxisController {
     private final MainGame game;
@@ -23,7 +26,6 @@ public class AxisController {
     private boolean pilotFieldSet;
     private boolean copilotFieldSet;
     private boolean axisChanged;
-
 
     public AxisController(GameModel gameModel, MainGame game) {
         this.game = game;
