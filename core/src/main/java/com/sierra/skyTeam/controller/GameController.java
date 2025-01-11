@@ -31,7 +31,7 @@ public class GameController {
         this.diceController = new DiceController(gameModel, this, fieldsView);
         this.radioController = new RadioController();
         this.altitudeController = new AltitudeController();
-        altitudeController.setRound(2);
+        altitudeController.setRound(1);
     }
 
     public AxisController getAxisController() {

@@ -39,7 +39,8 @@ public class GameScreen implements Screen {
         this.gameController = new GameController(game);
 
         batch = new SpriteBatch();
-        background = new Texture("board.png");
+        background = new Texture("board2.png");
+        //made two boards to make sure everyone is okay with the layout1
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(1280, 720, camera);
