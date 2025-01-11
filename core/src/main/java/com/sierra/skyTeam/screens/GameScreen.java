@@ -124,6 +124,8 @@ public class GameScreen implements Screen {
 
         isHovered = isHovered || endTurn.isHovered(touchX, touchY);
 
+        endTurn.handleClicked(touchX, touchY);
+
         if (isHovered) {
             Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
         } else {
