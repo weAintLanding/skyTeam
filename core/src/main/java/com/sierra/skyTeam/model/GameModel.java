@@ -1,8 +1,12 @@
 package com.sierra.skyTeam.model;
 
+import com.sierra.skyTeam.MainGame;
+import com.sierra.skyTeam.screens.CrashScreen;
+
 import java.util.Scanner;
 
 public class GameModel {
+    MainGame game;
     private final Airplane airplane;
     private final Pilot pilot;
     private final CoPilot copilot;
@@ -17,7 +21,8 @@ public class GameModel {
     boolean endOfGame;
     //private final int maxRounds = 5;
 
-    public GameModel() {
+    public GameModel(MainGame game) {
+        this.game = game;
         this.airplane = new Airplane();
         this.pilot = new Pilot(this);
         this.copilot = new CoPilot(this);
@@ -69,6 +74,23 @@ public class GameModel {
         return rerollsAvailable;
     }
 
+    public int countDicePlaced(Dice[] diceList){
+        int dicePlaced = 0;
+        for (Dice dice : diceList) {
+            if(dice.isPlaced()) {
+                dicePlaced++;
+            }
+        }
+        return dicePlaced;
+    }
+
+    public int pilotDicePlaced() {
+        return countDicePlaced(pilot.getDiceList());
+    }
+    public int copilotDicePlaced() {
+        return countDicePlaced(copilot.getDiceList());
+    }
+
     public boolean checkCrash() {
         if (airplane.getAltitude() < 0) {
             System.out.println("Crash: Altitude below safe levels");
@@ -100,6 +122,13 @@ public class GameModel {
             return true;
         }
         return false;
+    }
+
+    public void checkRoundConditions(){
+        if(!pilot.isAxis() || !copilot.isAxis() || !pilot.isThrottle() || !copilot.isThrottle()){
+            System.out.println("Round conditions not met. Plane Crashed.");
+            game.setScreen(new CrashScreen(game));
+        }
     }
 
     public boolean checkWin() {
@@ -138,13 +167,6 @@ public class GameModel {
         return true;
     }
 
-    public void checkRoundConditions(){
-        if(!pilot.isAxis() || !copilot.isAxis() || !pilot.isThrottle() || !copilot.isThrottle()){
-            System.out.println("Round conditions not met. Plane Crashed.");
-            System.exit(0);
-        }
-    }
-
     private void turnChecker(){
         if(pilot.isAxis() && copilot.isAxis() && !axisChanged){
             //airplane.getAxis().changeAxis(pilot,copilot);
@@ -153,7 +175,7 @@ public class GameModel {
         }
         if (pilot.isThrottle() && copilot.isThrottle() && !throttleChanged) {
             if(endOfGame){
-                airplane.getEngine().landPlane(pilot.getThrottle(), copilot.getThrottle());
+                //airplane.getEngine().landPlane(pilot.getThrottle(), copilot.getThrottle());
             }else {
                 //airplane.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle());
                 throttleChanged = true;
@@ -274,33 +296,33 @@ public class GameModel {
         return false;
     }
 
-    private void roundReset(GameModel gameModel){
+    public void roundReset(){
         //Reset Radio Slots
 
-        gameModel.getPilot().clearRadio();
-        gameModel.getCoPilot().clearRadio();
+        this.getPilot().clearRadio();
+        this.getCoPilot().clearRadio();
 
         //Remove Dice from Landing Gear, Flaps, Brakes
 
-        gameModel.getAirplane().getLandingGear().clearField();
-        gameModel.getAirplane().getFlaps().clearField();
-        gameModel.getAirplane().getBrakes().clearField();
+        this.getAirplane().getLandingGear().clearField();
+        this.getAirplane().getFlaps().clearField();
+        this.getAirplane().getBrakes().clearField();
 
         axisChanged = false;
         throttleChanged = false;
 
         //Engine axisModel
 
-        gameModel.getPilot().clearSlots();
-        gameModel.getCoPilot().clearSlots();
+        this.getPilot().clearSlots();
+        this.getCoPilot().clearSlots();
 
         //Altitude and Reroll
 
-        gameModel.getAltitudeTrack().descend();
+        this.getAltitudeTrack().descend();
         pilot.rollDice();
         copilot.rollDice();
 
-        if(gameModel.checkEndOfGame()) endOfGame = true;
+        if(this.checkEndOfGame()) endOfGame = true;
     }
 
 }

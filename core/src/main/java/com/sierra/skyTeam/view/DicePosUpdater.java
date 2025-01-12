@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.sierra.skyTeam.controller.RoundController;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.model.FieldModel;
 
@@ -23,8 +24,10 @@ public class DicePosUpdater {
     private int lastClickedDiceValue = -1;
     private CoffeeView selectedCoffee = null;
     DiceValueUpdater diceValueUpdater;
+    RoundController roundController;
+    private boolean dicePlayed;
 
-    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews,Viewport viewport, CoffeeManager coffeeManager, DiceValueUpdater diceValueUpdater, boolean isPilot) {
+    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews, Viewport viewport, CoffeeManager coffeeManager, DiceValueUpdater diceValueUpdater, boolean isPilot, RoundController roundController) {
         this.diceArray = diceArray;
         this.isPilot = isPilot;
         this.diceSprites = isPilot ? diceView.getCurrentPilotDiceSprites() : diceView.getCurrentCopilotDiceSprites();
@@ -32,6 +35,8 @@ public class DicePosUpdater {
         this.viewport = viewport;
         this.coffeeManager = coffeeManager;
         this.diceValueUpdater = diceValueUpdater;
+        this.roundController = roundController;
+        this.dicePlayed = isPilot ? roundController.getPilotDicePlaced() : roundController.getCopilotDicePlaced();
     }
 
     public void update() {
@@ -50,6 +55,15 @@ public class DicePosUpdater {
     }
 
     private void handleInput(float touchX, float touchY) {
+        if(isPilot){
+            this.dicePlayed = roundController.getPilotDicePlaced();
+        } else {
+            this.dicePlayed = roundController.getCopilotDicePlaced();
+        }
+        if (dicePlayed || (roundController.getTurn() && !isPilot) || (!(roundController.getTurn()) && isPilot)) {
+            return;
+        }
+
         for (CoffeeView coffee : coffeeManager.getActiveCoffees()) {
             if (coffee.getSprite().getBoundingRectangle().contains(touchX, touchY)) {
                 selectedCoffee = coffee;
@@ -78,15 +92,25 @@ public class DicePosUpdater {
     }
 
     private void handleHoverEffect(float touchX, float touchY) {
+        if(isPilot){
+            this.dicePlayed = roundController.getPilotDicePlaced();
+        } else {
+            this.dicePlayed = roundController.getCopilotDicePlaced();
+        }
+
         for (int i = 0; i < diceSprites.length; i++) {
             if (diceArray[i].isPlaced()) {
                 continue;
             }
 
-            if (diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
-                diceSprites[i].setColor(1, 1, 1, 1);
+            if((roundController.getTurn() && isPilot) || (!(roundController.getTurn()) && !isPilot)) {
+                if (diceSprites[i].getBoundingRectangle().contains(touchX, touchY)  && !dicePlayed) {
+                    diceSprites[i].setColor(1, 1, 1, 1);
+                } else {
+                    diceSprites[i].setColor(1, 1, 1, 0.7F);
+                }
             } else {
-                diceSprites[i].setColor(1, 1, 1, 0.7F);
+                diceSprites[i].setColor(1, 1, 1, 0F);
             }
         }
     }
@@ -114,6 +138,7 @@ public class DicePosUpdater {
                         if (!fieldModel.isOccupied()) {
                             fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field);
                             System.out.println("Placing dice");
+                            this.disableDice();
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
                                     diceArray[i].setPlaced(true); // No need to recheck isPilot
@@ -137,6 +162,7 @@ public class DicePosUpdater {
                             handleCoffeeFieldPlacement(fieldModel);
                         }
                         System.out.println("Placing dice");
+                        this.disableDice();
                         if (fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field)){
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
@@ -172,5 +198,13 @@ public class DicePosUpdater {
         lastClickedDiceValue = -1;
         selectedCoffee = null;
         currentState = State.SELECTING;
+    }
+
+    public void disableDice() {
+        if(isPilot){
+            roundController.setPilotDicePlacedTrue();
+        } else {
+            roundController.setCopilotDicePlacedTrue();
+        }
     }
 }

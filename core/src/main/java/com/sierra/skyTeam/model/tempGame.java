@@ -12,7 +12,7 @@ public class tempGame {
     boolean endOfGame = false;
 
     public void startGame(){
-        gameModel = new GameModel();
+        //gameModel = new GameModel();
         printOptions(gameModel);
     }
 
@@ -67,11 +67,11 @@ public class tempGame {
                         validInput = false;
                         break;
                     case 3:
-                        dice = diceAndCoffee(gameModel, input);
-                        if(currentPlayer.setRadio(dice)){
-                            turns++;
-                            break;
-                        }
+                        //dice = diceAndCoffee(gameModel, input);
+                        //if(currentPlayer.setRadio(dice)){
+                        //    turns++;
+                        //    break;
+                        //}
                         validInput = false;
                         break;
                     case 4:
@@ -130,7 +130,7 @@ public class tempGame {
         }
         if (pilot.isThrottle() && copilot.isThrottle() && !throttleChanged) {
             if(endOfGame){
-                airplane.getEngine().landPlane(pilot.getThrottle(), copilot.getThrottle());
+                //airplane.getEngine().landPlane(pilot.getThrottle(), copilot.getThrottle());
             }else {
                 //airplane.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle());
                 throttleChanged = true;

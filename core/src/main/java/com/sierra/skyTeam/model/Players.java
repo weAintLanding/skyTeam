@@ -145,7 +145,7 @@ public class Players {
             if(!field.isOccupied()){
                 field.placeDice(diceValue);
                 removeDice(diceValue);
-                gameModel.getApproachTrack().removeAirplaneWithRadio(this.getAirplane().getApproachPosition(), diceValue);
+                //gameModel.getApproachTrack().removeAirplaneWithRadio(this.getAirplane().getApproachPosition(), diceValue);
                 return true;
             }
         }

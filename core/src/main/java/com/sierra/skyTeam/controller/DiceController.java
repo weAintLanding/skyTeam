@@ -21,11 +21,14 @@ public class DiceController {
     DicePosUpdater copilotHandler;
     CoffeeManager coffeeManager;
     DiceValueUpdater diceValueUpdater;
+    RoundController roundController;
 
     public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView) {
         this.pilotDice = gameModel.getPilot().getDiceList();
         this.copilotDice = gameModel.getCoPilot().getDiceList();
         this.coffeeManager = new CoffeeManager(FieldGenerator.getCoffeeFieldViews());
+
+        this.roundController = gameController.getRoundController();
 
         this.diceView = new DiceView();
         this.fieldsView = fieldsView;
@@ -36,8 +39,8 @@ public class DiceController {
         this.viewport = viewport;
         this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged, this::onCoffeeInteraction);
 
-        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, diceValueUpdater, true);
-        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false);
+        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, diceValueUpdater, true, roundController);
+        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false, roundController);
     }
 
     public DiceView getDiceView(){
