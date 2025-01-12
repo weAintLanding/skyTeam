@@ -26,7 +26,7 @@ public class EndTurn {
         return false;
     }
 
-    public void handleClicked(float touchX, float touchY) {
+    public void handleClick(float touchX, float touchY) {
         for(int i = 0; i < bounds.size(); i++){
             Rectangle rect = bounds.get(i);
             if(rect.contains(touchX, touchY) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {

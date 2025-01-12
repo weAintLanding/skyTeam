@@ -51,7 +51,9 @@ public class DiceController {
     public void rerollDice(boolean isPilot) {
         Dice[] diceToReroll = isPilot ? pilotDice : copilotDice;
         for (Dice dice : diceToReroll) {
-            dice.reroll();
+            if(!dice.isPlaced()) {
+                dice.reroll();
+            }
         }
         updateView();
     }

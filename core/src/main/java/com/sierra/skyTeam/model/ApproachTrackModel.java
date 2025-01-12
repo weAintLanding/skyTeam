@@ -11,7 +11,7 @@ public class ApproachTrackModel {
     Track approachTrack;
     ApproachAirplaneView[] airplaneViews;
     boolean [] isAirplaneRemoved;
-    int currentPosition;
+    private int currentPosition;
     float[] yPositions = {94, 165, 236, 307, 378, 449, 521};
     float approachX = 78;
     float approachCurrentY;
@@ -35,6 +35,7 @@ public class ApproachTrackModel {
         int newPosition = currentPosition + 1;
         if(newPosition >= 0 && newPosition < yPositions.length) {
             approachCurrentY = yPositions[newPosition];
+            currentPosition = newPosition;
             approachTrack.updateIndex(newPosition, approachX, approachCurrentY);
         } else {
             System.out.println("Invalid index");
@@ -45,7 +46,8 @@ public class ApproachTrackModel {
         int newPosition = currentPosition + 2;
         if(newPosition >= 0 && newPosition < yPositions.length) {
             approachCurrentY = yPositions[newPosition];
-            approachTrack.updateIndex(newPosition, approachX, approachCurrentY);
+            currentPosition = newPosition;
+            approachTrack.updateIndex(currentPosition, approachX, approachCurrentY);
         } else {
             System.out.println("Invalid index");
         }
@@ -69,7 +71,14 @@ public class ApproachTrackModel {
     //this method should not be run in draw/render or else all sprites at the position will be removed
     //or we add a boolean to remove only one
     public void removeAirplane(int trackPos) {
-        float yPos = yPositions[trackPos - 1] + offset;
+        int adjustedPos = trackPos - 1;
+
+        if (adjustedPos >= yPositions.length) {
+            adjustedPos = yPositions.length - 1;
+            System.out.println("Value exceeds track length. Adjusted to removing airplanes on the last field");
+        }
+
+        float yPos = yPositions[adjustedPos] + offset;
         for(int i = 0; i < airplaneViews.length; i++){
             if(airplaneViews[i].getY() == yPos && !isAirplaneRemoved[i]){
                 isAirplaneRemoved[i] = true;
@@ -77,6 +86,10 @@ public class ApproachTrackModel {
                 return;
             }
         }
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
     }
 
     public void draw(SpriteBatch batch) {

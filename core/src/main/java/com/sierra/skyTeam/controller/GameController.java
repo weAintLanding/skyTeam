@@ -21,6 +21,7 @@ public class GameController {
     private final LandingGearController landingGearController;
     private final FlapsController flapsController;
     private final BrakesController brakesController;
+    private final RerollController rerollController;
 
     MarkerManager markerManager;
 
@@ -31,12 +32,12 @@ public class GameController {
 
         this.gameModel = new GameModel();
         this.fieldsView = FieldGenerator.generateFields();
-
         this.axisController = new AxisController(gameModel, game);
         this.playerController = new PlayerController(gameModel);
         this.diceController = new DiceController(gameModel, this, fieldsView);
         this.radioController = new RadioController();
         this.altitudeController = new AltitudeController();
+        this.rerollController = new RerollController(diceController, altitudeController.getRerollToken());
         this.engineController = new EngineController(gameModel, markerManager, radioController.getTrackManager());
         this.markerManager = new MarkerManager(gameModel.getAirplane().getEngine());
         this.landingGearController = new LandingGearController(gameModel, markerManager);
@@ -54,6 +55,9 @@ public class GameController {
     }
     public DiceController getDiceController() {
         return diceController;
+    }
+    public RerollController getRerollController() {
+        return rerollController;
     }
 
     public void draw(SpriteBatch batch) {

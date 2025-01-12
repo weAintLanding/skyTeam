@@ -41,4 +41,8 @@ public class AltitudeController {
         trackManager.draw(batch);
         rerollToken.draw(batch);
     }
+
+    public RerollTokenModel getRerollToken() {
+        return rerollToken;
+    }
 }

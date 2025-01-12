@@ -39,6 +39,7 @@ public class Dice {
     public boolean isPlaced() {
         return isPlaced;
     }
+
     public void setPlaced(boolean placed) {
         isPlaced = placed;
     }

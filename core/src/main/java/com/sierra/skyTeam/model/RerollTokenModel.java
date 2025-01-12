@@ -9,9 +9,11 @@ import java.util.List;
 public class RerollTokenModel {
 
     private final List<RerollToken> rerollTokens;
+    private int index;
 
     public RerollTokenModel() {
         rerollTokens = new ArrayList<>();
+        index = -1;
     }
 
     public void generateToken(float x, float y) {
@@ -37,18 +39,27 @@ public class RerollTokenModel {
 
                 rerollToken.setPosition(x, y);
                 rerollToken.setOnBoard(true);
+                index = i;
                 break;
             }
         }
     }
 
-    public void markTokenAsUsed(int number) {
-        int index = number - 1;
+    public void markTokenAsUsed() {
         if(index >= 0 && index < rerollTokens.size()) {
-            RerollToken rerollToken = new RerollToken();
+            RerollToken rerollToken = rerollTokens.get(index);
             rerollToken.setUsed();
             rerollToken.setOnBoard(false);
+            index = -1;
         }
+    }
+
+    public List<Boolean> tokensOnBoard() {
+        List<Boolean> tokensOnBoard = new ArrayList<>();
+        for (RerollToken rerollToken : rerollTokens) {
+            tokensOnBoard.add(rerollToken.isOnBoard());
+        }
+        return tokensOnBoard;
     }
 
     public void draw(SpriteBatch batch) {

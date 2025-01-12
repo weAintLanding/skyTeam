@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
 import com.badlogic.gdx.math.Vector2;
+import com.sierra.skyTeam.controller.RerollController;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.view.*;
 import com.sierra.skyTeam.controller.DiceController;
@@ -31,6 +32,7 @@ public class GameScreen implements Screen {
     Dice[] coPilotDice; // Model for CoPilot dice
     DiceView diceView; // Dice View
     DiceController diceController; // Dice Controller
+    RerollController rerollController;
     AxisView axis;
     EndTurn endTurn;
 
@@ -54,6 +56,8 @@ public class GameScreen implements Screen {
         pilotDice = gameController.getPlayerController().getPilotDice();
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
+        rerollController = gameController.getRerollController();
+
         endTurn = new EndTurn();
     }
 
@@ -69,6 +73,7 @@ public class GameScreen implements Screen {
         draw();
         gameController.getDiceController().updateHandler();
         handleHover();
+        handleInput();
     }
 
     public void draw() {
@@ -120,14 +125,22 @@ public class GameScreen implements Screen {
         }
 
         isHovered = isHovered || endTurn.isHovered(touchX, touchY);
-
-        endTurn.handleClicked(touchX, touchY);
+        isHovered = isHovered || rerollController.isHovered(touchX, touchY);
 
         if (isHovered) {
             Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
         } else {
             Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
         }
+    }
+
+    public void handleInput() {
+        Vector2 coordinates = InputHandler.scaledInput(viewport);
+        float touchX = coordinates.x;
+        float touchY = coordinates.y;
+
+        endTurn.handleClick(touchX, touchY);
+        rerollController.handleClick(touchX, touchY);
     }
 
     public void resize(int width, int height) {

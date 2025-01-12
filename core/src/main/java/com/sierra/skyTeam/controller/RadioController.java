@@ -33,7 +33,7 @@ public class RadioController {
     public void handleDicePlacement(){
         for(FieldModel fieldModel : radioFieldModels){
             if(fieldModel.isOccupied() && !fieldModel.isDiceProcessed()){
-                int placedDiceValue = fieldModel.getPlacedDice().getDiceValue();
+                int placedDiceValue = fieldModel.getPlacedDice().getDiceValue() + trackManager.getCurrentPosition();
                 trackManager.removeAirplane(placedDiceValue);
                 fieldModel.setDiceProcessed(true);
             }
