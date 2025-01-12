@@ -7,8 +7,8 @@ import com.sierra.skyTeam.view.FieldGenerator;
 import com.sierra.skyTeam.view.MarkerManager;
 
 public class EngineController {
+    MainGame game;
     GameModel gameModel;
-    MarkerManager markerManager;
 
     private final Airplane airplaneModel;
 
@@ -23,9 +23,9 @@ public class EngineController {
 
     private final ApproachTrackModel trackManager;
 
-    public EngineController(GameModel gameModel, MarkerManager markerManager, ApproachTrackModel trackManager) {
+    public EngineController(GameModel gameModel, ApproachTrackModel trackManager, MainGame game) {
+        this.game = game;
         this.gameModel = gameModel;
-        this.markerManager = markerManager;
         this.trackManager = trackManager;
 
         this.airplaneModel = gameModel.getAirplane();
@@ -42,7 +42,7 @@ public class EngineController {
     }
 
     public void updateEngine(Players pilot, Players copilot){
-        airplaneModel.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle(), trackManager);
+        airplaneModel.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle(), trackManager, game);
     }
 
     public void draw() {
@@ -62,7 +62,11 @@ public class EngineController {
 
     }
 
-
+    public void roundReset() {
+        this.pilotFieldSet = false;
+        this.copilotFieldSet = false;
+        this.engineChanged = false;
+    }
 
 
 }

@@ -12,6 +12,9 @@ public class GameController {
 
     private final GameModel gameModel;
 
+    private final EndTurn endTurn;
+    private final EndRound endRound;
+
     private final AxisController axisController;
     private final PlayerController playerController;
     private final DiceController diceController;
@@ -22,6 +25,7 @@ public class GameController {
     private final FlapsController flapsController;
     private final BrakesController brakesController;
     private final RerollController rerollController;
+    private final RoundController roundController;
 
     MarkerManager markerManager;
 
@@ -30,19 +34,23 @@ public class GameController {
     public GameController(MainGame game){
         this.game = game;
 
-        this.gameModel = new GameModel();
+        this.gameModel = new GameModel(game);
         this.fieldsView = FieldGenerator.generateFields();
         this.axisController = new AxisController(gameModel, game);
         this.playerController = new PlayerController(gameModel);
+        this.roundController = new RoundController(this, gameModel, fieldsView);
         this.diceController = new DiceController(gameModel, this, fieldsView);
-        this.radioController = new RadioController();
+        this.radioController = new RadioController(gameModel);
         this.altitudeController = new AltitudeController();
         this.rerollController = new RerollController(diceController, altitudeController.getRerollToken());
-        this.engineController = new EngineController(gameModel, markerManager, radioController.getTrackManager());
+        this.engineController = new EngineController(gameModel, radioController.getTrackManager(), game);
         this.markerManager = new MarkerManager(gameModel.getAirplane().getEngine());
         this.landingGearController = new LandingGearController(gameModel, markerManager);
         this.flapsController = new FlapsController(gameModel, markerManager);
         this.brakesController = new BrakesController(gameModel, markerManager);
+
+        this.endTurn = new EndTurn(roundController);
+        this.endRound = new EndRound(roundController);
 
         altitudeController.setRound(1);
     }
@@ -58,6 +66,25 @@ public class GameController {
     }
     public RerollController getRerollController() {
         return rerollController;
+    }
+    public RoundController getRoundController() {
+        return roundController;
+    }
+    public AltitudeController getAltitudeController() {
+        return altitudeController;
+    }
+    public EngineController getEngineController() {
+        return engineController;
+    }
+    public RadioController getRadioController() {
+        return radioController;
+    }
+
+    public EndTurn getEndTurn() {
+        return endTurn;
+    }
+    public EndRound getEndRound() {
+        return endRound;
     }
 
     public void draw(SpriteBatch batch) {

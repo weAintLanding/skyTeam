@@ -70,18 +70,19 @@ public class ApproachTrackModel {
     }
     //this method should not be run in draw/render or else all sprites at the position will be removed
     //or we add a boolean to remove only one
-    public void removeAirplane(int trackPos) {
+    public void removeAirplane(int trackPos, GameModel gameModel) {
         int adjustedPos = trackPos - 1;
 
         if (adjustedPos >= yPositions.length) {
-            adjustedPos = yPositions.length - 1;
-            System.out.println("Value exceeds track length. Adjusted to removing airplanes on the last field");
+            System.out.println("Value exceeds track length. Not removing Planes.");
+            return;
         }
 
         float yPos = yPositions[adjustedPos] + offset;
         for(int i = 0; i < airplaneViews.length; i++){
             if(airplaneViews[i].getY() == yPos && !isAirplaneRemoved[i]){
                 isAirplaneRemoved[i] = true;
+                gameModel.getApproachTrack().removeAirplane(trackPos-1);
                 System.out.println("airplane removed");
                 return;
             }

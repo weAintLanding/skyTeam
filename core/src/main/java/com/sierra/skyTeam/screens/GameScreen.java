@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sierra.skyTeam.MainGame;
 import com.badlogic.gdx.math.Vector2;
 import com.sierra.skyTeam.controller.RerollController;
+import com.sierra.skyTeam.controller.RoundController;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.view.*;
 import com.sierra.skyTeam.controller.DiceController;
@@ -33,8 +34,10 @@ public class GameScreen implements Screen {
     DiceView diceView; // Dice View
     DiceController diceController; // Dice Controller
     RerollController rerollController;
+    RoundController roundController;
     AxisView axis;
     EndTurn endTurn;
+    EndRound endRound;
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -53,12 +56,16 @@ public class GameScreen implements Screen {
 
         diceController = gameController.getDiceController();
         diceController.setViewport(viewport);
+
+        //Dice can be removed - not used
         pilotDice = gameController.getPlayerController().getPilotDice();
         coPilotDice = gameController.getPlayerController().getCoPilotDice();
 
         rerollController = gameController.getRerollController();
+        roundController = gameController.getRoundController();
 
-        endTurn = new EndTurn();
+        endTurn = gameController.getEndTurn();
+        endRound = gameController.getEndRound();
     }
 
     public void show() {
@@ -125,6 +132,7 @@ public class GameScreen implements Screen {
         }
 
         isHovered = isHovered || endTurn.isHovered(touchX, touchY);
+        isHovered = isHovered || endRound.isHovered(touchX, touchY);
         isHovered = isHovered || rerollController.isHovered(touchX, touchY);
 
         if (isHovered) {
@@ -140,6 +148,7 @@ public class GameScreen implements Screen {
         float touchY = coordinates.y;
 
         endTurn.handleClick(touchX, touchY);
+        endRound.handleClick(touchX, touchY);
         rerollController.handleClick(touchX, touchY);
     }
 

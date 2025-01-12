@@ -70,4 +70,10 @@ public class AxisController {
         axisView.setAxisValue(airplaneModel.getAxis().getAxisValue());
     }
 
+    public void roundReset() {
+        this.copilotFieldSet = false;
+        this.pilotFieldSet = false;
+        this.axisChanged = false;
+    }
+
 }
