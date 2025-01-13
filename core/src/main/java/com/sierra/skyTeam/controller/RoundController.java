@@ -1,7 +1,10 @@
 package com.sierra.skyTeam.controller;
 
+import com.sierra.skyTeam.MainGame;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.model.GameModel;
+import com.sierra.skyTeam.screens.CrashScreen;
+import com.sierra.skyTeam.screens.LandedScreen;
 import com.sierra.skyTeam.view.EndRound;
 import com.sierra.skyTeam.view.EndTurn;
 import com.sierra.skyTeam.view.FieldView;
@@ -12,6 +15,7 @@ public class RoundController {
     private final GameController gameController;
     private final GameModel gameModel;
     private final List<FieldView> fieldViews;
+    private final MainGame mainGame;
 
     private int numberOfPilotDicePlayed;
     private int numberOfCopilotDicePlayed;
@@ -21,10 +25,11 @@ public class RoundController {
     private boolean pilotDicePlaced;
     private boolean copilotDicePlaced;
 
-    public RoundController(GameController gameController, GameModel gameModel, List<FieldView> fieldViews) {
+    public RoundController(GameController gameController, GameModel gameModel, List<FieldView> fieldViews, MainGame game) {
         this.gameController = gameController;
         this.gameModel = gameModel;
         this.fieldViews = fieldViews;
+        this.mainGame = game;
 
         this.numberOfPilotDicePlayed = 0;
         this.numberOfCopilotDicePlayed = 0;
@@ -96,6 +101,17 @@ public class RoundController {
             System.out.println("Round has been ended.");
             gameModel.checkRoundConditions();
             gameModel.roundReset();
+            if(gameController.getAltitudeController().getRound() == 7){
+                if(gameModel.getAirplane().getApproachPosition() == 6) {
+                    System.out.println("Last Round");
+                    if (gameModel.checkWin()) {
+                        mainGame.setScreen(new LandedScreen(mainGame));
+                    }
+                } else {
+                    System.out.println("Landed before reaching airport.");
+                    mainGame.setScreen(new CrashScreen(mainGame));
+                }
+            }
             this.roundViewReset();
             this.numberOfPilotDicePlayed = 0;
             this.numberOfCopilotDicePlayed = 0;

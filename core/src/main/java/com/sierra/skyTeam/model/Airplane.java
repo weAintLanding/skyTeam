@@ -61,6 +61,6 @@ public class Airplane{
     }
 
     public int getAltitude(){
-        return altitude;
+        return gameModel.getAltitudeTrack().getCurrentAltitude();
     }
 }

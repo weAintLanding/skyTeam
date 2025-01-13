@@ -134,9 +134,9 @@ public class GameModel {
     public boolean checkWin() {
         if (airplane.getApproachPosition() == 6 // Final position in the approach track
                 && airplane.getAltitude() == 0 // Altitude must be 0
+                && airplane.getEngine().isPlaneLanded()
                 && airplane.getAxis().getAxisValue() == 0 // axisModel must be balanced
                 && airplane.getLandingGear().getActivatedLandingGearFields() == 3 // Landing gear engaged
-                && airplane.getBrakes().getActivatedBrakeFields() == 3 // Brakes engaged
                 && airplane.getFlaps().getActivatedFlapFields() == 4) { // Flaps fully engaged
             return true;
         }

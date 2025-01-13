@@ -8,9 +8,11 @@ public class Engine {
     private int blueAeroMarker = 4;
     private int orangeAeroMarker = 8;
     private int redBrakeMarker = 1;
+    private boolean planeLanded;
 
     public Engine(Airplane airplane) {
         this.airplane = airplane;
+        this.planeLanded = false;
     }
 
     //Getter and Setter for AeroMarkers
@@ -66,9 +68,14 @@ public class Engine {
         int engineSum = pilotValue + copilotValue;
         if (engineSum <= redBrakeMarker) {
             System.out.println("Plane stopped successfully.");
+            planeLanded = true;
         }else{
             System.out.println("Plane not able to break. Plane Crashed.");
             game.setScreen(new CrashScreen(game));
         }
+    }
+
+    public boolean isPlaneLanded() {
+        return planeLanded;
     }
 }

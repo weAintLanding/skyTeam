@@ -54,6 +54,10 @@ public class AltitudeController {
         rerollToken.draw(batch);
     }
 
+    public int getRound() {
+        return this.round;
+    }
+
     public RerollTokenModel getRerollToken() {
         return rerollToken;
     }

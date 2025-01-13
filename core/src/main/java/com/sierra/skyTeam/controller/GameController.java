@@ -38,12 +38,12 @@ public class GameController {
         this.fieldsView = FieldGenerator.generateFields();
         this.axisController = new AxisController(gameModel, game);
         this.playerController = new PlayerController(gameModel);
-        this.roundController = new RoundController(this, gameModel, fieldsView);
+        this.roundController = new RoundController(this, gameModel, fieldsView, game);
         this.diceController = new DiceController(gameModel, this, fieldsView);
         this.radioController = new RadioController(gameModel);
         this.altitudeController = new AltitudeController();
         this.rerollController = new RerollController(diceController, altitudeController.getRerollToken(), roundController);
-        this.engineController = new EngineController(gameModel, radioController.getTrackManager(), game);
+        this.engineController = new EngineController(gameModel, radioController.getTrackManager(), game, this);
         this.markerManager = new MarkerManager(gameModel.getAirplane().getEngine());
         this.landingGearController = new LandingGearController(gameModel, markerManager);
         this.flapsController = new FlapsController(gameModel, markerManager);

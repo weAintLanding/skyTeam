@@ -22,28 +22,27 @@ public class Flaps {
         return activatedFlapFields;
     }
 
-    public boolean setFlapFieldsTrue(int index, int diceValue) {
+    public void setFlapFieldsTrue(int index, int diceValue) {
         /*if (index < 0 || index >= flapFields.length) {
             System.out.println("Invalid flap field index.");
             return false;
         }*/
         if (index > 0 && !flapFields[index - 1].isSwitchedOn()) {
             System.out.println("Previous flap field not activated yet.");
-            return false;
+            return;
         }
         if (!isValidDiceValue(index, diceValue)) {
             System.out.println("Invalid dice value. Expected: " + flapConstraints[index][0] + " or " + flapConstraints[index][1]);
-            return false;
+            return;
         }
         if (flapFields[index].placeDice(diceValue) && !flapFields[index].isSwitchedOn()) {
             activatedFlapFields++;
             flapFields[index].setSwitchOn();
             System.out.println("Flap field " + (index + 1) + " activated successfully.");
             airplane.getEngine().setOrangeAeroMarker(airplane.getEngine().getOrangeAeroMarker() + 1);
-            return true;
+            return;
         }
         System.out.println("Flap field already activated.");
-        return false;
     }
 
     private boolean isValidDiceValue(int index, int diceValue) {

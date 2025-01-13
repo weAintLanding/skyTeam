@@ -9,6 +9,7 @@ import com.sierra.skyTeam.view.MarkerManager;
 public class EngineController {
     MainGame game;
     GameModel gameModel;
+    GameController gameController;
 
     private final Airplane airplaneModel;
 
@@ -23,10 +24,11 @@ public class EngineController {
 
     private final ApproachTrackModel trackManager;
 
-    public EngineController(GameModel gameModel, ApproachTrackModel trackManager, MainGame game) {
+    public EngineController(GameModel gameModel, ApproachTrackModel trackManager, MainGame game, GameController gameController) {
         this.game = game;
         this.gameModel = gameModel;
         this.trackManager = trackManager;
+        this.gameController = gameController;
 
         this.airplaneModel = gameModel.getAirplane();
 
@@ -42,7 +44,11 @@ public class EngineController {
     }
 
     public void updateEngine(Players pilot, Players copilot){
-        airplaneModel.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle(), trackManager, game);
+        if(gameController.getAltitudeController().getRound() == 7){
+            airplaneModel.getEngine().landPlane(pilot.getThrottle(), copilot.getThrottle(), game);
+        } else {
+            airplaneModel.getEngine().movePlane(pilot.getThrottle(), copilot.getThrottle(), trackManager, game);
+        }
     }
 
     public void draw() {
