@@ -92,7 +92,6 @@ public class GameScreen implements Screen {
         gameController.draw(batch);
         axis.render(batch);
 
-
         // Render Dice using DiceController
         diceController.render(batch, 86, 200); // Pass starting coordinates for Pilot dice
         batch.end();

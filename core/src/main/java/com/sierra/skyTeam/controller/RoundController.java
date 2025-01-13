@@ -7,6 +7,7 @@ import com.sierra.skyTeam.screens.CrashScreen;
 import com.sierra.skyTeam.screens.LandedScreen;
 import com.sierra.skyTeam.view.EndRound;
 import com.sierra.skyTeam.view.EndTurn;
+import com.sierra.skyTeam.view.EndTurnView;
 import com.sierra.skyTeam.view.FieldView;
 
 import java.util.List;
@@ -38,34 +39,43 @@ public class RoundController {
 
         this.pilotDicePlaced = false;
         this.copilotDicePlaced = false;
+        this.
 
         gameModel.getAltitudeTrack().descend();
     }
 
-    public void pilotEndTurn() {
+    public void pilotEndTurn(EndTurnView currentButton, EndTurnView otherButton) {
         if (numberOfPilotDicePlayed < gameModel.pilotDicePlaced()) {
             numberOfPilotDicePlayed++;
             System.out.println("Pilot Ended Turn");
             if(gameModel.copilotDicePlaced() != 4){
                 this.switchTurn();
                 this.copilotDicePlaced = false;
+
+                currentButton.setVisibility(isPilotTurn);
+                otherButton.setVisibility(!isPilotTurn);
             } else {
                 this.pilotDicePlaced = false;
+                currentButton.setVisibility(isPilotTurn);
             }
         } else {
             System.out.println("Place a dice to end turn.");
         }
     }
 
-    public void copilotEndTurn() {
+    public void copilotEndTurn(EndTurnView currentButton, EndTurnView otherButton) {
         if (numberOfCopilotDicePlayed < gameModel.copilotDicePlaced()) {
             numberOfCopilotDicePlayed++;
             System.out.println("Co-Pilot Ended Turn");
             if(gameModel.pilotDicePlaced() != 4){
                 this.switchTurn();
                 this.pilotDicePlaced = false;
+
+                currentButton.setVisibility(!isPilotTurn);
+                otherButton.setVisibility(isPilotTurn);
             } else {
                 this.copilotDicePlaced = false;
+                currentButton.setVisibility(!isPilotTurn);
             }
         } else {
             System.out.println("Place a dice to end turn.");

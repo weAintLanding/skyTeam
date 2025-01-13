@@ -50,6 +50,9 @@ public class GameController {
         this.brakesController = new BrakesController(gameModel, markerManager);
 
         this.endTurn = new EndTurn(roundController);
+        endTurn.getEndTurnButtons().get(0).setVisibility(true);
+        endTurn.getEndTurnButtons().get(1).setVisibility(false);
+
         this.endRound = new EndRound(roundController);
 
         altitudeController.setRound(1);
@@ -101,5 +104,7 @@ public class GameController {
         landingGearController.draw();
         flapsController.draw();
         brakesController.draw();
+
+        endTurn.draw(batch);
     }
 }
