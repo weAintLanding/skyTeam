@@ -157,24 +157,30 @@ public class DicePosUpdater {
                         break;
                     }
                 } else {
-                    if (!fieldModel.isOccupied()) {
-                        if(isCoffeeField(field)) {
-                            handleCoffeeFieldPlacement(fieldModel);
-                        }
-                        System.out.println("Placing dice");
-                        this.disableDice();
-                        if (fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field)){
-                            for (int i = 0; i < diceSprites.length; i++) {
-                                if (diceSprites[i] == selectedDice) {
-                                    diceArray[i].setPlaced(true); // No need to recheck isPilot
-                                    break;
+                    if (fieldModel.isDiceAllowed(lastClickedDiceValue, isPilot)) {
+                        if (!fieldModel.isOccupied()) {
+                            if (isCoffeeField(field)) {
+                                handleCoffeeFieldPlacement(fieldModel);
+                            }
+                            System.out.println("Placing dice");
+                            this.disableDice();
+                            if (fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field)) {
+                                for (int i = 0; i < diceSprites.length; i++) {
+                                    if (diceSprites[i] == selectedDice) {
+                                        diceArray[i].setPlaced(true); // No need to recheck isPilot
+                                        break;
+                                    }
                                 }
                             }
+                            resetSelection();
+                            break;
+                        } else {
+                            System.out.println("Field is occupied");
                         }
-                        resetSelection();
-                        break;
                     } else {
                         System.out.println("Dice value not allowed in this field.");
+                        resetSelection();
+                        break;
                     }
                 }
             }

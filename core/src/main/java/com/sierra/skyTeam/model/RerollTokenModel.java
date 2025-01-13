@@ -50,7 +50,7 @@ public class RerollTokenModel {
             RerollToken rerollToken = rerollTokens.get(index);
             rerollToken.setUsed();
             rerollToken.setOnBoard(false);
-            index = -1;
+            index -= 1;
         }
     }
 

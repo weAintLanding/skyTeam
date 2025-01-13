@@ -42,7 +42,7 @@ public class GameController {
         this.diceController = new DiceController(gameModel, this, fieldsView);
         this.radioController = new RadioController(gameModel);
         this.altitudeController = new AltitudeController();
-        this.rerollController = new RerollController(diceController, altitudeController.getRerollToken());
+        this.rerollController = new RerollController(diceController, altitudeController.getRerollToken(), roundController);
         this.engineController = new EngineController(gameModel, radioController.getTrackManager(), game);
         this.markerManager = new MarkerManager(gameModel.getAirplane().getEngine());
         this.landingGearController = new LandingGearController(gameModel, markerManager);

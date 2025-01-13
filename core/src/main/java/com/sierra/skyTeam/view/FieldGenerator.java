@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FieldGenerator {
+    private static final int[] allAllowedValues = {1,2,3,4,5,6};
     static int leftColX = 418; static int rightColX = 815;
     private static List<FieldView> coffeeFieldViews;
     private static FieldView pilotRadio;
@@ -53,13 +54,13 @@ public class FieldGenerator {
     }
 
     private static FieldView generatePilotRadio() {
-        FieldModel pilotRadioFieldModel = new FieldModel(true, false, false, null);
+        FieldModel pilotRadioFieldModel = new FieldModel(true, false, false, allAllowedValues);
         return new FieldView(leftColX, 565, pilotRadioFieldModel);
     }
 
     private static List<FieldView> generateCopilotRadio() {
-        FieldModel copilotRadioFieldModel1 = new FieldModel(false, false, false, null);
-        FieldModel copilotRadioFieldModel2 = new FieldModel(false, false, false, null);
+        FieldModel copilotRadioFieldModel1 = new FieldModel(false, false, false, allAllowedValues);
+        FieldModel copilotRadioFieldModel2 = new FieldModel(false, false, false, allAllowedValues);
         List<FieldView> copilotRadio = new ArrayList<>();
         copilotRadio.add(new FieldView(rightColX, 635, copilotRadioFieldModel1));
         copilotRadio.add(new FieldView(rightColX, 565, copilotRadioFieldModel2));
@@ -110,22 +111,22 @@ public class FieldGenerator {
     }
 
     private static FieldView generatePilotAxisField() {
-        FieldModel pilotAxisFieldModel = new FieldModel(true, false, false, null);
+        FieldModel pilotAxisFieldModel = new FieldModel(true, false, false, allAllowedValues);
         return new FieldView(493, 555, pilotAxisFieldModel);
     }
 
     private static FieldView generateCopilotAxisField() {
-        FieldModel copilotAxisFieldModel = new FieldModel(false, false, false, null);
+        FieldModel copilotAxisFieldModel = new FieldModel(false, false, false, allAllowedValues);
         return new FieldView(740, 555, copilotAxisFieldModel);
     }
 
     private static FieldView generatePilotThrottleField() {
-        FieldModel pilotThrottleFieldModel = new FieldModel(true, false, false, null);
+        FieldModel pilotThrottleFieldModel = new FieldModel(true, false, false, allAllowedValues);
         return new FieldView(543,315, pilotThrottleFieldModel);
     }
 
     private static FieldView generateCopilotThrottleField() {
-        FieldModel copilotThrottleFieldModel = new FieldModel(false, false, false, null);
+        FieldModel copilotThrottleFieldModel = new FieldModel(false, false, false, allAllowedValues);
         return new FieldView(690,315, copilotThrottleFieldModel);
     }
 
@@ -169,9 +170,9 @@ public class FieldGenerator {
     }
 
     private static List<FieldView> generateCoffeeFields(){
-        FieldModel coffeeFieldModel1 = new FieldModel(false, true, false, null);
-        FieldModel coffeeFieldModel2 = new FieldModel(false, true, false, null);
-        FieldModel coffeeFieldModel3 = new FieldModel(false, true, false, null);
+        FieldModel coffeeFieldModel1 = new FieldModel(false, true, false, allAllowedValues);
+        FieldModel coffeeFieldModel2 = new FieldModel(false, true, false, allAllowedValues);
+        FieldModel coffeeFieldModel3 = new FieldModel(false, true, false, allAllowedValues);
         List<FieldView> coffeeFieldViews = new ArrayList<>();
         coffeeFieldViews.add(new FieldView(545, 58, coffeeFieldModel1));
         coffeeFieldViews.add(new FieldView(617, 58, coffeeFieldModel2));
