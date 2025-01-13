@@ -64,8 +64,8 @@ public class DicePosUpdater {
             return;
         }
 
-        for (CoffeeView coffee : coffeeManager.getActiveCoffees()) {
-            if (coffee.getSprite().getBoundingRectangle().contains(touchX, touchY)) {
+        for (CoffeeView coffee : coffeeManager.getCoffees()) {
+            if (coffee.getSprite().getBoundingRectangle().contains(touchX, touchY)  && coffee.isAvailable()) {
                 selectedCoffee = coffee;
                 System.out.println("Coffee clicked");
             }
