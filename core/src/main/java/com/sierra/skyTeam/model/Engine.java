@@ -51,11 +51,17 @@ public class Engine {
                 game.setScreen(new CrashScreen(game));
             }
             System.out.println("Plane moves 1 position.");
+            if((airplane.getApproachPosition() + 1) > 6){
+                game.setScreen(new CrashScreen(game));
+            }
             trackManager.updateTrackBy1();
             airplane.setApproachPosition(airplane.getApproachPosition() + 1);
         } else {
             if(airplane.getGame().checkCrashMove(2)){
                 System.out.println("Plane crashed. ");
+                game.setScreen(new CrashScreen(game));
+            }
+            if((airplane.getApproachPosition() + 2) > 6){
                 game.setScreen(new CrashScreen(game));
             }
             System.out.println("Plane moves 2 positions.");
