@@ -1,7 +1,10 @@
 package com.sierra.skyTeam.controller;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sierra.skyTeam.MainGame;
 import com.sierra.skyTeam.model.Dice;
+import com.sierra.skyTeam.model.EndRound;
+import com.sierra.skyTeam.model.EndTurn;
 import com.sierra.skyTeam.model.GameModel;
 import com.sierra.skyTeam.screens.CrashScreen;
 import com.sierra.skyTeam.screens.LandedScreen;
@@ -24,6 +27,11 @@ public class RoundController {
     private boolean pilotDicePlaced;
     private boolean copilotDicePlaced;
 
+    private final EndTurn endTurn;
+    private final EndTurnView endTurnPilot;
+    private final EndTurnView endTurnCopilot;
+    private final EndRound endRound;
+
     public RoundController(GameController gameController, GameModel gameModel, List<FieldView> fieldViews, MainGame game) {
         this.gameController = gameController;
         this.gameModel = gameModel;
@@ -37,12 +45,18 @@ public class RoundController {
 
         this.pilotDicePlaced = false;
         this.copilotDicePlaced = false;
-        this.
 
-        gameModel.getAltitudeTrack().descend();
+        this.endTurn = new EndTurn(this);
+
+        endTurnPilot = endTurn.getEndTurnButtons().get(0);
+        endTurnCopilot = endTurn.getEndTurnButtons().get(1);
+
+        this.endRound = new EndRound(this);
+
+        this.gameModel.getAltitudeTrack().descend();
     }
 
-    public void pilotEndTurn(EndTurnView currentButton, EndTurnView otherButton) {
+    public void pilotEndTurn() {
         if (numberOfPilotDicePlayed < gameModel.pilotDicePlaced()) {
             numberOfPilotDicePlayed++;
             System.out.println("Pilot Ended Turn");
@@ -50,18 +64,19 @@ public class RoundController {
                 this.switchTurn();
                 this.copilotDicePlaced = false;
 
-                currentButton.setVisibility(isPilotTurn);
-                otherButton.setVisibility(!isPilotTurn);
+                endTurnPilot.setVisibility(isPilotTurn);
             } else {
                 this.pilotDicePlaced = false;
-                currentButton.setVisibility(isPilotTurn);
+
+                endTurnPilot.setVisibility(!isPilotTurn);
+                endRound.getEndRoundView().setVisibility(true);
             }
         } else {
             System.out.println("Place a dice to end turn.");
         }
     }
 
-    public void copilotEndTurn(EndTurnView currentButton, EndTurnView otherButton) {
+    public void copilotEndTurn() {
         if (numberOfCopilotDicePlayed < gameModel.copilotDicePlaced()) {
             numberOfCopilotDicePlayed++;
             System.out.println("Co-Pilot Ended Turn");
@@ -69,11 +84,12 @@ public class RoundController {
                 this.switchTurn();
                 this.pilotDicePlaced = false;
 
-                currentButton.setVisibility(!isPilotTurn);
-                otherButton.setVisibility(isPilotTurn);
+                endTurnCopilot.setVisibility(!isPilotTurn);
             } else {
                 this.copilotDicePlaced = false;
-                currentButton.setVisibility(!isPilotTurn);
+
+                endTurnCopilot.setVisibility(isPilotTurn);
+                endRound.getEndRoundView().setVisibility(true);
             }
         } else {
             System.out.println("Place a dice to end turn.");
@@ -98,9 +114,11 @@ public class RoundController {
 
     public void setPilotDicePlacedTrue() {
         pilotDicePlaced = true;
+        endTurnPilot.setVisibility(true);
     }
     public void setCopilotDicePlacedTrue() {
         copilotDicePlaced = true;
+        endTurnCopilot.setVisibility(true);
     }
 
 
@@ -146,5 +164,19 @@ public class RoundController {
         gameController.getAxisController().roundReset();
         gameController.getEngineController().roundReset();
         gameController.getRadioController().roundReset();
+
+        endRound.getEndRoundView().setVisibility(false);
+    }
+
+    public EndTurn getEndTurn() {
+        return endTurn;
+    }
+    public EndRound getEndRound() {
+        return endRound;
+    }
+
+    public void draw(SpriteBatch batch) {
+        endTurn.draw(batch);
+        endRound.draw(batch);
     }
 }

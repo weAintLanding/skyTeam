@@ -13,7 +13,7 @@ public class EndTurnView {
         this.endTurn = new Sprite(new Texture("endTurn.png"));
         endTurn.setPosition(x, y);
         endTurn.setScale(0.38F);
-        this.isVisible = true;
+        this.isVisible = false;
     }
 
     public void setVisibility(boolean isVisible) {

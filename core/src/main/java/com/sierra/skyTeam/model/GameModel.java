@@ -167,7 +167,7 @@ public class GameModel {
         return true;
     }
 
-    private void turnChecker(){
+    public void turnChecker(){
         if(pilot.isAxis() && copilot.isAxis() && !axisChanged){
             //airplane.getAxis().changeAxis(pilot,copilot);
             System.out.println("Current axisModel Value: " + airplane.getAxis().getAxisValue());
@@ -186,13 +186,13 @@ public class GameModel {
         }
     }
 
-    private Dice diceAndCoffee(GameModel gameModel, Scanner input) {
+    public Dice diceAndCoffee(Scanner input) {
         while(true) {
             System.out.print("Enter dice to play: ");
             int diceValue = input.nextInt();
-            if (gameModel.getCurrentPlayer().isDiceThere(diceValue)) {
+            if (this.getCurrentPlayer().isDiceThere(diceValue)) {
                 while(true) {
-                    Dice dice = gameModel.getCurrentPlayer().getDice(diceValue);
+                    Dice dice = this.getCurrentPlayer().getDice(diceValue);
                     int availableCoffee = airplane.getConcentration().getCoffeeAvailable();
                     if (availableCoffee > 0) {
                         System.out.println("You have " + availableCoffee + " coffee token" + (availableCoffee == 1 ? "" : "s") + " available");
@@ -224,7 +224,7 @@ public class GameModel {
         }
     }
 
-    private boolean brakes(Scanner input, Dice dice){
+    public boolean brakes(Scanner input, Dice dice){
         int diceValue = dice.getDiceValue();
         airplane.getBrakes().displayBrakeFields();
         System.out.println("Go back to Component Selection");
@@ -247,9 +247,9 @@ public class GameModel {
         }
     }
 
-    private boolean gearAndFlaps(GameModel gameModel, Scanner input, Dice dice) {
+    public boolean gearAndFlaps(Scanner input, Dice dice) {
         int diceValue = dice.getDiceValue();
-        Players currentPlayer = gameModel.getCurrentPlayer();
+        Players currentPlayer = this.getCurrentPlayer();
         if(currentPlayer==pilot){
             airplane.getLandingGear().displayFlapFields();
             System.out.println("4. Go back to Component Selection");

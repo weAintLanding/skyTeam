@@ -66,8 +66,8 @@ public class GameScreen implements Screen {
         rerollController = gameController.getRerollController();
         roundController = gameController.getRoundController();
 
-        endTurn = gameController.getEndTurn();
-        endRound = gameController.getEndRound();
+        endTurn = gameController.getRoundController().getEndTurn();
+        endRound = gameController.getRoundController().getEndRound();
     }
 
     public void show() {
@@ -108,7 +108,7 @@ public class GameScreen implements Screen {
 
         // Check Pilot Dice for Hover
         for (Sprite sprite : diceView.getCurrentPilotDiceSprites()) {
-            if (sprite.getBoundingRectangle().contains(touchX, touchY)) {
+            if (sprite.getBoundingRectangle().contains(touchX, touchY) && !roundController.getPilotDicePlaced()) {
                 isHovered = true;
                 break;
             }
@@ -126,7 +126,7 @@ public class GameScreen implements Screen {
 
         // Check CoPilot Dice for Hover
         for (Sprite sprite : diceView.getCurrentCopilotDiceSprites()) {
-            if (sprite.getBoundingRectangle().contains(touchX, touchY)) {
+            if (sprite.getBoundingRectangle().contains(touchX, touchY) && !roundController.getCopilotDicePlaced()) {
                 isHovered = true;
                 break;
             }

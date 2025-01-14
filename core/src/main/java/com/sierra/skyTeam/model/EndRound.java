@@ -12,7 +12,7 @@ public class EndRound {
     public EndRound(RoundController roundController) {
         this.roundController = roundController;
         endRound = new EndRoundView();
-        endRound.setVisibility(true);
+        endRound.setVisibility(false);
     }
     //endRound rectangle bounds are 900, 30, 150, 50;
 
@@ -24,6 +24,10 @@ public class EndRound {
         if(endRound.getBoundingRectangle().contains(touchX, touchY) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && endRound.isVisible()) {
             roundController.endRound();
         }
+    }
+
+    public EndRoundView getEndRoundView() {
+        return endRound;
     }
 
     public void draw(SpriteBatch batch) {

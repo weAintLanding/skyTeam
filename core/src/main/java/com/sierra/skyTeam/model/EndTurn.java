@@ -35,14 +35,11 @@ public class EndTurn {
         for(int i = 0; i < endTurnButtons.size(); i++){
             EndTurnView endTurnView = endTurnButtons.get(i);
             if(endTurnView.getBoundingRectangle().contains(touchX, touchY) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && endTurnView.isVisible()) {
-                int otherIndex = (i == 0) ? 1 : 0;
-                EndTurnView otherButton = endTurnButtons.get(otherIndex);
-
                 if(roundController.getTurn()) {
-                    roundController.pilotEndTurn(endTurnView, otherButton);
+                    roundController.pilotEndTurn();
 
                 } else {
-                    roundController.copilotEndTurn(endTurnView, otherButton);
+                    roundController.copilotEndTurn();
                 }
             }
         }

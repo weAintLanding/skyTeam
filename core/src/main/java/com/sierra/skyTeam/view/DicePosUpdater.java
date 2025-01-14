@@ -103,7 +103,7 @@ public class DicePosUpdater {
                 continue;
             }
 
-            if((roundController.getTurn() && isPilot) || (!(roundController.getTurn()) && !isPilot)) {
+            if((roundController.getTurn() && isPilot && (!roundController.getPilotDicePlaced())) || (!(roundController.getTurn()) && !isPilot && (!roundController.getCopilotDicePlaced())) ) {
                 if (diceSprites[i].getBoundingRectangle().contains(touchX, touchY)  && !dicePlayed) {
                     diceSprites[i].setColor(1, 1, 1, 1);
                 } else {
