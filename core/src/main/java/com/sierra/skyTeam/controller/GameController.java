@@ -106,5 +106,6 @@ public class GameController {
         brakesController.draw();
 
         endTurn.draw(batch);
+        endRound.draw(batch);
     }
 }

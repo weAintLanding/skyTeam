@@ -15,6 +15,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.sierra.skyTeam.controller.RerollController;
 import com.sierra.skyTeam.controller.RoundController;
 import com.sierra.skyTeam.model.Dice;
+import com.sierra.skyTeam.model.EndRound;
+import com.sierra.skyTeam.model.EndTurn;
 import com.sierra.skyTeam.view.*;
 import com.sierra.skyTeam.controller.DiceController;
 import com.sierra.skyTeam.controller.GameController;
@@ -44,7 +46,7 @@ public class GameScreen implements Screen {
         this.gameController = new GameController(game);
 
         batch = new SpriteBatch();
-        background = new Texture("board2.png");
+        background = new Texture("board.png");
         //made two boards to make sure everyone is okay with the layout1
 
         camera = new OrthographicCamera();

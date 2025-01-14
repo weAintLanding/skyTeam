@@ -5,8 +5,6 @@ import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.model.GameModel;
 import com.sierra.skyTeam.screens.CrashScreen;
 import com.sierra.skyTeam.screens.LandedScreen;
-import com.sierra.skyTeam.view.EndRound;
-import com.sierra.skyTeam.view.EndTurn;
 import com.sierra.skyTeam.view.EndTurnView;
 import com.sierra.skyTeam.view.FieldView;
 
