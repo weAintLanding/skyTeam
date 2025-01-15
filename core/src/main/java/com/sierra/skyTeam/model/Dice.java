@@ -9,11 +9,13 @@ public class Dice {
     private final Random random;
     private boolean isPlaced;
     private Sprite diceSprite;
+    private boolean selectedForReroll;
 
     public Dice() {
         this.random = new Random();
         this.diceValue = random.nextInt(6) + 1;
         this.isPlaced = false;
+        this.selectedForReroll = false;
     }
 
     public int getDiceValue() {
@@ -42,5 +44,13 @@ public class Dice {
 
     public void setPlaced(boolean placed) {
         isPlaced = placed;
+    }
+
+    public boolean isSelectedForReroll() {
+        return selectedForReroll;
+    }
+
+    public void setSelectedForReroll(boolean selectedForReroll) {
+        this.selectedForReroll = selectedForReroll;
     }
 }

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.sierra.skyTeam.controller.GameController;
+import com.sierra.skyTeam.controller.RerollController;
 import com.sierra.skyTeam.controller.RoundController;
 import com.sierra.skyTeam.model.Dice;
 import com.sierra.skyTeam.model.FieldModel;
@@ -26,8 +28,9 @@ public class DicePosUpdater {
     DiceValueUpdater diceValueUpdater;
     RoundController roundController;
     private boolean dicePlayed;
+    RerollController rerollController;
 
-    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews, Viewport viewport, CoffeeManager coffeeManager, DiceValueUpdater diceValueUpdater, boolean isPilot, RoundController roundController) {
+    public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews, Viewport viewport, CoffeeManager coffeeManager, DiceValueUpdater diceValueUpdater, boolean isPilot, RoundController roundController, GameController gameController) {
         this.diceArray = diceArray;
         this.isPilot = isPilot;
         this.diceSprites = isPilot ? diceView.getCurrentPilotDiceSprites() : diceView.getCurrentCopilotDiceSprites();
@@ -37,6 +40,7 @@ public class DicePosUpdater {
         this.diceValueUpdater = diceValueUpdater;
         this.roundController = roundController;
         this.dicePlayed = isPilot ? roundController.getPilotDicePlaced() : roundController.getCopilotDicePlaced();
+        this.rerollController = gameController.getRerollController();
     }
 
     public void update() {
@@ -45,8 +49,15 @@ public class DicePosUpdater {
         float touchY = coordinates.y;
 
         handleHoverEffect(touchX, touchY);
-        if (selectedDice != null) {
-            handleSelectedEffect();
+        if (!rerollController.getSelectingDice()){
+            if (selectedDice != null) {
+                handleSelectedEffect();
+            }
+        } else {
+            if (selectedDice != null) {
+                selectedDice.setColor(1,1,1,0.7f);
+                selectedDice = null;
+            }
         }
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
@@ -61,6 +72,25 @@ public class DicePosUpdater {
             this.dicePlayed = roundController.getCopilotDicePlaced();
         }
         if (dicePlayed || (roundController.getTurn() && !isPilot) || (!(roundController.getTurn()) && isPilot)) {
+            return;
+        }
+
+        if(rerollController.getSelectingDice()) {
+            for (int i = 0; i < diceSprites.length; i++) {
+                if (diceSprites[i].getBoundingRectangle().contains(touchX, touchY)) {
+                    Dice dice = diceArray[i];
+                    dice.setSelectedForReroll(!dice.isSelectedForReroll());
+                    if (dice.isSelectedForReroll()) {
+                        diceSprites[i].setColor(1,1,1, 1);
+                        System.out.println("1");
+                    } else {
+                        diceSprites[i].setColor(1,1,1, 0.7f);
+                        System.out.println("0.7");
+                    }
+                    System.out.println("Reroll Dice");
+                    break;
+                }
+            }
             return;
         }
 
@@ -98,19 +128,37 @@ public class DicePosUpdater {
             this.dicePlayed = roundController.getCopilotDicePlaced();
         }
 
-        for (int i = 0; i < diceSprites.length; i++) {
-            if (diceArray[i].isPlaced()) {
-                continue;
-            }
-
-            if((roundController.getTurn() && isPilot && (!roundController.getPilotDicePlaced())) || (!(roundController.getTurn()) && !isPilot && (!roundController.getCopilotDicePlaced())) ) {
-                if (diceSprites[i].getBoundingRectangle().contains(touchX, touchY)  && !dicePlayed) {
-                    diceSprites[i].setColor(1, 1, 1, 1);
-                } else {
-                    diceSprites[i].setColor(1, 1, 1, 0.7F);
+        if(rerollController.getSelectingDice()) {
+            for (int i = 0; i < diceSprites.length; i++) {
+                if (diceArray[i].isPlaced()) {
+                    continue;
                 }
-            } else {
-                diceSprites[i].setColor(1, 1, 1, 0F);
+
+                Dice dice = diceArray[i];
+
+                if(((roundController.getTurn() && isPilot && (!roundController.getPilotDicePlaced())) || (!(roundController.getTurn()) && !isPilot && (!roundController.getCopilotDicePlaced())))) {
+                    if (diceSprites[i].getBoundingRectangle().contains(touchX, touchY) && dice.isSelectedForReroll()) {
+                        diceSprites[i].setColor(1, 1, 1, 1);
+                    }
+                } else {
+                    diceSprites[i].setColor(1, 1, 1, 0F);
+                }
+            }
+        } else {
+            for (int i = 0; i < diceSprites.length; i++) {
+                if (diceArray[i].isPlaced()) {
+                    continue;
+                }
+
+                if (((roundController.getTurn() && isPilot && (!roundController.getPilotDicePlaced())) || (!(roundController.getTurn()) && !isPilot && (!roundController.getCopilotDicePlaced()))) && !rerollController.getSelectingDice()) {
+                    if (diceSprites[i].getBoundingRectangle().contains(touchX, touchY) && !dicePlayed) {
+                        diceSprites[i].setColor(1, 1, 1, 1);
+                    } else {
+                        diceSprites[i].setColor(1, 1, 1, 0.7F);
+                    }
+                } else {
+                    diceSprites[i].setColor(1, 1, 1, 0F);
+                }
             }
         }
     }

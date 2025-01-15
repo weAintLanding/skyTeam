@@ -11,6 +11,7 @@ public class RerollMessageView {
     public RerollMessageView() {
         this.rerollMessage = new Sprite(new Texture("rerollAvailable.png"));
         rerollMessage.setScale(0.37F);
+        this.isVisible = false;
     }
 
     public void setPosition(float x, float y) {

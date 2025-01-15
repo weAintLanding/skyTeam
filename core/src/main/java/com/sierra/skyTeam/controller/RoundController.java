@@ -61,8 +61,14 @@ public class RoundController {
             numberOfPilotDicePlayed++;
             System.out.println("Pilot Ended Turn");
             if(gameModel.copilotDicePlaced() != 4){
+                RerollController rerollController = gameController.getRerollController();
                 this.switchTurn();
                 this.copilotDicePlaced = false;
+
+                if (rerollController.getRerollJustPlayed() && !rerollController.getPilotRerolled()) {
+                    rerollController.setRollJustPlayed(false);
+                    rerollController.getRerollMessagePilot().setVisibility(false);
+                }
 
                 endTurnPilot.setVisibility(isPilotTurn);
             } else {
@@ -81,8 +87,14 @@ public class RoundController {
             numberOfCopilotDicePlayed++;
             System.out.println("Co-Pilot Ended Turn");
             if(gameModel.pilotDicePlaced() != 4){
+                RerollController rerollController = gameController.getRerollController();
                 this.switchTurn();
                 this.pilotDicePlaced = false;
+
+                if (rerollController.getRerollJustPlayed() && rerollController.getPilotRerolled()) {
+                    rerollController.setRollJustPlayed(false);
+                    rerollController.getRerollMessageCopilot().setVisibility(false);
+                }
 
                 endTurnCopilot.setVisibility(!isPilotTurn);
             } else {
@@ -127,6 +139,7 @@ public class RoundController {
             System.out.println("Round has been ended.");
             gameModel.checkRoundConditions();
             gameModel.roundReset();
+            this.roundViewReset();
             if(gameController.getAltitudeController().getRound() == 7){
                 if(gameModel.getAirplane().getApproachPosition() == 6) {
                     System.out.println("Last Round");
@@ -138,7 +151,6 @@ public class RoundController {
                     mainGame.setScreen(new CrashScreen(mainGame));
                 }
             }
-            this.roundViewReset();
             this.numberOfPilotDicePlayed = 0;
             this.numberOfCopilotDicePlayed = 0;
         } else {

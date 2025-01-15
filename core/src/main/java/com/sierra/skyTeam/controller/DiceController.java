@@ -22,12 +22,14 @@ public class DiceController {
     CoffeeManager coffeeManager;
     DiceValueUpdater diceValueUpdater;
     RoundController roundController;
+    GameController gameController;
 
     public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView) {
         this.pilotDice = gameModel.getPilot().getDiceList();
         this.copilotDice = gameModel.getCoPilot().getDiceList();
         this.coffeeManager = new CoffeeManager(FieldGenerator.getCoffeeFieldViews());
 
+        this.gameController = gameController;
         this.roundController = gameController.getRoundController();
 
         this.diceView = new DiceView();
@@ -39,8 +41,8 @@ public class DiceController {
         this.viewport = viewport;
         this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged, this::onCoffeeInteraction);
 
-        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, diceValueUpdater, true, roundController);
-        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false, roundController);
+        pilotHandler = new DicePosUpdater(diceView, pilotDice, fieldsView, viewport, coffeeManager, diceValueUpdater, true, roundController, gameController);
+        copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false, roundController, gameController);
     }
 
     public DiceView getDiceView(){
@@ -54,11 +56,26 @@ public class DiceController {
     public void rerollDice(boolean isPilot) {
         Dice[] diceToReroll = isPilot ? pilotDice : copilotDice;
         for (Dice dice : diceToReroll) {
-            if(!dice.isPlaced()) {
+            if (dice.isSelectedForReroll()) {
                 dice.reroll();
+                dice.setSelectedForReroll(false);
             }
+            /*if(!dice.isPlaced()) {
+                dice.reroll();
+            }*/
         }
         updateView();
+    }
+
+    public boolean isRerolling(boolean isPilot) {
+        int numberOfDice = 0;
+        Dice[] diceToReroll = isPilot ? pilotDice : copilotDice;
+        for (Dice dice : diceToReroll) {
+            if (dice.isSelectedForReroll()) {
+                numberOfDice++;
+            }
+        }
+        return numberOfDice!=0;
     }
 
     private void onDiceValueChanged() {

@@ -12,44 +12,114 @@ public class RerollController {
     private final RerollTokenModel rerollTokenModel;
     private final RoundController roundController;
     private final RerollButtonView rerollButton;
-    private final RerollMessageView rerollMessage;
+    private final RerollMessageView rerollMessagePilot;
+    private final RerollMessageView rerollMessageCopilot;
+    private boolean isSelectingDice = false;
+    private boolean rerollJustPlayed;
+    private boolean pilotRerolled;
 
     public RerollController(DiceController diceController, RerollTokenModel rerollTokenModel, RoundController roundController) {
         this.diceController = diceController;
         this.rerollTokenModel = rerollTokenModel;
         this.roundController = roundController;
-        this.rerollButton = new RerollButtonView();
-        this.rerollMessage = new RerollMessageView();
+
+        this.rerollButton = new RerollButtonView(this);
+
+        this.rerollMessagePilot = new RerollMessageView();
         //rerollMessage.setPosition(-128, 525); pilot
-        rerollMessage.setPosition(938,525);
+        rerollMessagePilot.setPosition(-128,525);
+        this.rerollMessageCopilot = new RerollMessageView();
+        rerollMessageCopilot.setPosition(938,525);
+
+        this.rerollJustPlayed = false;
     }
 
     public void toggleVisibility() {
         boolean tokenOnBoard = rerollTokenModel.tokensOnBoard().contains(true);
-        rerollButton.setVisibility(tokenOnBoard);
+        rerollButton.setVisibility(tokenOnBoard || rerollJustPlayed);
     }
 
     public void handleClick(float touchX, float touchY) {
         if(rerollButton.getBoundingRectangle().contains(touchX, touchY) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && rerollButton.isVisible()){
-            boolean tokenOnBoard = rerollTokenModel.tokensOnBoard().contains(true);
-            if(tokenOnBoard){
-                rerollTokenModel.markTokenAsUsed();
-                diceController.rerollDice(roundController.getTurn());
-                //this needs to change according to end turn, which I can try implementing tomorrow.
+            if (!isSelectingDice) {
+                if(rerollJustPlayed){
+                    if (((roundController.getTurn() || pilotRerolled) && !(roundController.getTurn() && pilotRerolled))) {
+                        isSelectingDice = true;
+                        rerollButton.setVisibility(true);
+                    }
+                } else {
+                    isSelectingDice = true;
+                    rerollButton.setVisibility(true);
+                }
+            } else {
+                if (diceController.isRerolling(roundController.getTurn())){
+                    if(!rerollJustPlayed){
+                        rerollTokenModel.markTokenAsUsed();
+                    }
+                    diceController.rerollDice(roundController.getTurn());
+                    if (rerollJustPlayed) {
+                        rerollMessagePilot.setVisibility(false);
+                        rerollMessageCopilot.setVisibility(false);
+                    }
+                    rerollJustPlayed = !rerollJustPlayed;
+                    if (rerollJustPlayed){
+                        if(roundController.getTurn()){
+                            rerollMessageCopilot.setVisibility(true);
+                            pilotRerolled = true;
+                        } else {
+                            rerollMessagePilot.setVisibility(true);
+                            pilotRerolled = false;
+                        }
+                    }
+                    isSelectingDice = false;
+                } else {
+                    isSelectingDice = false;
+                }
             }
+            /*rerollTokenModel.markTokenAsUsed();
+            diceController.rerollDice(roundController.getTurn());
+            //this needs to change according to end turn, which I can try implementing tomorrow.*/
         }
     }
 
     public boolean isHovered(float touchX, float touchY) {
         boolean tokenOnBoard = rerollTokenModel.tokensOnBoard().contains(true);
-        if(tokenOnBoard && rerollButton.isVisible()) {
+        if((tokenOnBoard || rerollJustPlayed) && rerollButton.isVisible()) {
             return rerollButton.getBoundingRectangle().contains(touchX, touchY);
         }
         return false;
     }
 
+    public boolean getSelectingDice() {
+        return isSelectingDice;
+    }
+
     public void draw(SpriteBatch batch) {
         rerollButton.draw(batch);
-        rerollMessage.draw(batch);
+        if (rerollMessagePilot.isVisible()){
+            rerollMessagePilot.draw(batch);
+        }
+        if (rerollMessageCopilot.isVisible()){
+            rerollMessageCopilot.draw(batch);
+        }
+    }
+
+    public boolean getRerollJustPlayed() {
+        return rerollJustPlayed;
+    }
+
+    public boolean getPilotRerolled() {
+        return pilotRerolled;
+    }
+
+    public void setRollJustPlayed(boolean rerollJustPlayed) {
+        this.rerollJustPlayed = rerollJustPlayed;
+    }
+
+    public RerollMessageView getRerollMessagePilot() {
+        return rerollMessagePilot;
+    }
+    public RerollMessageView getRerollMessageCopilot() {
+        return rerollMessageCopilot;
     }
 }
