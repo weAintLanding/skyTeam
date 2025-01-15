@@ -104,6 +104,8 @@ public class GameController {
         landingGearController.draw();
         flapsController.draw();
         brakesController.draw();
+        rerollController.toggleVisibility();
+        rerollController.draw(batch);
 
         /*endTurn.draw(batch);
         endRound.draw(batch);*/
