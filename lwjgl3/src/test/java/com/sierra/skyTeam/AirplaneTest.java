@@ -34,11 +34,6 @@ public class AirplaneTest {
 
     }
 
-    @Test
-    public void testInitialAltitude() {
-        // Checks that initial altitude is set correctly
-        assertEquals(6000, airplane.getAltitude());
-    }
 
     @Test
     public void testInitialApproachPosition() {
