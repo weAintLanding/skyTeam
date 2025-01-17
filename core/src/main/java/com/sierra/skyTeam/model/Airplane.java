@@ -14,6 +14,8 @@ public class Airplane{
     private final Concentration concentration;
 
     public Airplane(){
+        this.altitude = 6000;
+        this.approachPosition = 0;
         engine = new Engine(this);
         axisModel = new AxisModel(this);
         brakes = new Brakes(this);

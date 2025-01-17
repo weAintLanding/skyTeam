@@ -34,6 +34,7 @@ public class AirplaneTest {
 
     }
 
+ 
 
     @Test
     public void testInitialApproachPosition() {
@@ -90,4 +91,5 @@ public class AirplaneTest {
         // Checks that the concentration object is not null
         assertNotNull(airplane.getConcentration());
     }
+
 }
