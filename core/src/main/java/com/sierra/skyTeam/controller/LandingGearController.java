@@ -9,6 +9,10 @@ import com.sierra.skyTeam.view.MarkerManager;
 
 import java.util.List;
 
+/**
+ * Der LandingGearController verwaltet die Logik des LandingGears im Spiel.
+ * Er sorgt dafür, dass das LandingGear korrekt gesetzt wird, wenn das entsprechende Feld belegt wird.
+ */
 public class LandingGearController {
     private Airplane airplaneModel;
 
@@ -24,8 +28,12 @@ public class LandingGearController {
     private boolean field2;
     private boolean field3;
 
-
-
+    /**
+     * Konstruktor: Initialisiert den LandingGearController mit den entsprechenden Modellen und Feldansichten.
+     *
+     * @param gameModel Das GameModel, das die Flugdaten enthält.
+     * @param markerManager Der MarkerManager, der die verschiedenen Marker im Spiel verwaltet.
+     */
     public LandingGearController(GameModel gameModel, MarkerManager markerManager) {
         this.airplaneModel = gameModel.getAirplane();
         this.markerManager = markerManager;
@@ -41,6 +49,10 @@ public class LandingGearController {
         this.field3 = false;
     }
 
+    /**
+     * Überprüft, ob Felder für das LandingGear besetzt sind, und setzt die entsprechenden Werte im Flugzeugmodell.
+     * Jedes belegte Feld aktualisiert den entsprechenden Marker, wenn der richtige Würfel gesetzt wird.
+     */
     public void draw(){
         if(!field1 && landingGearFieldModel1.isOccupied()){
             airplaneModel.getLandingGear().setLandingGearFieldsTrue(0, landingGearFieldModel1.getPlacedDice().getDiceValue());
@@ -58,6 +70,4 @@ public class LandingGearController {
             markerManager.update("blue");
         }
     }
-
-
 }

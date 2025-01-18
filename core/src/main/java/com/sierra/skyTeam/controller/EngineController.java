@@ -6,6 +6,10 @@ import com.sierra.skyTeam.view.AxisView;
 import com.sierra.skyTeam.view.FieldGenerator;
 import com.sierra.skyTeam.view.MarkerManager;
 
+/**
+ * Der EngineController steuert die Motorleistung des Flugzeugs und koordiniert
+ * die Interaktionen zwischen den Spielern, den Feldern und dem Anflug-Track.
+ */
 public class EngineController {
     MainGame game;
     GameModel gameModel;
@@ -24,6 +28,14 @@ public class EngineController {
 
     private final ApproachTrackModel trackManager;
 
+    /**
+     * Konstruktor: Initialisiert die Engine-Controller mit den entsprechenden Modellen und Feldern.
+     *
+     * @param gameModel     Das GameModel, das alle notwendigen Daten enthält.
+     * @param trackManager  Das Anflug-Track-Modell.
+     * @param game          Die MainGame-Instanz.
+     * @param gameController Die Controller des Spiels.
+     */
     public EngineController(GameModel gameModel, ApproachTrackModel trackManager, MainGame game, GameController gameController) {
         this.game = game;
         this.gameModel = gameModel;
@@ -43,6 +55,12 @@ public class EngineController {
         this.engineChanged = false;
     }
 
+    /**
+     * Aktualisiert die Motorleistung des Flugzeugs basierend auf den Werten von Pilot und Copilot.
+     *
+     * @param pilot   Der Pilot-Instanz.
+     * @param copilot Der Copilot-Instanz.
+     */
     public void updateEngine(Players pilot, Players copilot){
         if(gameController.getAltitudeController().getRound() == 7){
             airplaneModel.getEngine().landPlane(pilot.getThrottle(), copilot.getThrottle(), game);
@@ -51,6 +69,19 @@ public class EngineController {
         }
     }
 
+    /**
+     * Setzt den Status der Felder und der Motorleistung für die nächste Runde zurück.
+     */
+    public void roundReset() {
+        this.pilotFieldSet = false;
+        this.copilotFieldSet = false;
+        this.engineChanged = false;
+    }
+
+    /**
+     * Überprüft die Belegung der Steuerungsfelder und aktualisiert die Motorleistung,
+     * falls alle erforderlichen Felder belegt sind.
+     */
     public void draw() {
         if(pilotField.isOccupied() && !pilotFieldSet){
             pilot.setThrottle(pilotField.getPlacedDice());
@@ -66,12 +97,4 @@ public class EngineController {
         }
 
     }
-
-    public void roundReset() {
-        this.pilotFieldSet = false;
-        this.copilotFieldSet = false;
-        this.engineChanged = false;
-    }
-
-
 }

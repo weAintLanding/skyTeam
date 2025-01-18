@@ -13,6 +13,11 @@ import com.sierra.skyTeam.view.FieldView;
 
 import java.util.List;
 
+/**
+ * Der RoundController verwaltet die Logik für den Ablauf eines Runden im Spiel.
+ * Er steuert die Platzierung von Würfeln durch den Piloten und Co-Piloten, das Ende der Runde
+ * und den Wechsel der Spielrunden.
+ */
 public class RoundController {
     private final GameController gameController;
     private final GameModel gameModel;
@@ -32,6 +37,14 @@ public class RoundController {
     private final EndTurnView endTurnCopilot;
     private final EndRound endRound;
 
+    /**
+     * Konstruktor: Initialisiert den RoundController mit den erforderlichen Modellen und Views.
+     *
+     * @param gameController Die Controller des Spiels.
+     * @param gameModel Das Modell des Spiels.
+     * @param fieldViews Die Ansichten der Felder.
+     * @param game Die MainGame-Instanz.
+     */
     public RoundController(GameController gameController, GameModel gameModel, List<FieldView> fieldViews, MainGame game) {
         this.gameController = gameController;
         this.gameModel = gameModel;
@@ -56,6 +69,9 @@ public class RoundController {
         this.gameModel.getAltitudeTrack().descend();
     }
 
+    /**
+     * Beendet den Turn des Piloten und wechselt zu dem des Co-Piloten.
+     */
     public void pilotEndTurn() {
         if (numberOfPilotDicePlayed < gameModel.pilotDicePlaced()) {
             numberOfPilotDicePlayed++;
@@ -81,6 +97,9 @@ public class RoundController {
         }
     }
 
+    /**
+     * Beendet den Turn des Co-Piloten und wechselt zu dem des Piloten.
+     */
     public void copilotEndTurn() {
         if (numberOfCopilotDicePlayed < gameModel.copilotDicePlaced()) {
             numberOfCopilotDicePlayed++;
@@ -106,31 +125,60 @@ public class RoundController {
         }
     }
 
+    /**
+     * Wechselt den Turn von Pilot zu Co-Pilot und umgekehrt.
+     */
     public void switchTurn() {
         isPilotTurn = !isPilotTurn;
     }
 
+    /**
+     * Gibt zurück, ob der Pilot am Zug ist.
+     *
+     * @return true, wenn der Pilot am Zug ist, andernfalls false.
+     */
     public boolean getTurn() {
         return isPilotTurn;
     }
 
+    /**
+     * Gibt zurück, ob der Pilot einen Würfel platziert hat.
+     *
+     * @return true, wenn der Pilot einen Würfel platziert hat, andernfalls false.
+     */
     public boolean getPilotDicePlaced() {
         return pilotDicePlaced;
     }
+
+    /**
+     * Gibt zurück, ob der Co-Pilot einen Würfel platziert hat.
+     *
+     * @return true, wenn der Co-Pilot einen Würfel platziert hat, andernfalls false.
+     */
     public boolean getCopilotDicePlaced() {
         return copilotDicePlaced;
     }
 
+    /**
+     * Setzt den Status für das Platzieren eines Würfels durch den Piloten.
+     */
     public void setPilotDicePlacedTrue() {
         pilotDicePlaced = true;
         endTurnPilot.setVisibility(true);
     }
+
+    /**
+     * Setzt den Status für das Platzieren eines Würfels durch den Co-Piloten.
+     */
     public void setCopilotDicePlacedTrue() {
         copilotDicePlaced = true;
         endTurnCopilot.setVisibility(true);
     }
 
-
+    /**
+     * Beendet die aktuelle Runde, prüft, ob alle Rundenbedingungen erfüllt sind
+     * und setzt alle relevanten Spielzustände zurück.
+     */
     public void endRound() {
         if(gameModel.pilotDicePlaced() == 4 && gameModel.copilotDicePlaced() == 4){
             System.out.println("Round has been ended.");
@@ -155,6 +203,9 @@ public class RoundController {
         }
     }
 
+    /**
+     * Setzt alle relevanten Views und Modelle für die nächste Runde zurück.
+     */
     public void roundViewReset() {
         for (Dice dice: gameModel.getPilot().getDiceList()) {
             dice.setPlaced(false);
@@ -177,13 +228,29 @@ public class RoundController {
         endRound.getEndRoundView().setVisibility(false);
     }
 
+    /**
+     * Gibt das Objekt für die EndTurn-Taste zurück.
+     *
+     * @return Das EndTurn-Objekt.
+     */
     public EndTurn getEndTurn() {
         return endTurn;
     }
+
+    /**
+     * Gibt das Objekt für die EndRound-Taste zurück.
+     *
+     * @return Das EndRound-Objekt.
+     */
     public EndRound getEndRound() {
         return endRound;
     }
 
+    /**
+     * Zeichnet die EndTurn- und EndRound-Ansichten.
+     *
+     * @param batch Das SpriteBatch für die Zeichnung.
+     */
     public void draw(SpriteBatch batch) {
         endTurn.draw(batch);
         endRound.draw(batch);

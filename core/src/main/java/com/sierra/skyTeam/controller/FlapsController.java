@@ -9,6 +9,10 @@ import com.sierra.skyTeam.view.MarkerManager;
 
 import java.util.List;
 
+/**
+ * Der FlapsController steuert die Flaps des Flugzeugs und verarbeitet
+ * die Belegung der zugehörigen Felder.
+ */
 public class FlapsController {
     private Airplane airplaneModel;
 
@@ -26,6 +30,12 @@ public class FlapsController {
     private boolean field3;
     private boolean field4;
 
+    /**
+     * Konstruktor: Initialisiert den FlapsController mit den entsprechenden Modellen und Markern.
+     *
+     * @param gameModel    Das GameModel, das die Flugdaten enthält.
+     * @param markerManager Der MarkerManager, der die verschiedenen Marker im Spiel verwaltet.
+     */
     public FlapsController(GameModel gameModel, MarkerManager markerManager) {
         this.airplaneModel = gameModel.getAirplane();
         this.markerManager = markerManager;
@@ -43,6 +53,11 @@ public class FlapsController {
         this.field4 = false;
     }
 
+    /**
+     * Überprüft die Belegung der Klappenfelder und aktualisiert den Status der Flaps,
+     * wenn ein Feld belegt ist. Jedes belegte Feld aktualisiert den entsprechenden Marker,
+     * wenn der richtige Würfel gesetzt wird.
+     */
     public void draw(){
         if(!field1 && flapsFieldModel1.isOccupied()){
             airplaneModel.getFlaps().setFlapFieldsTrue(0, flapsFieldModel1.getPlacedDice().getDiceValue());

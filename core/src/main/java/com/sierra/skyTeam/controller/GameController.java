@@ -7,6 +7,11 @@ import com.sierra.skyTeam.view.*;
 
 import java.util.List;
 
+/**
+ * Der GameController verwaltet die verschiedenen Controller und die Logik des Spiels.
+ * Er kümmert sich um die Steuerung der Flugzeugkomponenten, die Spieler-interaktionen,
+ * das Würfeln und die Steuerung der Spielrunden.
+ */
 public class GameController {
     private final MainGame game;
 
@@ -28,6 +33,11 @@ public class GameController {
 
     private final List<FieldView> fieldsView;
 
+    /**
+     * Konstruktor: Initialisiert den GameController mit den entsprechenden Controllern und Modellen.
+     *
+     * @param game Die MainGame-Instanz.
+     */
     public GameController(MainGame game){
         this.game = game;
 
@@ -49,31 +59,83 @@ public class GameController {
         altitudeController.setRound(1);
     }
 
+    /**
+     * Gibt den AxisController zurück.
+     *
+     * @return Der AxisController des Spiels.
+     */
     public AxisController getAxisController() {
         return axisController;
     }
+
+    /**
+     * Gibt den PlayerController zurück.
+     *
+     * @return Der PlayerController des Spiels.
+     */
     public PlayerController getPlayerController() {
         return playerController;
     }
+
+    /**
+     * Gibt den DiceController zurück.
+     *
+     * @return Der DiceController des Spiels.
+     */
     public DiceController getDiceController() {
         return diceController;
     }
+
+    /**
+     * Gibt den RerollController zurück.
+     *
+     * @return Der RerollController des Spiels.
+     */
     public RerollController getRerollController() {
         return rerollController;
     }
+
+    /**
+     * Gibt den RoundController zurück.
+     *
+     * @return Der RoundController des Spiels.
+     */
     public RoundController getRoundController() {
         return roundController;
     }
+
+    /**
+     * Gibt den AltitudeController zurück.
+     *
+     * @return Der AltitudeController des Spiels.
+     */
     public AltitudeController getAltitudeController() {
         return altitudeController;
     }
+
+    /**
+     * Gibt den EngineController zurück.
+     *
+     * @return Der EngineController des Spiels.
+     */
     public EngineController getEngineController() {
         return engineController;
     }
+
+    /**
+     * Gibt den RadioController zurück.
+     *
+     * @return Der RadioController des Spiels.
+     */
     public RadioController getRadioController() {
         return radioController;
     }
 
+    /**
+     * Zeichnet alle Spielfelder und ruft die Zeichnungsfunktionen der verschiedenen Controller auf.
+     *
+     * @param batch Der SpriteBatch zum Rendern der Spielgrafik.
+     */
     public void draw(SpriteBatch batch) {
         for (FieldView field : fieldsView) {
             field.switchRenderer(batch);

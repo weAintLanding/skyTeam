@@ -8,6 +8,12 @@ import com.sierra.skyTeam.view.*;
 
 import java.util.List;
 
+/**
+ * Die Klasse DiceController verwaltet die DIce-Logik im Spiel, einschließlich
+ * der Anzeige, Positionierung und Interaktion von Würfeln für Pilot und Copilot.
+ * Sie koordiniert auch die Interaktionen mit Feldern, Kaffeefeldern und
+ * anderen Spielelementen.
+ */
 public class DiceController {
     private final Dice[] pilotDice;
     private final Dice[] copilotDice;
@@ -24,6 +30,14 @@ public class DiceController {
     RoundController roundController;
     GameController gameController;
 
+    /**
+     * Konstruktor: Initialisiert den Dice-Controller mit den Modellen und
+     * zugehörigen Ansichten.
+     *
+     * @param gameModel    Das GameModel, das die relevanten Daten enthält.
+     * @param gameController Die Controller des Spiels.
+     * @param fieldsView   Die Liste der Feldansichten.
+     */
     public DiceController(GameModel gameModel, GameController gameController, List<FieldView> fieldsView) {
         this.pilotDice = gameModel.getPilot().getDiceList();
         this.copilotDice = gameModel.getCoPilot().getDiceList();
@@ -37,6 +51,11 @@ public class DiceController {
         updateView();
     }
 
+    /**
+     * Setzt die Viewport-Instanz und initialisiert die zugehörigen Dice-Handler.
+     *
+     * @param viewport Der Viewport zur Darstellung.
+     */
     public void setViewport(Viewport viewport) {
         this.viewport = viewport;
         this.diceValueUpdater = new DiceValueUpdater(viewport, diceView, pilotDice, copilotDice, this::onDiceValueChanged, this::onCoffeeInteraction);
@@ -45,14 +64,29 @@ public class DiceController {
         copilotHandler = new DicePosUpdater(diceView, copilotDice, fieldsView,viewport, coffeeManager, diceValueUpdater, false, roundController, gameController);
     }
 
+    /**
+     * Gibt die Dice-View zurück.
+     *
+     * @return Die Instanz von {@link DiceView}.
+     */
     public DiceView getDiceView(){
         return diceView;
     }
 
+    /**
+     * Gibt den Dice-Value-Updater zurück.
+     *
+     * @return Die Instanz von {@link DiceValueUpdater}.
+     */
     public DiceValueUpdater getDiceValueUpdater() {
         return diceValueUpdater;
     }
 
+    /**
+     * Führt einen Würfelneuwurf für den Piloten oder Copiloten durch.
+     *
+     * @param isPilot Gibt an, ob der Neuwurf für den Piloten gilt.
+     */
     public void rerollDice(boolean isPilot) {
         Dice[] diceToReroll = isPilot ? pilotDice : copilotDice;
         for (Dice dice : diceToReroll) {
@@ -64,6 +98,12 @@ public class DiceController {
         updateView();
     }
 
+    /**
+     * Überprüft, ob Würfel für einen Neuwurf ausgewählt sind.
+     *
+     * @param isPilot Gibt an, ob die Überprüfung für den Pilotenwürfel gilt.
+     * @return Wahr, wenn Würfel für einen Neuwurf ausgewählt sind.
+     */
     public boolean isRerolling(boolean isPilot) {
         int numberOfDice = 0;
         Dice[] diceToReroll = isPilot ? pilotDice : copilotDice;
@@ -75,27 +115,50 @@ public class DiceController {
         return numberOfDice!=0;
     }
 
+    /**
+     * Wird aufgerufen, wenn sich der Würfelwert geändert hat.
+     */
     private void onDiceValueChanged() {
         resetSelections();
     }
+
+    /**
+     * Wird aufgerufen, wenn eine Interaktion mit Kaffeefeldern stattfindet.
+     */
     private void onCoffeeInteraction() {
         coffeeManager.removeCoffee(diceValueUpdater.selectedCoffee);
     }
 
+    /**
+     * Setzt die Auswahl der Würfel zurück.
+     */
     public void resetSelections() {
         pilotHandler.resetSelection();
         copilotHandler.resetSelection();
     }
 
+    /**
+     * Aktualisiert die Dice-View basierend auf den aktuellen Würfeldaten.
+     */
     public void updateView() {
         diceView.updateSprites(pilotDice, copilotDice);
     }
 
+    /**
+     * Aktualisiert die Position der Dice.
+     */
     public void updateHandler() {
         pilotHandler.update();
         copilotHandler.update();
     }
 
+    /**
+     * Zeichnet die Würfel und andere zugehörige Elemente auf dem Bildschirm.
+     *
+     * @param batch  Der SpriteBatch zur Darstellung.
+     * @param startX Die Position in X-Richtung.
+     * @param startY Die Position in Y-Richtung.
+     */
     public void render(SpriteBatch batch, float startX, float startY) {
         // Render Pilot dice
         diceView.render(batch, true, startX, startY, pilotDice);
@@ -105,8 +168,5 @@ public class DiceController {
         coffeeManager.draw(batch);
         // Pop-up render
         diceValueUpdater.render(batch);
-    }
-
-    public void dispose(){
     }
 }
