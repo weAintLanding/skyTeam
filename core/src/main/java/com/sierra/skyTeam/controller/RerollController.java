@@ -26,7 +26,6 @@ public class RerollController {
         this.rerollButton = new RerollButtonView(this);
 
         this.rerollMessagePilot = new RerollMessageView();
-        //rerollMessage.setPosition(-128, 525); pilot
         rerollMessagePilot.setPosition(-128,525);
         this.rerollMessageCopilot = new RerollMessageView();
         rerollMessageCopilot.setPosition(938,525);
@@ -76,9 +75,6 @@ public class RerollController {
                     isSelectingDice = false;
                 }
             }
-            /*rerollTokenModel.markTokenAsUsed();
-            diceController.rerollDice(roundController.getTurn());
-            //this needs to change according to end turn, which I can try implementing tomorrow.*/
         }
     }
 

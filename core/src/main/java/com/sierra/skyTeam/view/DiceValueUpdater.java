@@ -255,7 +255,6 @@ public class DiceValueUpdater {
             ((dice.getDiceValue() + changeAmount) >= 1)){
             dice.setDiceValue(dice.getDiceValue() + changeAmount);
             diceView.updateSprites(pilotDice, copilotDice);
-            System.out.println("Sprites updated!");
         }
     }
 
@@ -290,8 +289,6 @@ public class DiceValueUpdater {
                 Dice dice = isPilotDice ? pilotDice[diceArrayIndex] : copilotDice[diceArrayIndex];
                 if(dice.getDiceValue() != initialDiceValue){
                     removeCoffee();
-                }else {
-                    System.out.println("Value unchanged. Coffee will be not be used.");
                 }
                 hideOptions();
             }

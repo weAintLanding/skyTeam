@@ -17,7 +17,6 @@ public class AxisModel {
         int changeValue = copilotValue - pilotValue;
         axisValue = axisValue + changeValue;
         if(airplane.getGame().checkCrashAxis()){
-            System.out.println("axisModel out of balance. Plane Crashed.");
             game.setScreen(new CrashScreen(game));
         }
     }

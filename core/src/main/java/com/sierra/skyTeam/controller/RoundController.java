@@ -59,7 +59,6 @@ public class RoundController {
     public void pilotEndTurn() {
         if (numberOfPilotDicePlayed < gameModel.pilotDicePlaced()) {
             numberOfPilotDicePlayed++;
-            System.out.println("Pilot Ended Turn");
             if(gameModel.copilotDicePlaced() != 4){
                 RerollController rerollController = gameController.getRerollController();
                 this.switchTurn();
@@ -85,7 +84,6 @@ public class RoundController {
     public void copilotEndTurn() {
         if (numberOfCopilotDicePlayed < gameModel.copilotDicePlaced()) {
             numberOfCopilotDicePlayed++;
-            System.out.println("Co-Pilot Ended Turn");
             if(gameModel.pilotDicePlaced() != 4){
                 RerollController rerollController = gameController.getRerollController();
                 this.switchTurn();
@@ -110,7 +108,6 @@ public class RoundController {
 
     public void switchTurn() {
         isPilotTurn = !isPilotTurn;
-        System.out.println(isPilotTurn ? "Pilot's Turn" : "Co-Pilot's Turn");
     }
 
     public boolean getTurn() {
@@ -147,7 +144,7 @@ public class RoundController {
                         mainGame.setScreen(new LandedScreen(mainGame));
                     }
                 } else {
-                    System.out.println("Landed before reaching airport.");
+                    System.out.println("Crash-landed before reaching airport.");
                     mainGame.setScreen(new CrashScreen(mainGame));
                 }
             }

@@ -74,7 +74,6 @@ public class ApproachTrackModel {
         int adjustedPos = trackPos - 1;
 
         if (adjustedPos >= yPositions.length) {
-            System.out.println("Value exceeds track length. Not removing Planes.");
             return;
         }
 
@@ -83,7 +82,6 @@ public class ApproachTrackModel {
             if(airplaneViews[i].getY() == yPos && !isAirplaneRemoved[i]){
                 isAirplaneRemoved[i] = true;
                 gameModel.getApproachTrack().removeAirplane(trackPos-1);
-                System.out.println("airplane removed");
                 return;
             }
         }

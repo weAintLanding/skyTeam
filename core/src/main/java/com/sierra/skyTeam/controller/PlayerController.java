@@ -8,11 +8,9 @@ import java.util.List;
 public class PlayerController {
 
     private GameModel gameModel;
-    private Airplane airplaneModel;
 
     public PlayerController(GameModel gameModel){
         this.gameModel = gameModel;
-        this.airplaneModel = gameModel.getAirplane();
     }
 
     public Dice[] getPilotDice(){

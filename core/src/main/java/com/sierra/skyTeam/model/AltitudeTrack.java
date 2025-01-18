@@ -27,11 +27,9 @@ public class AltitudeTrack {
                 gameModel.setRerollsAvailable();
             }
             System.out.println(" | Reroll Tokens: " + gameModel.getRerollsAvailable());
-            System.out.println();
         } else {
             System.out.println("Already at the final altitude (landed).");
             System.out.println(" | Reroll Tokens: " + gameModel.getRerollsAvailable());
-            System.out.println();
         }
     }
     public void displayAltitudeStatus() {

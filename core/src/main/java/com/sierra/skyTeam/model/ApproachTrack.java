@@ -10,7 +10,6 @@ public class ApproachTrack {
     // Constructor: Initialize the track with predefined airplane counts
     public ApproachTrack() {
         this.track = new ArrayList<>(Arrays.asList(0,0,1,2,1,3,2));
-        // Populate the track: (0, 0), (1, 0), (2, 1), (3, 2), (4, 1), (5, 3), (6, 2)
     }
 
     public int getLength() {
@@ -22,7 +21,6 @@ public class ApproachTrack {
         if (index >= 0 && index < length) {
             return track.get(index);
         }
-        //System.out.println("Position out of bounds: " + index);
         return -1;
     }
 
@@ -32,7 +30,6 @@ public class ApproachTrack {
             track.set(position, track.get(position) - 1); // Decrease airplane count
             return true; // Successfully removed
         }
-        System.out.println("No airplanes to remove at position " + position);
         return false; // Nothing to remove
     }
 

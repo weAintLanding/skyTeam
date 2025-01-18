@@ -52,7 +52,7 @@ public class Marker {
                 markerSprite.setRotation(rotation + 45);
                 break;
             default:
-                System.out.println("Invalid Value");
+                break;
         }
     }
 
@@ -80,7 +80,7 @@ public class Marker {
                 markerSprite.setRotation(rotation + 64);
                 break;
             default:
-                System.out.println("Invalid Value");
+                break;
         }
     }
 
@@ -104,7 +104,7 @@ public class Marker {
                 markerSprite.setRotation(rotation + 85);
                 break;
             default:
-                System.out.println("Invalid Value");
+                break;
         }
     }
 

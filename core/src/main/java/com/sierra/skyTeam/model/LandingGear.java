@@ -22,10 +22,6 @@ public class LandingGear {
     }
 
     public boolean setLandingGearFieldsTrue(int index, int diceValue) {
-        /*if (index < 0 || index >= landingGearFields.length) {
-            System.out.println("Invalid landing gear field index.");
-            return false;
-        }*/
         if (!isValidDiceValue(index, diceValue)) {
             System.out.println("Invalid dice value. Expected: " + landingGearConstraints[index][0] + " or " + landingGearConstraints[index][1]);
             return false;
@@ -33,7 +29,6 @@ public class LandingGear {
         if (landingGearFields[index].placeDice(diceValue) && !landingGearFields[index].isSwitchedOn()) {
             activatedLandingGearFields++;
             landingGearFields[index].setSwitchOn();
-            System.out.println("Landing Gear field " + (index + 1) + " activated successfully.");
             airplane.getEngine().setBlueAeroMarker((airplane.getEngine().getBlueAeroMarker()) + 1);
             return true;
         }

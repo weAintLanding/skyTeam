@@ -47,7 +47,6 @@ public class FieldModel {
         for(int allowedValue : allowedValues){
             if(diceValue == allowedValue){
                 this.diceValue = diceValue;
-                System.out.println("Dice Allowed.");
                 toggleSwitch();
                 return true;
             }

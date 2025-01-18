@@ -113,12 +113,9 @@ public class DicePosUpdater {
                     dice.setSelectedForReroll(!dice.isSelectedForReroll());
                     if (dice.isSelectedForReroll()) {
                         diceSprites[i].setColor(1,1,1, 1);
-                        System.out.println("1");
                     } else {
                         diceSprites[i].setColor(1,1,1, 0.7f);
-                        System.out.println("0.7");
                     }
-                    System.out.println("Reroll Dice");
                     break;
                 }
             }
@@ -128,7 +125,6 @@ public class DicePosUpdater {
         for (CoffeeView coffee : coffeeManager.getCoffees()) {
             if (coffee.getSprite().getBoundingRectangle().contains(touchX, touchY)  && coffee.isAvailable()) {
                 selectedCoffee = coffee;
-                System.out.println("Coffee clicked");
             }
         }
 
@@ -233,26 +229,20 @@ public class DicePosUpdater {
             if (field.getBounds().contains(touchX, touchY)) {
                 FieldModel fieldModel = field.getFieldModel();
                 if(fieldModel.hasSwitch()){
-                    System.out.println("Field with switch");
                     if (fieldModel.isDiceAllowed(lastClickedDiceValue, isPilot)){
                         if (!fieldModel.isOccupied()) {
                             fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field);
-                            System.out.println("Placing dice");
                             this.disableDice();
                             for (int i = 0; i < diceSprites.length; i++) {
                                 if (diceSprites[i] == selectedDice) {
                                     diceArray[i].setPlaced(true); // No need to recheck isPilot
-                                    System.out.println(diceArray[i].isPlaced());
                                     break;
                                 }
                             }
                             resetSelection();
                             break;
-                        } else {
-                            System.out.println("Field is occupied");
                         }
                     } else {
-                        System.out.println("Dice value not allowed in this field.");
                         resetSelection();
                         break;
                     }
@@ -262,7 +252,6 @@ public class DicePosUpdater {
                             if (isCoffeeField(field)) {
                                 handleCoffeeFieldPlacement(fieldModel);
                             }
-                            System.out.println("Placing dice");
                             this.disableDice();
                             if (fieldModel.placeDice(getDiceFromSprite(selectedDice), isPilot, field)) {
                                 for (int i = 0; i < diceSprites.length; i++) {
@@ -274,11 +263,8 @@ public class DicePosUpdater {
                             }
                             resetSelection();
                             break;
-                        } else {
-                            System.out.println("Field is occupied");
                         }
                     } else {
-                        System.out.println("Dice value not allowed in this field.");
                         resetSelection();
                         break;
                     }
@@ -295,7 +281,6 @@ public class DicePosUpdater {
     private void handleCoffeeFieldPlacement(FieldModel fieldModel){
         if(!fieldModel.isOccupied()){
             coffeeManager.placeCoffee();
-            System.out.println("Dice placed in coffee field");
         }
     }
 
@@ -313,7 +298,6 @@ public class DicePosUpdater {
      * Setzt die Auswahl zurück.
      */
     public void resetSelection() {
-        System.out.println("Resetting selection");
         selectedDice = null;
         lastClickedDiceValue = -1;
         selectedCoffee = null;

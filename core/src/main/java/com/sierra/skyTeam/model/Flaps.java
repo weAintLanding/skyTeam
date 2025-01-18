@@ -38,7 +38,6 @@ public class Flaps {
         if (flapFields[index].placeDice(diceValue) && !flapFields[index].isSwitchedOn()) {
             activatedFlapFields++;
             flapFields[index].setSwitchOn();
-            System.out.println("Flap field " + (index + 1) + " activated successfully.");
             airplane.getEngine().setOrangeAeroMarker(airplane.getEngine().getOrangeAeroMarker() + 1);
             return;
         }

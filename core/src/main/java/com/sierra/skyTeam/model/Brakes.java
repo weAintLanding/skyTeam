@@ -38,7 +38,6 @@ public class Brakes {
         if(brakeFields[index].placeDice(diceValue) && !brakeFields[index].isSwitchedOn()) {
             activatedBrakeFields++;
             brakeFields[index].setSwitchOn();
-            System.out.println("Brake field " + (index + 1) + " activated successfully. ");
             if (activatedBrakeFields == 1) {
                 airplane.getEngine().setRedBrakeMarker((airplane.getEngine().getRedBrakeMarker()) + 1);
             } else if (activatedBrakeFields <= 3) {

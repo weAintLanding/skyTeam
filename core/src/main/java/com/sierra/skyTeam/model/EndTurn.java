@@ -18,9 +18,7 @@ public class EndTurn {
         endTurnButtons = new ArrayList<>();
         endTurnButtons.add(new EndTurnView(-100, -40));     //pilot
         endTurnButtons.add(new EndTurnView(965, -40));   //copilot
-        //can use index value to figure out which button was pressed
     }
-    //endRound rectangle bounds are 900, 30, 150, 50;
 
     public boolean isHovered(float touchX, float touchY) {
         for(EndTurnView endTurnView : endTurnButtons) {

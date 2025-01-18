@@ -20,12 +20,10 @@ public class Field {
     }
     public boolean placeDice(int diceValue) {
         if (occupied) {
-            System.out.println("fieldView is already occupied. Cannot place another die.");
             return false;
         }
         this.diceValue = diceValue;
         this.occupied = true;
-        System.out.println("Dice value " + diceValue + " placed on " + fieldType + " field.");
         return true;
     }
 

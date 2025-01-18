@@ -10,16 +10,13 @@ public class GameModel {
     private final Airplane airplane;
     private final Pilot pilot;
     private final CoPilot copilot;
-    //private int roundNumber;
     private int rerollsAvailable;
-    //private int startingPlayer;
     private final ApproachTrack approachTrack;
     private final AltitudeTrack altitudeTrack;
     private Players currentPlayer;
     boolean axisChanged;
     boolean throttleChanged;
     boolean endOfGame;
-    //private final int maxRounds = 5;
 
     public GameModel(MainGame game) {
         this.game = game;
@@ -52,7 +49,6 @@ public class GameModel {
     }
     public void switchPlayer() {
         currentPlayer = (currentPlayer == pilot) ? copilot : pilot;
-        System.out.println("Next turn.");
     }
 
     public ApproachTrack getApproachTrack() {
@@ -96,11 +92,6 @@ public class GameModel {
             System.out.println("Crash: Altitude below safe levels");
             return true;
         }
-        /*int currentPosition = airplane.getApproachPosition();
-        if (approachTrack.hasAirplanesAt(currentPosition)) {
-            System.out.println("Crash: Collision detected at position " + currentPosition + ".");
-            return true;
-        }*/
         return false;
     }
 
@@ -118,7 +109,6 @@ public class GameModel {
 
     public boolean checkCrashAxis(){
         if (airplane.getAxis().getAxisValue() < -2 || airplane.getAxis().getAxisValue() > 2) {
-            System.out.println("Crash: axisModel out of balance");
             return true;
         }
         return false;
@@ -126,7 +116,6 @@ public class GameModel {
 
     public void checkRoundConditions(){
         if(!pilot.isAxis() || !copilot.isAxis() || !pilot.isThrottle() || !copilot.isThrottle()){
-            System.out.println("Round conditions not met. Plane Crashed.");
             game.setScreen(new CrashScreen(game));
         }
     }

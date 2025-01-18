@@ -45,7 +45,7 @@ public class MarkerManager {
                 redMarker.brakesUpdate(engineModel.getRedBrakeMarker());
                 break;
             default:
-                System.out.println("wrong value");
+                break;
         }
     }
 

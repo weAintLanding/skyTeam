@@ -14,7 +14,6 @@ public class EndRound {
         endRound = new EndRoundView();
         endRound.setVisibility(false);
     }
-    //endRound rectangle bounds are 900, 30, 150, 50;
 
     public boolean isHovered(float touchX, float touchY) {
         return (endRound.getBoundingRectangle().contains(touchX, touchY) && endRound.isVisible());

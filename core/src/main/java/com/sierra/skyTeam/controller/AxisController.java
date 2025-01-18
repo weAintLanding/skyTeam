@@ -55,7 +55,6 @@ public class AxisController {
 
     public void draw() {
         if(pilotField.isOccupied() && !pilotFieldSet){
-            System.out.println("This works.");
             pilot.setAxis(pilotField.getPlacedDice());
             pilotFieldSet = true;
         }

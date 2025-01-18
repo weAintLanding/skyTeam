@@ -60,9 +60,6 @@ public class DiceController {
                 dice.reroll();
                 dice.setSelectedForReroll(false);
             }
-            /*if(!dice.isPlaced()) {
-                dice.reroll();
-            }*/
         }
         updateView();
     }

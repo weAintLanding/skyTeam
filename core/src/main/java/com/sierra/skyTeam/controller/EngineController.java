@@ -53,7 +53,6 @@ public class EngineController {
 
     public void draw() {
         if(pilotField.isOccupied() && !pilotFieldSet){
-            System.out.println("This works.");
             pilot.setThrottle(pilotField.getPlacedDice());
             pilotFieldSet = true;
         }

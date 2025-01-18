@@ -10,7 +10,6 @@ public class Airplane{
     private final Brakes brakes;
     private final LandingGear landingGear;
     private final Flaps flaps;
-    //private final Radio radio;
     private final Concentration concentration;
 
     public Airplane(){
@@ -21,7 +20,6 @@ public class Airplane{
         brakes = new Brakes(this);
         landingGear = new LandingGear(this);
         flaps = new Flaps(this);
-        //radio = new Radio(this);
         concentration = new Concentration();
     }
 
@@ -47,9 +45,7 @@ public class Airplane{
     public Flaps getFlaps(){
         return flaps;
     }
-    /*public Radio getRadio(){
-        return radio;
-    }*/
+
     public Concentration getConcentration() {
         return concentration;
     }

@@ -12,9 +12,6 @@ public class GameController {
 
     private final GameModel gameModel;
 
-    /*private final EndTurn endTurn;
-    private final EndRound endRound;*/
-
     private final AxisController axisController;
     private final PlayerController playerController;
     private final DiceController diceController;
@@ -49,12 +46,6 @@ public class GameController {
         this.flapsController = new FlapsController(gameModel, markerManager);
         this.brakesController = new BrakesController(gameModel, markerManager);
 
-        /*this.endTurn = new EndTurn(roundController);
-        endTurn.getEndTurnButtons().get(0).setVisibility(true);
-        endTurn.getEndTurnButtons().get(1).setVisibility(false);
-
-        this.endRound = new EndRound(roundController);*/
-
         altitudeController.setRound(1);
     }
 
@@ -83,13 +74,6 @@ public class GameController {
         return radioController;
     }
 
-    /*public EndTurn getEndTurn() {
-        return endTurn;
-    }
-    public EndRound getEndRound() {
-        return endRound;
-    }*/
-
     public void draw(SpriteBatch batch) {
         for (FieldView field : fieldsView) {
             field.switchRenderer(batch);
@@ -106,9 +90,6 @@ public class GameController {
         brakesController.draw();
         rerollController.toggleVisibility();
         rerollController.draw(batch);
-
-        /*endTurn.draw(batch);
-        endRound.draw(batch);*/
 
         roundController.draw(batch);
     }

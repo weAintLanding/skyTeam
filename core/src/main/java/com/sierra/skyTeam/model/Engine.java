@@ -47,19 +47,16 @@ public class Engine {
         this.redBrakeMarker = redBrakeMarker;
     }
 
-    
+
 
     public void movePlane(int pilotValue, int copilotValue, ApproachTrackModel trackManager, MainGame game) {
         int engineSum = pilotValue + copilotValue;
 
         if (engineSum <= blueAeroMarker) {
-            System.out.println("Plane does not move");
         } else if (engineSum <= orangeAeroMarker) {
             if(airplane.getGame().checkCrashMove(1)){
-                System.out.println("Plane crashed. ");
                 game.setScreen(new CrashScreen(game));
             }
-            System.out.println("Plane moves 1 position.");
             if((airplane.getApproachPosition() + 1) > 6){
                 game.setScreen(new CrashScreen(game));
             }
@@ -67,13 +64,11 @@ public class Engine {
             airplane.setApproachPosition(airplane.getApproachPosition() + 1);
         } else {
             if(airplane.getGame().checkCrashMove(2)){
-                System.out.println("Plane crashed. ");
                 game.setScreen(new CrashScreen(game));
             }
             if((airplane.getApproachPosition() + 2) > 6){
                 game.setScreen(new CrashScreen(game));
             }
-            System.out.println("Plane moves 2 positions.");
             trackManager.updateTrackBy2();
             airplane.setApproachPosition(airplane.getApproachPosition() + 2);
         }
@@ -82,10 +77,8 @@ public class Engine {
     public void landPlane(int pilotValue, int copilotValue, MainGame game) {
         int engineSum = pilotValue + copilotValue;
         if (engineSum <= redBrakeMarker) {
-            System.out.println("Plane stopped successfully.");
             planeLanded = true;
         }else{
-            System.out.println("Plane not able to break. Plane Crashed.");
             game.setScreen(new CrashScreen(game));
         }
     }

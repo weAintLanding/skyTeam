@@ -15,10 +15,8 @@ public class Concentration {
         int maxCoffee = 3;
         if(coffeeAvailable < maxCoffee) {
             coffeeAvailable++;
-            System.out.println("Coffee Added. Available: " + coffeeAvailable);
             return true;
         } else {
-            System.out.println("Cannot add more Coffee tokens. Maximum Limit reached.");
             return false;
         }
     }
@@ -29,11 +27,9 @@ public class Concentration {
 
         if(modifiedDiceValue >= 1 && modifiedDiceValue <= 6) {
             coffeeAvailable -= Math.abs(coffeeAmount);
-            System.out.println("Dice value modified to: " + modifiedDiceValue);
             dice.setDiceValue(modifiedDiceValue);
             return true;
         } else {
-            System.out.println("Invalid dice value after using coffee. Use less Coffee.");
             return false;
         }
     }
