@@ -5,27 +5,43 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Die Klasse {@code AxisView} repräsentiert das Axis im Spiel.
+ * Sie verwaltet der Axis-Wert, berechnet die Drehungen und rendert das Axis.
+ */
 public class AxisView {
     private int axisValue;
-    private Sprite axis;
+    private final Sprite axis;
 
+    /**
+     * Konstruktor für {@code AxisView}. Initialisiert den Axis-Wert,
+     * lädt die Axis-Textur und setzt die Standardposition und Skalierung.
+     *
+     * @param axisValue Der initiale Wert der Achse.
+     */
     public AxisView(int axisValue) {
         this.axisValue = axisValue;
         Texture texture = new Texture("Axis.png");
         axis = new Sprite(texture);
         axis.setPosition(525, 410);
         axis.setScale(0.6F);
-        axis.setOriginCenter();    }
+        axis.setOriginCenter();
+    }
 
-    //public void calcAxis(int pilotAxisValue, int copilotAxisValue){
-        // idk some thing for fadhil
-    //}
-
+    /**
+     * Setzt den Wert des Axis und aktualisiert die Rotation basierend auf diesem Wert.
+     *
+     * @param axisValue Der neue Wert der Achse.
+     */
     public void setAxisValue(int axisValue) {
         this.axisValue = axisValue;
         rotateAxis();
     }
 
+    /**
+     * Berechnet und setzt die Rotation des Axis basierend auf dem Axis-Wert.
+     * Die Rotation wird mit einer Animation aktualisiert, wenn der Zielwinkel und der aktuelle Winkel abweichen.
+     */
     public void rotateAxis() {
         float animationSpeed = 2f;
         float deltaTime = Gdx.graphics.getDeltaTime();
@@ -42,6 +58,11 @@ public class AxisView {
         }
     }
 
+    /**
+     * Zeichnet des Axis-Sprites auf dem Bildschirm unter Verwendung des angegebenen {@code SpriteBatch}.
+     *
+     * @param batch Der {@code SpriteBatch}, der zum Rendern des Sprites verwendet wird.
+     */
     public void render(SpriteBatch batch) {
         axis.draw(batch);
     }

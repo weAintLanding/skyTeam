@@ -13,7 +13,15 @@ import com.sierra.skyTeam.model.FieldModel;
 
 import java.util.List;
 
+/**
+ * Verwalten und Aktualisieren der Position von Würfeln auf dem Spielfeld.
+ * Diese Klasse steuert das Auswählen und Platzierung von Würfeln sowie deren Interaktionen mit anderen Objekten wie Kaffee und Feldern.
+ */
 public class DicePosUpdater {
+    /**
+     * Enum, das den aktuellen Zustand des Würfels beschreibt:
+     * entweder "SELECTING" oder "PLACING".
+     */
     enum State { SELECTING, PLACING }
     private State currentState = State.SELECTING;
     private final CoffeeManager coffeeManager;
@@ -30,6 +38,19 @@ public class DicePosUpdater {
     private boolean dicePlayed;
     RerollController rerollController;
 
+    /**
+     * Konstruktor für die DicePosUpdater-Klasse.
+     *
+     * @param diceView Das View-Objekt für die Würfelansicht.
+     * @param diceArray Das Array der Würfelobjekte.
+     * @param FieldViews Die Liste der Felder auf dem Spielfeld.
+     * @param viewport Das Viewport-Objekt für die Anzeige.
+     * @param coffeeManager Der Manager, der die Kaffees verwaltet.
+     * @param diceValueUpdater Der Würfelwert-Updater.
+     * @param isPilot Boolean, der angibt, ob der Spieler ein Pilot oder Copilot ist.
+     * @param roundController Der Controller für die Spielrunde.
+     * @param gameController Der Controller für das gesamte Spiel.
+     */
     public DicePosUpdater(DiceView diceView, Dice[] diceArray, List<FieldView> FieldViews, Viewport viewport, CoffeeManager coffeeManager, DiceValueUpdater diceValueUpdater, boolean isPilot, RoundController roundController, GameController gameController) {
         this.diceArray = diceArray;
         this.isPilot = isPilot;
@@ -43,6 +64,10 @@ public class DicePosUpdater {
         this.rerollController = gameController.getRerollController();
     }
 
+    /**
+     * Aktualisiert den Zustand der Würfel.
+     * Überprüft, ob auf einen Würfel oder ein Feld geklickt wurde und führt die entsprechende Aktion aus.
+     */
     public void update() {
         Vector2 coordinates = InputHandler.scaledInput(viewport);
         float touchX = coordinates.x;
@@ -65,6 +90,12 @@ public class DicePosUpdater {
         }
     }
 
+    /**
+     * Verwaltet die Benutzereingaben für das Auswählen und Platzieren von Würfeln sowie deren Interaktionen mit Kaffees und Feldern.
+     *
+     * @param touchX Die x-Koordinate des Berührungsereignisses.
+     * @param touchY Die y-Koordinate des Berührungsereignisses.
+     */
     private void handleInput(float touchX, float touchY) {
         if(isPilot){
             this.dicePlayed = roundController.getPilotDicePlaced();
@@ -121,6 +152,12 @@ public class DicePosUpdater {
         }
     }
 
+    /**
+     * Verwaltet den Hover-Effekt, wenn der Benutzer mit der Maus über Würfel fährt.
+     *
+     * @param touchX Die x-Koordinate des Hover-Ereignisses.
+     * @param touchY Die y-Koordinate des Hover-Ereignisses.
+     */
     private void handleHoverEffect(float touchX, float touchY) {
         if(isPilot){
             this.dicePlayed = roundController.getPilotDicePlaced();
@@ -163,10 +200,19 @@ public class DicePosUpdater {
         }
     }
 
+    /**
+     * Handhabt die Opacity des Würfels, wenn er ausgewählt wurde, um ihn hervorzuheben.
+     */
     private void handleSelectedEffect() {
         selectedDice.setColor(1, 1, 1, 1);
     }
 
+    /**
+     * Gibt der Würfel basierend auf dem angegebenen Sprite zurück.
+     *
+     * @param sprite Die Sprite, dessen Würfel gesucht wird.
+     * @return Das zugehörige Würfelobjekt.
+     */
     private Dice getDiceFromSprite(Sprite sprite) {
         for (int i = 0; i < diceSprites.length; i++) {
             if (diceSprites[i] == sprite) {
@@ -176,6 +222,12 @@ public class DicePosUpdater {
         return null;
     }
 
+    /**
+     * Verwaltet die Platzierung eines Würfels auf einem Feld.
+     *
+     * @param touchX Die x-Koordinate des Klicks.
+     * @param touchY Die y-Koordinate des Klicks.
+     */
     private void handleFieldPlacement(float touchX, float touchY) {
         for (FieldView field : FieldViews) {
             if (field.getBounds().contains(touchX, touchY)) {
@@ -235,6 +287,11 @@ public class DicePosUpdater {
         }
     }
 
+    /**
+     * Verwaltet die Platzierung eines Würfels auf einem Kaffee-Feld.
+     *
+     * @param fieldModel Das Kaffee-Feld, auf dem der Würfel platziert wird.
+     */
     private void handleCoffeeFieldPlacement(FieldModel fieldModel){
         if(!fieldModel.isOccupied()){
             coffeeManager.placeCoffee();
@@ -242,10 +299,19 @@ public class DicePosUpdater {
         }
     }
 
+    /**
+     * Überprüft, ob das angegebene Feld ein Kaffee-Feld ist.
+     *
+     * @param field Das Feld, das überprüft wird.
+     * @return true, wenn es ein Kaffee-Feld ist, andernfalls false.
+     */
     private boolean isCoffeeField(FieldView field) {
         return coffeeManager.coffeeFields.contains(field);
     }
 
+    /**
+     * Setzt die Auswahl zurück.
+     */
     public void resetSelection() {
         System.out.println("Resetting selection");
         selectedDice = null;
@@ -254,6 +320,9 @@ public class DicePosUpdater {
         currentState = State.SELECTING;
     }
 
+    /**
+     * Deaktiviert die Verwendung von Würfeln, nachdem sie platziert wurden.
+     */
     public void disableDice() {
         if(isPilot){
             roundController.setPilotDicePlacedTrue();

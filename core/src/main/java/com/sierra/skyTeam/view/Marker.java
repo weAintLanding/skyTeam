@@ -3,11 +3,24 @@ package com.sierra.skyTeam.view;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Stellt ein Marker-Objekt mit einem Sprite, einem Wert und Koordinaten dar.
+ * Diese Klasse verwaltet die Position, Rotation und Aktualisierungslogik des Markers für Landing-Gear, Flaps und Bremsen.
+ */
 public class Marker {
     private int value;
     Sprite markerSprite;
     float x, y, rotation;
 
+    /**
+     * Erstellt ein Marker-Objekt mit dem angegebenen Sprite, Initialwert, Position und Rotation.
+     *
+     * @param markerSprite die Sprite, die den Marker darstellt
+     * @param initialValue der Anfangswert des Markers
+     * @param x die x-Koordinate des Markers
+     * @param y die y-Koordinate des Markers
+     * @param rotation die Rotation des Markers in Grad
+     */
     public Marker (Sprite markerSprite, int initialValue, float x, float y, float rotation){
         this.markerSprite = markerSprite;
         this.value = initialValue;
@@ -19,6 +32,11 @@ public class Marker {
         this.markerSprite.setScale(0.7F);
     }
 
+    /**
+     * Aktualisiert die Position und Rotation des Markers basierend auf dem aktiven Landing-Gear-Switches.
+     *
+     * @param value der neue Wert, der den Blau-Marker darstellt
+     */
     public void landingUpdate (int value){
         switch(value){
             case 5:
@@ -38,6 +56,11 @@ public class Marker {
         }
     }
 
+    /**
+     * Aktualisiert die Position und Rotation des Markers basierend auf dem aktiven Flap-Switches.
+     *
+     * @param value der neue Wert, der den Orange-Marker darstellt
+     */
     public void flapsUpdate (int value){
         switch(value){
             case 9:
@@ -61,6 +84,11 @@ public class Marker {
         }
     }
 
+    /**
+     * Aktualisiert die Position und Rotation des Markers basierend auf dem aktiven Bremsen-Switches.
+     *
+     * @param value der neue Wert, der den Rote-Marker darstellt
+     */
     public void brakesUpdate(int value){
         switch(value){
             case 2:
@@ -80,6 +108,11 @@ public class Marker {
         }
     }
 
+    /**
+     * Zeichnet die Marker-Sprite mit dem angegebenen {@code SpriteBatch}.
+     *
+     * @param batch Der {@code SpriteBatch}, der zum Rendern verwendet wird.
+     */
     public void draw(SpriteBatch batch){
         markerSprite.draw(batch);
     }

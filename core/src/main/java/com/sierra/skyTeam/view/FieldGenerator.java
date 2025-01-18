@@ -5,6 +5,11 @@ import com.sierra.skyTeam.model.FieldModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Diese Klasse enthält Methoden zum Generieren von verschiedenen Feldern für das Spiel.
+ * Sie umfasst das Erstellen von Feldern für verschiedene Komponenten wie Landing-Gear, Axis,
+ * Flaps und mehr, sowie deren Positionierung.
+ */
 public class FieldGenerator {
     private static final int[] allAllowedValues = {1,2,3,4,5,6};
     static int leftColX = 418; static int rightColX = 815;
@@ -19,9 +24,14 @@ public class FieldGenerator {
     private static List<FieldView> flapsFieldViews;
     private static List<FieldView> brakeFieldViews;
 
+    /**
+     * Generiert eine Liste von Feldern für das Spiel.
+     * Diese Methode kombiniert alle notwendigen Felder in einer Liste.
+     *
+     * @return Eine Liste von FieldView-Objekten, die die Felder repräsentieren.
+     */
     public static List<FieldView> generateFields() {
         List<FieldView> FieldViews = new ArrayList<>();
-        FieldView rerollTokenFieldView = generateRerollTokenField();
         landingGearFieldViews = generateLandingGear();
         flapsFieldViews = generateFlaps();
         pilotAxisFieldView = generatePilotAxisField();
@@ -35,7 +45,6 @@ public class FieldGenerator {
         coffeeFieldViews = generateCoffeeFields();
 
         FieldViews.add(pilotRadio);
-        FieldViews.add(rerollTokenFieldView);
         FieldViews.addAll(copilotRadio);
         FieldViews.addAll(landingGearFieldViews);
         FieldViews.addAll(flapsFieldViews);
@@ -48,16 +57,21 @@ public class FieldGenerator {
         return FieldViews;
     }
 
-    private static FieldView generateRerollTokenField() {
-        FieldModel token = new FieldModel(false, false, false, null);
-        return new FieldView((leftColX+2), 630, token);
-    }
-
+    /**
+     * Generiert das Feld für das Pilot-Radio.
+     *
+     * @return Ein FieldView-Objekt, das das Pilot-Radio darstellt.
+     */
     private static FieldView generatePilotRadio() {
         FieldModel pilotRadioFieldModel = new FieldModel(true, false, false, allAllowedValues);
         return new FieldView(leftColX, 565, pilotRadioFieldModel);
     }
 
+    /**
+     * Generiert das Feld für das Copilot-Radio.
+     *
+     * @return Ein FieldView-Objekt, das das Copilot-Radio darstellt.
+     */
     private static List<FieldView> generateCopilotRadio() {
         FieldModel copilotRadioFieldModel1 = new FieldModel(false, false, false, allAllowedValues);
         FieldModel copilotRadioFieldModel2 = new FieldModel(false, false, false, allAllowedValues);
@@ -67,6 +81,11 @@ public class FieldGenerator {
         return copilotRadio;
     }
 
+    /**
+     * Generiert die Felder für die Landing-Gear.
+     *
+     * @return Eine Liste von FieldView-Objekten, die die Landing-Gear-Felder darstellen.
+     */
     private static List<FieldView> generateLandingGear(){
         List<FieldView> landingGear = new ArrayList<>();
         int [] allowedValues1 = {1,2};
@@ -81,6 +100,11 @@ public class FieldGenerator {
         return landingGear;
     }
 
+    /**
+     * Generiert die Felder für die Flaps.
+     *
+     * @return Eine Liste von FieldView-Objekten, die die Flaps-Felder darstellen.
+     */
     private static List<FieldView> generateFlaps(){
         List<FieldView> flaps = new ArrayList<>();
         int [] allowedValues1 = {1,2};
@@ -110,42 +134,51 @@ public class FieldGenerator {
         return flaps;
     }
 
+    /**
+     * Generiert das Feld für die Pilot-Axis.
+     *
+     * @return Eine Liste von FieldView-Objekten, die das Pilot-Axis-Feld darstellen.
+     */
     private static FieldView generatePilotAxisField() {
         FieldModel pilotAxisFieldModel = new FieldModel(true, false, false, allAllowedValues);
         return new FieldView(493, 555, pilotAxisFieldModel);
     }
 
+    /**
+     * Generiert das Feld für die Copilot-Axis.
+     *
+     * @return Eine Liste von FieldView-Objekten, die das Copilot-Axis-Feld darstellen.
+     */
     private static FieldView generateCopilotAxisField() {
         FieldModel copilotAxisFieldModel = new FieldModel(false, false, false, allAllowedValues);
         return new FieldView(740, 555, copilotAxisFieldModel);
     }
 
+    /**
+     * Generiert das Feld für den Throttle.
+     *
+     * @return Eine Liste von FieldView-Objekten, die das Pilot-Throttle-Feld darstellen.
+     */
     private static FieldView generatePilotThrottleField() {
         FieldModel pilotThrottleFieldModel = new FieldModel(true, false, false, allAllowedValues);
         return new FieldView(543,315, pilotThrottleFieldModel);
     }
 
+    /**
+     * Generiert das Feld für den Throttle.
+     *
+     * @return Eine Liste von FieldView-Objekten, die das Copilot-Throttle-Feld darstellen.
+     */
     private static FieldView generateCopilotThrottleField() {
         FieldModel copilotThrottleFieldModel = new FieldModel(false, false, false, allAllowedValues);
         return new FieldView(690,315, copilotThrottleFieldModel);
     }
 
-    public static FieldView getPilotAxisFieldView() {
-        return pilotAxisFieldView;
-    }
-
-    public static FieldView getCopilotAxisFieldView() {
-        return copilotAxisFieldView;
-    }
-
-    public static FieldView getPilotThrottleFieldView() {
-        return pilotThrottleFieldView;
-    }
-
-    public static FieldView getCopilotThrottleFieldView(){
-        return copilotThrottleFieldView;
-    }
-
+    /**
+     * Generiert die Felder für die Bremsen.
+     *
+     * @return Eine Liste von FieldView-Objekten, die die Bremsen-Felder darstellen.
+     */
     private static List<FieldView> generateBrakeFields() {
         List<FieldView> brakeFieldViews = new ArrayList<>();
         int[] allowedValues1 = {2};
@@ -169,6 +202,11 @@ public class FieldGenerator {
         return brakeFieldViews;
     }
 
+    /**
+     * Generiert die Felder für den Kaffee.
+     *
+     * @return Eine Liste von FieldView-Objekten, die die Kaffee-Felder darstellen.
+     */
     private static List<FieldView> generateCoffeeFields(){
         FieldModel coffeeFieldModel1 = new FieldModel(false, true, false, allAllowedValues);
         FieldModel coffeeFieldModel2 = new FieldModel(false, true, false, allAllowedValues);
@@ -180,6 +218,47 @@ public class FieldGenerator {
         return coffeeFieldViews;
     }
 
+    /**
+     * Gibt das Pilot-Axis-Feld zurück.
+     *
+     * @return Eine `FieldView`-Objekt, das das Pilot-Axis-Feld darstellt.
+     */
+    public static FieldView getPilotAxisFieldView() {
+        return pilotAxisFieldView;
+    }
+
+    /**
+     * Gibt das Copilot-Axis-Feld zurück.
+     *
+     * @return Eine `FieldView`-Objekt, das das Copilot-Axis-Feld darstellt.
+     */
+    public static FieldView getCopilotAxisFieldView() {
+        return copilotAxisFieldView;
+    }
+
+    /**
+     * Gibt das Pilot-Throttle-Feld zurück.
+     *
+     * @return Eine `FieldView`-Objekt, das das Pilot-Throttle-Feld darstellt.
+     */
+    public static FieldView getPilotThrottleFieldView() {
+        return pilotThrottleFieldView;
+    }
+
+    /**
+     * Gibt das Copilot-Throttle-Feld zurück.
+     *
+     * @return Eine `FieldView`-Objekt, das das Copilot-Throttle-Feld darstellt.
+     */
+    public static FieldView getCopilotThrottleFieldView(){
+        return copilotThrottleFieldView;
+    }
+
+    /**
+     * Gibt die Kaffeefelder zurück.
+     *
+     * @return Eine Liste von `FieldView`-Objekten, die die Kaffeefelder darstellen.
+     */
     public static List<FieldView> getCoffeeFieldViews() {
         if(coffeeFieldViews == null) {
             System.out.println("It dont work");
@@ -187,22 +266,47 @@ public class FieldGenerator {
         return coffeeFieldViews;
     }
 
+    /**
+     * Gibt die Landing-Gear-Felder zurück.
+     *
+     * @return Eine Liste von `FieldView`-Objekten, die die Landing-Gear-Felder darstellen.
+     */
     public static List<FieldView> getLandingGearFieldViews() {
         return landingGearFieldViews;
     }
 
+    /**
+     * Gibt die Flaps-Felder zurück.
+     *
+     * @return Eine Liste von `FieldView`-Objekten, die die Flaps-Felder darstellen.
+     */
     public static List<FieldView> getFlapsFieldViews() {
         return flapsFieldViews;
     }
 
+    /**
+     * Gibt die Liste der Bremse-Felder zurück.
+     *
+     * @return Eine Liste von `FieldView`-Objekten, die die Bremse-Felder darstellen.
+     */
     public static List<FieldView> getBrakeFieldViews() {
         return brakeFieldViews;
     }
 
+    /**
+     * Gibt das Pilot-Radio-Feld zurück.
+     *
+     * @return Eine `FieldView`-Objekt, das das Pilot-Radio-Feld darstellt.
+     */
     public static FieldView getPilotRadio() {
         return pilotRadio;
     }
 
+    /**
+     * Gibt die Liste der Copilot-Radio-Felder zurück.
+     *
+     * @return Eine Liste von `FieldView`-Objekten, die die Copilot-Radio-Felder darstellen.
+     */
     public static List<FieldView> getCopilotRadio() {
         return copilotRadio;
     }
