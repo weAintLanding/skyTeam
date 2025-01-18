@@ -61,7 +61,6 @@ public class DiceTest {
     }
 
 
-     //Test to ensure reroll actually changes the dice value in most cases.
 
    
 }

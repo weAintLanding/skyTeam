@@ -64,12 +64,9 @@ public class FieldTest {
 
     @Test
     public void testFieldModelPlaceDice() {
-        // Mock FieldView bounds so the dice can be placed
         when(mockFieldView.getBounds()).thenReturn(new com.badlogic.gdx.math.Rectangle(0, 0, 100, 100));
-        // Mock dice sprite
         when(mockDice.getDiceSprite()).thenReturn(mock(com.badlogic.gdx.graphics.g2d.Sprite.class));
 
-        // Place dice and verify
         boolean result = fieldModel.placeDice(mockDice, false, mockFieldView);
         assertTrue(result);
         assertTrue(fieldModel.isOccupied());
@@ -78,15 +75,12 @@ public class FieldTest {
 
     @Test
     public void testFieldModelRemoveDice() {
-        // Preparation
         when(mockFieldView.getBounds()).thenReturn(new com.badlogic.gdx.math.Rectangle(0, 0, 100, 100));
         when(mockDice.getDiceSprite()).thenReturn(mock(com.badlogic.gdx.graphics.g2d.Sprite.class));
         fieldModel.placeDice(mockDice, false, mockFieldView);
 
-        // Act
         fieldModel.removeDice();
 
-        // Assert
         assertFalse(fieldModel.isOccupied());
         assertNull(fieldModel.getPlacedDice());
     }
