@@ -60,7 +60,6 @@ public class GameModelIntegrationTest {
         // Verify dice changed
         assertFalse(java.util.Arrays.equals(initialDiceValues, newDiceValues));
         
-        // Verify reroll consumed
     }
 
     private int[] getDiceValues(Dice[] dice) {
