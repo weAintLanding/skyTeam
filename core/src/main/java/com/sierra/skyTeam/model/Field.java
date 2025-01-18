@@ -13,7 +13,11 @@ public class Field {
         this.diceValue = -1;
         this.switchLight = false;
     }
+    public void setOwner(Players player) {
 
+        this.owner = player;
+
+    }
     public boolean placeDice(int diceValue) {
         if (occupied) {
             System.out.println("fieldView is already occupied. Cannot place another die.");

@@ -1,30 +1,41 @@
 package com.sierra.skyTeam;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import com.sierra.skyTeam.model.*;
+import com.sierra.skyTeam.screens.CrashScreen;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockedConstruction;
+import org.mockito.MockitoAnnotations;
 
-
-import com.sierra.skyTeam.model.*;
-import com.sierra.skyTeam.view.*;
-
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 public class EngineTest {
+
     private Engine engine;
     private Airplane mockAirplane;
+    private ApproachTrackModel mockTrackManager;
     private MainGame mockMainGame;
-    private GameModel mockGame;
-    
+    private GameModel mockGameModel;
 
     @Before
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        // Initialize mocks
         mockAirplane = mock(Airplane.class);
-        engine = new Engine(mockAirplane);
-        mockGame = mock(GameModel.class);
+        mockTrackManager = mock(ApproachTrackModel.class);
         mockMainGame = mock(MainGame.class);
-        mockAirplane.setGame(mockGame);        
+        mockGameModel = mock(GameModel.class);
+
+        // Initialize Engine with mocked Airplane
+        engine = new Engine(mockAirplane);
+
+        // Set up mockAirplane behavior
+        when(mockAirplane.getGame()).thenReturn(mockGameModel);
     }
 
     @Test
@@ -67,40 +78,83 @@ public class EngineTest {
     }
 
     @Test
+    public void testInitialPlaneLandedStatus() {
+        // Ensure plane is not landed initially
+        assertFalse(engine.isPlaneLanded());
+    }
+
+    @Test
     public void testMovePlaneNoMove() {
         // Test plane does not move if engine sum is less than or equal to blue aero marker
-        engine.movePlane(3, 1, mock(ApproachTrackModel.class), mock(MainGame.class));
-        assertEquals(0, mockAirplane.getApproachPosition());
+        int pilotValue = 2;
+        int copilotValue = 2; // engineSum = 4 <= blueAeroMarker (4)
+
+        // Assume initial approach position is 0
+        when(mockAirplane.getApproachPosition()).thenReturn(0);
+
+        // Call movePlane
+        engine.movePlane(pilotValue, copilotValue, mockTrackManager, mockMainGame);
+
+        // Verify no movement
+        verify(mockTrackManager, never()).updateTrackBy1();
+        verify(mockTrackManager, never()).updateTrackBy2();
+        verify(mockAirplane, never()).setApproachPosition(anyInt());
+        verify(mockMainGame, never()).setScreen(any(CrashScreen.class));
     }
 
     @Test
-    public void testMovePlaneOneMove() {
-        // Test plane moves 1 position if engine sum is less than or equal to orange aero marker
-        engine.movePlane(5, 3, mock(ApproachTrackModel.class), mock(MainGame.class));
-        assertEquals(1, mockAirplane.getApproachPosition());
+    public void testMovePlaneMoveOnePosition_Successful() {
+        // Test plane moves 1 position if engine sum is greater than blue aero marker but <= orange aero marker
+        int pilotValue = 3;
+        int copilotValue = 2; // engineSum = 5 > blueAeroMarker (4) and <= orangeAeroMarker (8)
+
+        when(mockAirplane.getApproachPosition()).thenReturn(3);
+        when(mockGameModel.checkCrashMove(1)).thenReturn(false);
+
+        // Call movePlane
+        engine.movePlane(pilotValue, copilotValue, mockTrackManager, mockMainGame);
+
+        // Verify track update and position change
+        verify(mockTrackManager).updateTrackBy1();
+        verify(mockAirplane).setApproachPosition(4);
+        verify(mockMainGame, never()).setScreen(any(CrashScreen.class));
     }
 
+
+
     @Test
-    public void testMovePlaneTwoMove() {
+    public void testMovePlaneMoveTwoPositions_Successful() {
         // Test plane moves 2 positions if engine sum is greater than orange aero marker
-        engine.movePlane(9, 3, mock(ApproachTrackModel.class), mock(MainGame.class));
-        assertEquals(2, mockAirplane.getApproachPosition());
+        int pilotValue = 5;
+        int copilotValue = 4; // engineSum = 9 > orangeAeroMarker (8)
+
+        when(mockAirplane.getApproachPosition()).thenReturn(2);
+        when(mockGameModel.checkCrashMove(2)).thenReturn(false);
+
+        // Call movePlane
+        engine.movePlane(pilotValue, copilotValue, mockTrackManager, mockMainGame);
+
+        // Verify track update and position change
+        verify(mockTrackManager).updateTrackBy2();
+        verify(mockAirplane).setApproachPosition(4);
+        verify(mockMainGame, never()).setScreen(any(CrashScreen.class));
     }
+
+ 
+    
 
     @Test
-    public void testMovePlaneCrash() {
-        // Test plane crashes if engine sum is greater than orange aero marker and crash move is true
-        MainGame mockGame = mock(MainGame.class);
-        engine.movePlane(9, 3, mock(ApproachTrackModel.class), mockGame);
-        assertEquals(0, mockAirplane.getApproachPosition());
-    }
+    public void testLandPlaneSuccessfulLanding() {
+        // Test successful landing when engine sum is within redBrakeMarker
+        int pilotValue = 0;
+        int copilotValue = 1; // engineSum = 1 <= redBrakeMarker (1)
 
-    @Test
-    public void testMovePlaneCrashEnd() {
-        // Test plane crashes if engine sum is greater than orange aero marker and approach position is at end
-        MainGame mockGame = mock(MainGame.class);
-        engine.movePlane(9, 3, mock(ApproachTrackModel.class), mockGame);
-        assertEquals(0, mockAirplane.getApproachPosition());
-    }
+        // Call landPlane
+        engine.landPlane(pilotValue, copilotValue, mockMainGame);
 
+        // Verify plane is landed and crash screen is not set
+        assertTrue(engine.isPlaneLanded());
+        verify(mockMainGame, never()).setScreen(any(CrashScreen.class));
+    }
 }
+

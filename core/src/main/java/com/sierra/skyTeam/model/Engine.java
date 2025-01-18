@@ -9,6 +9,7 @@ public class Engine {
     private int orangeAeroMarker = 8;
     private int redBrakeMarker = 1;
     private boolean planeLanded;
+    private ApproachTrackModel trackManager;
 
     public Engine(Airplane airplane) {
         this.airplane = airplane;
@@ -28,6 +29,12 @@ public class Engine {
         return orangeAeroMarker;
     }
 
+    public void setTrackManager(ApproachTrackModel trackManager) {
+
+        this.trackManager = trackManager;
+
+    }
+
     public void setOrangeAeroMarker(int orangeAeroMarker) {
         this.orangeAeroMarker = orangeAeroMarker;
     }
@@ -39,6 +46,8 @@ public class Engine {
     public void setRedBrakeMarker(int redBrakeMarker) {
         this.redBrakeMarker = redBrakeMarker;
     }
+
+    
 
     public void movePlane(int pilotValue, int copilotValue, ApproachTrackModel trackManager, MainGame game) {
         int engineSum = pilotValue + copilotValue;

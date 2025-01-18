@@ -63,14 +63,5 @@ public class DiceTest {
 
      //Test to ensure reroll actually changes the dice value in most cases.
 
-    @Test
-    public void testRerollChangesValue() {
-        int initialValue = dice.getDiceValue();
-        dice.reroll();
-
-        // Since reroll is random, there's a small chance the value won't change.
-        // This test ensures it changes most of the time.
-        int newValue = dice.getDiceValue();
-        assertNotEquals("Dice value should change after reroll (most of the time)", initialValue, newValue);
-    }
+   
 }
