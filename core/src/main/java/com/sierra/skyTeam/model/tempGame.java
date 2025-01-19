@@ -2,6 +2,11 @@ package com.sierra.skyTeam.model;
 
 import java.util.Scanner;
 
+/**
+ * Diese Klasse wurde für die Nicht-GUI-Version des Spiels (Terminal-Version) verwendet.
+ * Diese Klasse verwaltet das Spiel, einschließlich des Startens des Spiels, der Anzeige von Optionen für den aktuellen Spieler
+ * und der Verarbeitung von Benutzeraktionen.
+ */
 public class tempGame {
     GameModel gameModel;
     private Airplane airplane;
@@ -11,11 +16,20 @@ public class tempGame {
     boolean throttleChanged = false;
     boolean endOfGame = false;
 
+    /**
+     * Startet das Spiel und zeigt die Spieloptionen für den aktuellen Spieler an.
+     */
     public void startGame(){
         //gameModel = new GameModel();
         printOptions(gameModel);
     }
 
+    /**
+     * Zeigt die Optionen für den aktuellen Spieler an, basierend auf dessen Rolle (Pilot oder Co-Pilot).
+     * Verarbeitet die Eingabe des Spielers und führt die entsprechende Aktion aus.
+     *
+     * @param gameModel Das GameModel-Objekt, das die Spiellogik und -daten verwaltet.
+     */
     public void printOptions(GameModel gameModel){
         pilot = gameModel.getPilot();
         copilot = gameModel.getCoPilot();

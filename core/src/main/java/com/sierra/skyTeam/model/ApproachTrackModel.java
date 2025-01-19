@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.sierra.skyTeam.view.ApproachAirplaneView;
 import com.sierra.skyTeam.view.Track;
 
+/**
+ * Die Klasse {@code ApproachTrackModel} enthält Informationen für die Darstellung und Logik der ApproachTrack.
+ * Sie enthält Informationen über die Position des Trackers, Flugzeuge und die Interaktion mit der ApproachTrack.
+ */
 public class ApproachTrackModel {
     Track approachTrack;
     ApproachAirplaneView[] airplaneViews;
@@ -16,6 +20,11 @@ public class ApproachTrackModel {
     float approachX = 78;
     float approachCurrentY;
     float offset = 60;
+
+    /**
+     * Konstruktor für die Klasse {@code ApproachTrackModel}.
+     * Initialisiert den ApproachTrack-Tracker, die Positionen und die Flugzeugansichten.
+     */
 
     public ApproachTrackModel(){
         airplaneViews = new ApproachAirplaneView[9];
@@ -30,7 +39,11 @@ public class ApproachTrackModel {
         approachCurrentY = yPositions[currentPosition];
         approachTrack.setTrackerPosition(approachX, approachCurrentY);
     }
-    //will be used for throttle logic
+
+    /**
+     * Aktualisiert den Tracker um eine Position nach vorne.
+     * Diese Methode wird für Logiken wie Throttle{@link Engine} verwendet.
+     */
     public void updateTrackBy1(){
         int newPosition = currentPosition + 1;
         if(newPosition >= 0 && newPosition < yPositions.length) {
@@ -42,6 +55,10 @@ public class ApproachTrackModel {
         }
     }
 
+    /**
+     * Aktualisiert den Tracker um zwei Positionen nach vorne.
+     * Diese Methode wird ebenfalls für Logiken wie Throttle{@link Engine} verwendet.
+     */
     public void updateTrackBy2(){
         int newPosition = currentPosition + 2;
         if(newPosition >= 0 && newPosition < yPositions.length) {
@@ -53,6 +70,9 @@ public class ApproachTrackModel {
         }
     }
 
+    /**
+     * Setzt die Flugzeuge an ihre Startpositionen auf der ApproachTrack.
+     */
     public void setAirplanes() {
         airplaneViews[0].drawAirplaneAt(265, yPositions[2]+offset);
         airplaneViews[1].drawAirplaneAt(250, yPositions[3]+offset);
@@ -68,8 +88,15 @@ public class ApproachTrackModel {
             airplaneView.setRotation(randomRotation);
         }
     }
-    //this method should not be run in draw/render or else all sprites at the position will be removed
-    //or we add a boolean to remove only one
+
+    /**
+     * Entfernt ein Flugzeug von einer bestimmten Position der ApproachTrack.
+     *
+     * @param trackPos Die Position der ApproachTrack.
+     * @param gameModel Das GameModel, das die Logik der Annäherungsspur verwaltet.
+     */
+    /*this method should not be run in draw/render or else all sprites at the position will be removed
+    or we add a boolean to remove only one*/
     public void removeAirplane(int trackPos, GameModel gameModel) {
         int adjustedPos = trackPos - 1;
 
@@ -87,10 +114,20 @@ public class ApproachTrackModel {
         }
     }
 
+    /**
+     * Gibt die aktuelle Position des Trackers zurück.
+     *
+     * @return Die aktuelle Position des Trackers.
+     */
     public int getCurrentPosition() {
         return currentPosition;
     }
 
+    /**
+     * Zeichnet den ApproachTrack-Tracker und die Flugzeuge auf den Bildschirm.
+     *
+     * @param batch Der SpriteBatch, der für das Rendering verwendet wird.
+     */
     public void draw(SpriteBatch batch) {
         approachTrack.draw(batch);
         for(int i = 0; i < airplaneViews.length; i++){

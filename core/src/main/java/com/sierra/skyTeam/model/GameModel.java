@@ -5,6 +5,11 @@ import com.sierra.skyTeam.screens.CrashScreen;
 
 import java.util.Scanner;
 
+/**
+ * Die {@code GameModel}-Klasse verwaltet die Spiellogik und den Zustand des Spiels.
+ * Sie stellt sicher, dass alle Spielfunktionen korrekt ausgeführt werden,
+ * einschließlich der Verwaltung von Spielern, Würfeln, Flugzeugen und verschiedenen Bedingungen im Spiel.
+ */
 public class GameModel {
     MainGame game;
     private final Airplane airplane;
@@ -18,6 +23,12 @@ public class GameModel {
     boolean throttleChanged;
     boolean endOfGame;
 
+    /**
+     * Konstruktor für die {@code GameModel}-Klasse.
+     * Initialisiert das Spielmodell und setzt die Standardwerte für Flugzeug, Piloten, Co-Piloten, Wiederholungen und Tracks.
+     *
+     * @param game Das MainGame-Objekt, das das Spiel steuert.
+     */
     public GameModel(MainGame game) {
         this.game = game;
         this.airplane = new Airplane();
@@ -34,42 +45,92 @@ public class GameModel {
         airplane.setGame(this);
     }
 
+    /**
+     * Gibt den aktuellen Piloten zurück.
+     *
+     * @return Der Pilot.
+     */
     public Pilot getPilot() {
         return pilot;
     }
+    /**
+     * Gibt den aktuellen Co-Piloten zurück.
+     *
+     * @return Der Co-Pilot.
+     */
     public CoPilot getCoPilot() {
         return copilot;
     }
+    /**
+     * Gibt das Flugzeug zurück.
+     *
+     * @return Das Airplane.
+     */
     public Airplane getAirplane() {
         return airplane;
     }
 
+    /**
+     * Gibt den aktuellen Spieler zurück.
+     *
+     * @return Der aktuelle Spieler.
+     */
     public Players getCurrentPlayer() {
         return currentPlayer;
     }
+    /**
+     * Wechselt den aktuellen Spieler (Pilot oder Co-Pilot).
+     */
     public void switchPlayer() {
         currentPlayer = (currentPlayer == pilot) ? copilot : pilot;
     }
 
+    /**
+     * Gibt die ApproachTrack zurück.
+     *
+     * @return Die ApproachTrack.
+     */
     public ApproachTrack getApproachTrack() {
         return approachTrack;
     }
+    /**
+     * Gibt die AltitudeTrack zurück.
+     *
+     * @return Die AltitudeTrack.
+     */
     public AltitudeTrack getAltitudeTrack() {
         return altitudeTrack;
     }
 
+    /**
+     * Erhöht die Anzahl der Reroll-Token um eins.
+     */
     public void setRerollsAvailable() {
         this.rerollsAvailable++;
     }
+    /**
+     * Verringert die Anzahl der Reroll-Token um eins, wenn Token verfügbar sind.
+     */
     public void decreaseRerollsAvailable() {
         if (rerollsAvailable > 0) {
             rerollsAvailable--;
         }
     }
+    /**
+     * Gibt die Anzahl der verfügbaren Rerolls zurück.
+     *
+     * @return Die Anzahl der verfügbaren Rerolls.
+     */
     public int getRerollsAvailable() {
         return rerollsAvailable;
     }
 
+    /**
+     * Zählt die Anzahl der platzierten Würfel in einer Liste von Würfeln.
+     *
+     * @param diceList Die Liste von Würfeln.
+     * @return Die Anzahl der platzierten Würfel.
+     */
     public int countDicePlaced(Dice[] diceList){
         int dicePlaced = 0;
         for (Dice dice : diceList) {
@@ -79,14 +140,28 @@ public class GameModel {
         }
         return dicePlaced;
     }
-
+    /**
+     * Gibt die Anzahl der vom Piloten platzierten Würfel zurück.
+     *
+     * @return Die Anzahl der vom Piloten platzierten Würfel.
+     */
     public int pilotDicePlaced() {
         return countDicePlaced(pilot.getDiceList());
     }
+    /**
+     * Gibt die Anzahl der vom Co-Piloten platzierten Würfel zurück.
+     *
+     * @return Die Anzahl der vom Co-Piloten platzierten Würfel.
+     */
     public int copilotDicePlaced() {
         return countDicePlaced(copilot.getDiceList());
     }
 
+    /**
+     * Überprüft, ob ein Absturz vorliegt (z.B. wenn die Flughöhe unter null liegt).
+     *
+     * @return {@code true} wenn ein Absturz vorliegt, sonst {@code false}.
+     */
     public boolean checkCrash() {
         if (airplane.getAltitude() < 0) {
             System.out.println("Crash: Altitude below safe levels");
@@ -95,6 +170,12 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Überprüft, ob ein Absturz beim Bewegen des Flugzeugs vorliegt.
+     *
+     * @param moves Die Anzahl der Bewegungen.
+     * @return {@code true} wenn ein Absturz vorliegt, sonst {@code false}.
+     */
     public boolean checkCrashMove(int moves) {
         if(approachTrack.hasAirplanesAt(airplane.getApproachPosition())){
             return true;
@@ -107,6 +188,11 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Überprüft, ob der Flugzeug-AxisWert außerhalb des sicheren Bereichs liegt.
+     *
+     * @return {@code true} wenn die Axis außerhalb des sicheren Bereichs liegt, sonst {@code false}.
+     */
     public boolean checkCrashAxis(){
         if (airplane.getAxis().getAxisValue() < -2 || airplane.getAxis().getAxisValue() > 2) {
             return true;
@@ -114,12 +200,21 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Überprüft, ob alle Bedingungen für die Runde erfüllt sind und wechselt
+     * zum Absturzbildschirm, wenn dies nicht der Fall ist.
+     */
     public void checkRoundConditions(){
         if(!pilot.isAxis() || !copilot.isAxis() || !pilot.isThrottle() || !copilot.isThrottle()){
             game.setScreen(new CrashScreen(game));
         }
     }
 
+    /**
+     * Überprüft, ob der Spieler gewonnen hat, basierend auf den Landebedingungen.
+     *
+     * @return {@code true} wenn die Landebedingungen erfüllt sind, sonst {@code false}.
+     */
     public boolean checkWin() {
         if (airplane.getApproachPosition() == 6 // Final position in the approach track
                 && airplane.getAltitude() == 0 // Altitude must be 0
@@ -132,10 +227,56 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Setzt alle Spielkomponenten zurück und bereitet das Spiel für die nächste Runde vor.
+     * Dies umfasst das Zurücksetzen der Radios, das Entfernen von Würfeln von den Landeklappen-, Fahrwerks- und Bremsfeldern,
+     * das Zurücksetzen von Axis und Throttle, das Rollen von Würfeln für Pilot und Co-Pilot sowie das Überprüfen des Spielstatus.
+     */
+    public void roundReset(){
+        //Reset Radio Slots
+
+        this.getPilot().clearRadio();
+        this.getCoPilot().clearRadio();
+
+        //Remove Dice from Landing Gear, Flaps, Brakes
+
+        this.getAirplane().getLandingGear().clearField();
+        this.getAirplane().getFlaps().clearField();
+        this.getAirplane().getBrakes().clearField();
+
+        axisChanged = false;
+        throttleChanged = false;
+
+        //Engine axisModel
+
+        this.getPilot().clearSlots();
+        this.getCoPilot().clearSlots();
+
+        //Altitude and Reroll
+
+        this.getAltitudeTrack().descend();
+        pilot.rollDice();
+        copilot.rollDice();
+
+        if(this.checkEndOfGame()) endOfGame = true;
+    }
+
+    //Dies sind Funktionen, die für die Nicht-GUI-Version des Spiels (Terminal-Version) verwendet werden.
+
+    /**
+     * Überprüft, ob das Spiel zu Ende ist, basierend auf der Flughöhe und der Position des Flugzeugs.
+     *
+     * @return {@code true} wenn das Spiel zu Ende ist, sonst {@code false}.
+     */
     public boolean checkEndOfGame() {
         return altitudeTrack.getCurrentAltitude() == 0 && airplane.getApproachPosition() == 6;
     }
 
+    /**
+     * Überprüft die Landebedingungen des Flugzeugs.
+     *
+     * @return {@code true} wenn alle Landebedingungen erfüllt sind, sonst {@code false}.
+     */
     public boolean checkLandingConditions() {
         if (airplane.getLandingGear().getActivatedLandingGearFields() < 3) {
             System.out.println("Landing conditions not met: Landing gear incomplete.");
@@ -156,6 +297,9 @@ public class GameModel {
         return true;
     }
 
+    /**
+     * Führt eine Rundenprüfung durch, um sicherzustellen, dass alle Aktionen der Spieler korrekt ausgeführt wurden.
+     */
     public void turnChecker(){
         if(pilot.isAxis() && copilot.isAxis() && !axisChanged){
             //airplane.getAxis().changeAxis(pilot,copilot);
@@ -175,6 +319,12 @@ public class GameModel {
         }
     }
 
+    /**
+     * Verwaltet die Interaktion des Spielers mit den Würfeln und Kaffeetokens.
+     *
+     * @param input Das Scanner-Objekt für die Eingabe des Spielers.
+     * @return Der Würfel, der vom Spieler gewählt wurde.
+     */
     public Dice diceAndCoffee(Scanner input) {
         while(true) {
             System.out.print("Enter dice to play: ");
@@ -213,6 +363,14 @@ public class GameModel {
         }
     }
 
+    /**
+     * Verarbeitet die Brakes-komponente des Spiels, indem ein Würfel auf eines der verfügbaren Felder gesetzt wird.
+     * Der Spieler wählt das Feld, auf dem er den Würfel platzieren möchte.
+     *
+     * @param input Das Scanner-Objekt für die Eingabe des Spielers.
+     * @param dice Das Würfeln, das auf ein Feld gesetzt wird.
+     * @return {@code true}, wenn der Würfel erfolgreich platziert wurde, andernfalls {@code false}.
+     */
     public boolean brakes(Scanner input, Dice dice){
         int diceValue = dice.getDiceValue();
         airplane.getBrakes().displayBrakeFields();
@@ -236,6 +394,14 @@ public class GameModel {
         }
     }
 
+    /**
+     * Verarbeitet die Klappen- und Fahrwerkskomponenten des Spiels.
+     * Der Spieler wählt ein Feld für das Platzieren des Würfels auf den Klappen oder das Fahrwerk, je nachdem, ob er Pilot oder Co-Pilot ist.
+     *
+     * @param input Das Scanner-Objekt für die Eingabe des Spielers.
+     * @param dice Das Würfeln, das auf ein Feld gesetzt wird.
+     * @return {@code true}, wenn der Würfel erfolgreich platziert wurde, andernfalls {@code false}.
+     */
     public boolean gearAndFlaps(Scanner input, Dice dice) {
         int diceValue = dice.getDiceValue();
         Players currentPlayer = this.getCurrentPlayer();
@@ -284,36 +450,6 @@ public class GameModel {
         }
         return false;
     }
-
-    public void roundReset(){
-        //Reset Radio Slots
-
-        this.getPilot().clearRadio();
-        this.getCoPilot().clearRadio();
-
-        //Remove Dice from Landing Gear, Flaps, Brakes
-
-        this.getAirplane().getLandingGear().clearField();
-        this.getAirplane().getFlaps().clearField();
-        this.getAirplane().getBrakes().clearField();
-
-        axisChanged = false;
-        throttleChanged = false;
-
-        //Engine axisModel
-
-        this.getPilot().clearSlots();
-        this.getCoPilot().clearSlots();
-
-        //Altitude and Reroll
-
-        this.getAltitudeTrack().descend();
-        pilot.rollDice();
-        copilot.rollDice();
-
-        if(this.checkEndOfGame()) endOfGame = true;
-    }
-
 }
 
 
