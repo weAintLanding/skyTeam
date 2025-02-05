@@ -4,48 +4,90 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
+/**
+ * Die {@code Players}-Klasse stellt einen Spieler im Spiel dar.
+ * Sie verwaltet die Würfelergebnisse des Spielers, die Slots für die Steuerung (Axis, Throttle(Engine)) und Radiofelder.
+ * Die Klasse ermöglicht es dem Spieler, Würfel zu rollen, Würfel neu zu werfen, und mit verschiedenen Spielmechanismen zu interagieren.
+ */
 public class Players {
-    private final Game game;
-    private final List<Dice> diceRolls;
+    private final GameModel gameModel;
+    private final Dice[] diceRolls;
     private Integer axisSlot = null;
     private Integer throttle = null;
-    //private int radioSlots;
-    //private Integer radio = null;
-    //private static final int maxRadioSlots = 2;
     protected int radioSlots;
     protected Field[] radioPlayer;
-/*    private static int coffee = 0;
-    private static final int maxCoffee = 3;*/
     Random random = new Random();
 
-
-    public Players(Game game) {
-        this.game = game;
-        diceRolls = new ArrayList<>();
+    /**
+     * Konstruktor für die {@code Players}-Klasse. Initialisiert das Player-objekt und würfelt die Würfel.
+     *
+     * @param gameModel Das Spielmodell, das mit diesem Spieler verbunden ist.
+     */
+    public Players(GameModel gameModel) {
+        this.gameModel = gameModel;
+        diceRolls = new Dice[4];
+        this.rollDice();
     }
 
+    /**
+     * Gibt das Airplane-Model des Spiels zurück.
+     *
+     * @return Das Airplane-Model.
+     */
     public Airplane getAirplane(){
-        return game.getAirplane();
+        return gameModel.getAirplane();
     }
 
+    /**
+     * Würfelt die Würfel des Spielers.
+     */
     public void rollDice () {
         for(int i = 0; i < 4; i++){
-            diceRolls.add(new Dice());
+            diceRolls[i] = new Dice();
         }
     }
-    public String getDiceRolls () {
+    /**
+     * Gibt eine Liste der Würfel des Spielers zurück.
+     *
+     * @return Eine Liste der {@link Dice}-Objekte.
+     */
+    public Dice[] getDiceList() {
+        return diceRolls;
+    }
+    /**
+     * Gibt eine String-Darstellung der Würfelergebnisse des Spielers zurück.
+     *
+     * @return Eine String-Darstellung der Würfelergebnisse.
+     */
+    public String getDiceRollsString() {
         List<Integer> diceArray = new ArrayList<>();
-        for(int i = 0; i < diceRolls.size(); i++){
-            diceArray.add(diceRolls.get(i).getDiceValue());
+        for(Dice dice : diceRolls){
+            if(dice != null){
+                diceArray.add(dice.getDiceValue());
+            }
         }
         return diceArray.toString();
     }
+
+    /**
+     * Überprüft, ob ein bestimmter Würfelwert vorhanden ist.
+     *
+     * @param diceValue Der zu überprüfende Würfelwert.
+     * @return {@code true}, wenn der Würfelwert vorhanden ist, sonst {@code false}.
+     */
     public boolean isDiceThere (int diceValue){
         for(Dice dice : diceRolls){
-            if(dice.getDiceValue() == diceValue) return true;
+            if(dice != null && dice.getDiceValue() == diceValue) return true;
         }
         return false;
     }
+
+    /**
+     * Gibt das {@link Dice}-Objekt für einen bestimmten Würfelwert zurück.
+     *
+     * @param diceValue Der gesuchte Würfelwert.
+     * @return Das {@link Dice}-Objekt oder {@code null}, wenn es nicht gefunden wurde.
+     */
     public Dice getDice (int diceValue){
         for(Dice dice : diceRolls){
             if(dice.getDiceValue() == diceValue){
@@ -54,139 +96,141 @@ public class Players {
         }
         return null;
     }
+    /**
+     * Entfernt einen Würfel mit einem bestimmten Wert.
+     *
+     * @param diceValue Der zu entfernende Würfelwert.
+     */
     public void removeDice (int diceValue){
         for (Dice dice : diceRolls){
-            if (dice.getDiceValue() == diceValue){
-                diceRolls.remove(dice);
+            if (dice != null && dice.getDiceValue() == diceValue){
+                dice = null;
                 return;
             }
         }
     }
+    /**
+     * Würfelt die Würfel des Spielers neu, wenn noch Reroll-Token verfügbar sind.
+     */
     public void reroll() {
-        if (game.getRerollsAvailable() > 0){
-            for (int i = 0; i < diceRolls.size(); i++) {
-                Dice dice = diceRolls.get(i);
-                int newValue = random.nextInt(6)+1;
-                dice.setDiceValue(newValue);
+        if (gameModel.getRerollsAvailable() > 0){
+            for (int i = 0; i < diceRolls.length; i++) {
+                if (diceRolls[i] != null) {
+                    int newValue = random.nextInt(6)+1;
+                    diceRolls[i].setDiceValue(newValue);
+                }
             }
-            game.decreaseRerollsAvailable();
-            System.out.println("Dice Rerolled. Remaining rerolls: " + game.getRerollsAvailable());
+            gameModel.decreaseRerollsAvailable();
         } else {
             System.out.println("No rerolls available.");
         }
     }
 
+    /**
+     * Setzt einen Würfelwert für den Axis-Slot, wenn noch keiner gesetzt wurde.
+     *
+     * @param dice Der zu setzende Würfel.
+     * @return {@code true}, wenn der Würfel erfolgreich gesetzt wurde, sonst {@code false}.
+     */
     public boolean setAxis(Dice dice){
         int diceValue = dice.getDiceValue();
         if (axisSlot != null) {
-            System.out.println("axisModel slot is already occupied");
             return false;
         }
         this.axisSlot = diceValue;
         removeDice(diceValue);
-        System.out.println(this.getClass().getSimpleName() + " placed " + diceValue + " on their axisModel slot");
         return true;
     }
+    /**
+     * Gibt den aktuellen Wert des Axis-Slots zurück.
+     *
+     * @return Der Wert des Axis-Slots oder {@code null}, wenn er nicht gesetzt wurde.
+     */
     public Integer getAxis() {
         return axisSlot;
     }
+    /**
+     * Überprüft, ob der Axis-Slot gesetzt ist.
+     *
+     * @return {@code true}, wenn der Axis-Slot gesetzt ist, sonst {@code false}.
+     */
     public boolean isAxis(){
         return axisSlot != null;
     }
 
+    /**
+     * Setzt einen Würfelwert für den Throttle-Slot, wenn noch keiner gesetzt wurde.
+     *
+     * @param dice Der zu setzende Würfel.
+     * @return {@code true}, wenn der Würfel erfolgreich gesetzt wurde, sonst {@code false}.
+     */
     public boolean setThrottle(Dice dice){
         int diceValue = dice.getDiceValue();
         if (throttle != null) {
-            System.out.println("Throttle slot is already occupied.");
             return false;
         }
         this.throttle = diceValue;
         removeDice(diceValue);
-        System.out.println(this.getClass().getSimpleName() + " placed " + diceValue + " on their Throttle slot.");
         return true;
     }
+    /**
+     * Gibt den aktuellen Wert des Throttle-Slots zurück.
+     *
+     * @return Der Wert des Throttle-Slots oder {@code null}, wenn er nicht gesetzt wurde.
+     */
     public Integer getThrottle() {
         return throttle;
     }
+    /**
+     * Überprüft, ob der Throttle-Slot gesetzt ist.
+     *
+     * @return {@code true}, wenn der Throttle-Slot gesetzt ist, sonst {@code false}.
+     */
     public boolean isThrottle(){
         return throttle != null;
     }
 
-    /*public void setRadio (int diceValue){
-        if (radioSlots < maxRadioSlots){
-            if (isDiceThere(diceValue)){
-                radioSlots++;
-                radio = diceValue;
-                removeDice(diceValue);
-                System.out.println(this.getClass().getSimpleName() + " placed " + diceValue + " on their Radio slot");
-            }else System.out.println("No such dice exists for the player");
-        }else System.out.println(this.getClass().getSimpleName() + " cannot place more dice in the Radio slot");
-    }
-    public int getRadioSlots(){
-        return radioSlots;
-    }
-    public void getRadio() {
-        if (radio != null) System.out.println("Radio for " + this.getClass().getSimpleName() + " is: " + radio);
-        else System.out.println("Radio for " + this.getClass().getSimpleName() + " is: empty");
-    }*/
-
+    /**
+     * Setzt einen Würfel für den Radio-Slot, wenn ein Funkfeld verfügbar ist.
+     *
+     * @param dice Der zu setzende Würfel.
+     * @return {@code true}, wenn der Würfel erfolgreich im Radio-Slot platziert wurde, sonst {@code false}.
+     */
     public boolean setRadio(Dice dice){
         int diceValue = dice.getDiceValue();
         for(Field field: radioPlayer){
             if(!field.isOccupied()){
                 field.placeDice(diceValue);
                 removeDice(diceValue);
-                game.getApproachTrack().removeAirplaneWithRadio(this.getAirplane().getApproachPosition(), diceValue);
                 return true;
             }
         }
-        System.out.println("No more radios available.");
         return false;
     }
+    /**
+     * Setzt alle Funkfelder des Spielers zurück.
+     */
     public void clearRadio(){
         for(Field field: radioPlayer){
             field.resetField();
         }
     }
 
+    /**
+     * Setzt einen Kaffee im Flugzeug des Spielers, wenn es verfügbar ist.
+     *
+     * @param dice Der zu verwendende Würfel.
+     * @return {@code true}, wenn der Kaffee erfolgreich hinzugefügt wurde, sonst {@code false}.
+     */
     public boolean setCoffee (Dice dice){
         boolean coffeeAdded = this.getAirplane().getConcentration().addCoffee();
         this.removeDice(dice.getDiceValue());
         return coffeeAdded;
     }
-/*    public void useCoffee (int diceValue, int coffeeValue){
-        int coffeeNeeded = Math.abs(coffeeValue);
-        if (coffeeValue == 0) {
-            System.out.println("Invalid: Coffee can not be 0");
-            return;
-        }
 
-        if (coffee < coffeeNeeded){
-            System.out.println("Invalid: Not enough coffees available");
-            return;
-        }
-
-        if(!isDiceThere(diceValue)){
-            System.out.println("Invalid: No such dice exists for the player");
-            return;
-        }
-
-        for(Dice dice : diceRolls){
-            if(dice.getDiceValue() == diceValue) {
-                int index = diceRolls.indexOf(dice);
-                int adjustedValue = diceValue + coffeeValue;
-                if (adjustedValue >= 0 && adjustedValue <= 6) {
-                    dice.setDiceValue(adjustedValue);
-                    coffee -= coffeeNeeded;
-                    return;
-                } else System.out.println("Invalid number: Out of bounds");
-            }
-        }
-    }
-    public void getCoffee() {
-        System.out.println("Total no. of Coffees: " + coffee);
-    }*/
-
+    /**
+     * Setzt alle Slots (Axis, Throttle) des Spielers zurück.
+     */
     public void clearSlots(){
         this.axisSlot = null;
         this.throttle = null;
